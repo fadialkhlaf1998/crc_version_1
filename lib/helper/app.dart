@@ -7,8 +7,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class App {
-  static Color primery = Color(0XFFFA5C00);
-  static Color secundry = Color(0XFFF6921E);
+  static Color primery = Color(0XFFFD6001);
+  static Color secundry = Color(0XFF191919);
 
   static textBlod(Color color, double size) {
     return TextStyle(color: color,
@@ -21,6 +21,7 @@ class App {
     return TextStyle(
         color: color, fontSize: size, overflow: TextOverflow.ellipsis);
   }
+
 
   static sucss_msg(BuildContext context,String msg){
     return showTopSnackBar(

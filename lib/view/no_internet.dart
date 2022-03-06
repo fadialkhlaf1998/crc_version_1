@@ -20,7 +20,7 @@ class NoInternet extends StatelessWidget{
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
             // image: DecorationImage(
-            //   image: AssetImage("assets/background/no_internet.png"),
+            //   image: AssetImage("assets/images/no_internet.png"),
             //   fit: BoxFit.cover
             // )
 

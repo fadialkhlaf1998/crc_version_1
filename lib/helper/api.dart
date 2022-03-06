@@ -63,6 +63,28 @@ class Api {
     else {
       return -1;
     }
-
   }
+
+  // static Future<List<Brand>> getBrands()async {
+  //
+  //   var request = http.Request('GET', Uri.parse(url + 'api/brand'));
+  //
+  //   http.StreamedResponse response = await request.send();
+  //
+  //   if(response.statusCode == 200){
+  //     var json = await response.stream.bytesToString();
+  //     var list = jsonDecode(json) as List;
+  //     List<Brand> brands = <Brand>[];
+  //     for(var l in list){
+  //       brands.add(Brand.fromMap(l));
+  //     }
+  //     return brands;
+  //   }
+  //   else {
+  //     return [];
+  //   }
+  // }
+
+
+
 }

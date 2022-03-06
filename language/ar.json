@@ -1,3 +1,8 @@
 {
-  "test": "test"
+  "test": "test",
+  "next" : "Next",
+  "welcome_to_crc" : "Welcome to CRC",
+  "please_select_car_brand" : "Please select the car brand",
+  "search_here" : "Search here"
+
 }
