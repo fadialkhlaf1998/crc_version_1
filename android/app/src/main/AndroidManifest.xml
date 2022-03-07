@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.maxart.crc_version_1">
-   <application
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application
         android:label="crc_version_1"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">

@@ -1,7 +1,9 @@
 import 'package:crc_version_1/app_localization.dart';
+import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/home_controller.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
+import 'package:crc_version_1/view/cars_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:get/get.dart';
 
 class Home extends StatelessWidget {
   HomeController homeController = Get.put(HomeController());
+  CarListController carListController = Get.put(CarListController());
 
 
   @override
@@ -26,7 +29,7 @@ class Home extends StatelessWidget {
               const SizedBox(height: 30,),
               AnimatedSwitcher(
                 duration: Duration(milliseconds: 300),
-                child: !homeController.chooseModel.value ?
+                child: !homeController.modelOption.value ?
                 _brandBody(context) : _modelsBody(context),
               ),
             ],
@@ -46,11 +49,11 @@ class Home extends StatelessWidget {
         children: [
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 1000),
-            child:  homeController.chooseModel.value ? SizedBox(
+            child:  homeController.modelOption.value ? SizedBox(
               width: 50,
               child: GestureDetector(
                 onTap: (){
-                  homeController.chooseModel.value = false;
+                  homeController.modelOption.value = false;
                 },
                 child: Icon(Icons.arrow_back_ios, color: Theme.of(context).dividerColor,),
               ),
@@ -66,20 +69,21 @@ class Home extends StatelessWidget {
                 child: MyTheme.isDarkTheme ?  Image.asset('assets/images/logo_dark.png'): Image.asset('assets/images/logo_light.png'),
               ),
               Text(App_Localization.of(context).translate('welcome_to_crc'), style: Theme.of(context).textTheme.headline2),
-              !homeController.chooseModel.value ?
+              !homeController.modelOption.value ?
                 Text(App_Localization.of(context).translate('please_select_car_brand'), style: Theme.of(context).textTheme.bodyText2)
                     :Text(App_Localization.of(context).translate('please_select_the_vehicle_type'), style: Theme.of(context).textTheme.bodyText2) ,
             ],
           ),
+          !homeController.modelOption.value ?
           SizedBox(
             width: 50,
             child: GestureDetector(
               onTap: (){
-                homeController.chooseModel.value = true;
+                homeController.modelOption.value = true;
               },
-              child: Text(App_Localization.of(context).translate('next'),  style: Theme.of(context).textTheme.headline2),
+              child: Text(App_Localization.of(context).translate('next'), style: Theme.of(context).textTheme.headline2),
             ),
-          ),
+          ) : SizedBox(width: 50,),
         ],
       ),
     );
@@ -131,7 +135,9 @@ class Home extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      
+                      homeController.brandName.value= "%";
+                      homeController.modelName.value= "%";
+                      homeController.getAll();
                     },
                     child: Container(
                       color: Colors.transparent,
@@ -139,11 +145,11 @@ class Home extends StatelessWidget {
                       child:Text('All car', style: Theme.of(context).textTheme.headline3),
                     ),
                   ),
-                  Divider(color: Theme.of(context).dividerColor,thickness: 1,indent: 30,endIndent: 35,)
+                  Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)
                 ],
               ),
               ListView.builder(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: homeController.brands.length,
                 itemBuilder: (context, index){
@@ -170,7 +176,7 @@ class Home extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Divider(color: Theme.of(context).dividerColor,thickness: 1,indent: 30,endIndent: 35,)
+                        Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)
                       ],
                     );
                   });
@@ -187,35 +193,60 @@ class Home extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.68,
-      child: ListView.builder(
-        itemCount: homeController.brands[homeController.brandIndex.value].models.length,
-        itemBuilder: (context, index){
-          return Obx((){
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+      child:SingleChildScrollView(
+        physics: const ScrollPhysics(),
+        child: Column(
+          children: [
+            Column(
               children: [
                 GestureDetector(
                   onTap: (){
-
+                    homeController.modelName.value= "%";
+                    homeController.getAll();
                   },
                   child: Container(
                     color: Colors.transparent,
                     width: MediaQuery.of(context).size.width * 0.85,
-                    height: MediaQuery.of(context).size.height * 0.04,
-                    child:Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(homeController.brands[homeController.brandIndex.value].models[index].title, style: Theme.of(context).textTheme.headline3),
-                      ],
-                    ),
+                    child:Text('All models', style: Theme.of(context).textTheme.headline3),
                   ),
                 ),
-                Divider(color: Theme.of(context).dividerColor,thickness: 1,indent: 30,endIndent: 35,)
+                Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)
               ],
-            );
-          });
-        },
+            ),
+            ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: homeController.brands[homeController.brandIndex.value].models.length,
+              itemBuilder: (context, index){
+                return Obx((){
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      GestureDetector(
+                        onTap: (){
+                          homeController.chooseModel(index);
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          width: MediaQuery.of(context).size.width * 0.85,
+                          height: MediaQuery.of(context).size.height * 0.04,
+                          child:Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(homeController.brands[homeController.brandIndex.value].models[index].title, style: Theme.of(context).textTheme.headline3),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)
+                    ],
+                  );
+                });
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -9,7 +9,8 @@ import 'package:http/http.dart' as http;
 
 class Api {
 
-  static String url = "http://10.0.2.2:3000/";
+  //static String url = "http://10.0.2.2:3000/";
+  static String url = "http://phpstack-548447-2482384.cloudwaysapps.com/";
 
   static Future<bool> check_internet()async{
     // return false;
@@ -59,7 +60,7 @@ class Api {
     if (response.statusCode == 200) {
       var jsondata = await response.stream.bytesToString();
       var data = jsonDecode(jsondata) as List;
-      return Company.fromJson(data[0]).id;
+      return Company.fromMap(data[0]).id;
     }
     else {
       return -1;
@@ -68,16 +69,16 @@ class Api {
 
   static Future<List<Car>> filter(String year,String brand, String model, String color, String price, String sort ) async{
     var headers = {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     };
-    var request = http.Request('POST', Uri.parse(url + '/api/car_filter'));
+    var request = http.Request('POST', Uri.parse(url + 'api/car_filter'));
     request.body = json.encode({
-      "year": "%",
-      "brand": "%",
-      "model": "%",
-      "color": "%",
-      "price": "999999999999999999999999999999999999999999999999999",
-      "sort": "ASC"
+      "year": year,
+      "brand": brand,
+      "model": model,
+      "color": color,
+      "price": price,
+      "sort": sort
     });
     request.headers.addAll(headers);
 
@@ -85,34 +86,18 @@ class Api {
 
     if (response.statusCode == 200) {
       String jsondata = await response.stream.bytesToString();
-      return List.from(jsonDecode(jsondata)).map((e)=>Car.fromJson(e)).toList();
+      var list = jsonDecode(jsondata) as List;
+      List<Car> cars = <Car>[];
+      for(var c in list){
+        cars.add(Car.fromMap(c));
+      }
+      return cars;
     }
     else {
-      return <Car>[];
+     return <Car>[];
     }
 
   }
-
-  // static Future<List<Brand>> getBrands()async {
-  //
-  //   var request = http.Request('GET', Uri.parse(url + 'api/brand'));
-  //
-  //   http.StreamedResponse response = await request.send();
-  //
-  //   if(response.statusCode == 200){
-  //     var json = await response.stream.bytesToString();
-  //     var list = jsonDecode(json) as List;
-  //     List<Brand> brands = <Brand>[];
-  //     for(var l in list){
-  //       brands.add(Brand.fromMap(l));
-  //     }
-  //     return brands;
-  //   }
-  //   else {
-  //     return [];
-  //   }
-  // }
-
 
 
 }
