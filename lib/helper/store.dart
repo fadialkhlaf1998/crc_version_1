@@ -19,4 +19,10 @@ class Store {
     prefs.setString("email", Global.loginInfo!.email);
     prefs.setString("pass", Global.loginInfo!.pass);
   }
+
+  static logout()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("email");
+    prefs.remove("pass");
+  }
 }

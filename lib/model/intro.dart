@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class Intro {
   Intro({
     required this.brands,
@@ -29,6 +31,7 @@ class Brands {
   late final int id;
   late final String title;
   late final String image;
+  var selected = false.obs;
   late final List<Models> models;
 
   Brands.fromJson(Map<String, dynamic> json){

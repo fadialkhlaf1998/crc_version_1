@@ -13,6 +13,7 @@ class LoginController extends GetxController{
   TextEditingController password = TextEditingController();
   var loading = false.obs;
   var submited = false.obs;
+  var sign_up_option = false.obs;
 
   submite(BuildContext context){
     Api.check_internet().then((internet) {

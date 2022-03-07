@@ -3,5 +3,19 @@
   "next" : "Next",
   "welcome_to_crc" : "Welcome to CRC",
   "please_select_car_brand" : "Please Select The Car Brand",
-  "search_here" : "Search here"
+  "search_here" : "Search here",
+  "username_cannot_be_empty" : "Username cannot be empty",
+  "username_is_wrong" : "Username is Wrong",
+  "username" : "Username",
+  "enter_your_username" : "Enter your Username",
+  "password_length" : "Password must be at least 6 characters long",
+  "password" : "Password",
+  "enter_your_password" : "Enter your password",
+  "login" : "Log In",
+  "contact_us_to_sign_up" : "Contact Us to sign up",
+  "call_us_whatsapp" : "Call us WhatsApp",
+  "call_us" : "Call us",
+  "return_to_login" : "Return to Login",
+  "please_select_the_vehicle_type" : "Please select the vehicle type",
+  "all_car" : "All car"
 }

@@ -9,11 +9,16 @@ class IntroView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Center(
-          child: CircularProgressIndicator(color: Colors.black,),
+      body: SafeArea(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/images/background2_light.png')
+            )
+          ),
         ),
       ),
     );

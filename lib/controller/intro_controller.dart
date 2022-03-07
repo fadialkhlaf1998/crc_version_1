@@ -37,7 +37,7 @@ class IntroController extends GetxController{
   get_page(){
       Store.Load_login().then((value) {
         if(Global.loginInfo!.email=="non"){
-          Future.delayed(Duration(milliseconds: 1000)).then((value) {
+          Future.delayed(Duration(milliseconds: 2000)).then((value) {
             Get.offAll(() => LogIn());
           });
         }else{

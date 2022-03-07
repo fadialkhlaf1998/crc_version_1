@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:crc_version_1/model/car.dart';
 import 'package:crc_version_1/model/company.dart';
 import 'package:crc_version_1/model/intro.dart';
 import 'package:http/http.dart' as http;
@@ -63,6 +64,33 @@ class Api {
     else {
       return -1;
     }
+  }
+
+  static Future<List<Car>> filter(String year,String brand, String model, String color, String price, String sort ) async{
+    var headers = {
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST', Uri.parse(url + '/api/car_filter'));
+    request.body = json.encode({
+      "year": "%",
+      "brand": "%",
+      "model": "%",
+      "color": "%",
+      "price": "999999999999999999999999999999999999999999999999999",
+      "sort": "ASC"
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String jsondata = await response.stream.bytesToString();
+      return List.from(jsonDecode(jsondata)).map((e)=>Car.fromJson(e)).toList();
+    }
+    else {
+      return <Car>[];
+    }
+
   }
 
   // static Future<List<Brand>> getBrands()async {
