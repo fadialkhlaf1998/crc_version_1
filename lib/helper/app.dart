@@ -42,6 +42,17 @@ class App {
       ),
     );
   }
+
+  static info_msg(BuildContext context,String info){
+    return showTopSnackBar(
+      context,
+      CustomSnackBar.info(
+        message:
+        info,
+        backgroundColor: primery,
+      ),
+    );
+  }
   static openwhatsapp(BuildContext context,String msg) async{
     var whatsapp ="971526924021";
     var whatsappURl_android = "whatsapp://send?phone="+whatsapp+"&text=$msg";

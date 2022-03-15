@@ -23,14 +23,18 @@ class LoginController extends GetxController{
           loading.value=true;
           Api.login(username.text, password.text).then((value) {
             if(value!=-1){
-              loading.value=false;
+              Future.delayed(Duration(milliseconds: 2500)).then((value){
+                loading.value=false;
+              });
               Global.loginInfo!.email=username.text;
               Global.loginInfo!.pass=password.text;
               Store.Save_login();
               Global.company_id=value;
               Get.offAll(()=>Home());
             }else{
-              loading.value=false;
+              Future.delayed(Duration(milliseconds: 2500)).then((value){
+                loading.value=false;
+              });
             }
 
           }).catchError((err){

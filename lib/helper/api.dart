@@ -1,10 +1,13 @@
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:connectivity/connectivity.dart';
 import 'package:crc_version_1/model/car.dart';
 import 'package:crc_version_1/model/company.dart';
 import 'package:crc_version_1/model/intro.dart';
+import 'package:crc_version_1/model/my_car.dart';
+import 'package:crc_version_1/model/person.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
@@ -99,5 +102,61 @@ class Api {
 
   }
 
+  static Future addPerson(String name,File image, String phone, String languages, double companyId)async{
+
+  }
+
+  static Future<List<MyCar>> getMyCarsList(int companyId)async{
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url + 'api/car_for_company'));
+    request.body = json.encode({
+      "company_id": companyId
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String jsondata = await response.stream.bytesToString();
+      var list = jsonDecode(jsondata) as List;
+      List<MyCar> myCars = <MyCar>[];
+      for(var c in list){
+        myCars.add(MyCar.fromMap(c));
+      }
+      return myCars;
+    }
+    else {
+      return <MyCar>[];
+    }
+  }
+
+  static Future <List<Person>> getPeopleList(int companyId)async{
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url + 'api/contact_person_for_company'));
+    request.body = json.encode({
+      "company_id": companyId
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String jsondata = await response.stream.bytesToString();
+      var list = jsonDecode(jsondata) as List;
+      List<Person> personsList = <Person>[];
+      for(var c in list){
+        personsList.add(Person.fromMap(c));
+      }
+      return personsList;
+    }
+    else {
+      return <Person>[];
+    }
+
+  }
 
 }

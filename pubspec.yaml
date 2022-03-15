@@ -45,6 +45,13 @@ dependencies:
   cached_network_image: ^3.2.0
   cupertino_icons: ^1.0.2
   google_fonts: ^2.3.1
+  flutter_speed_dial: ^5.0.0+1
+  lottie: ^1.2.2
+  image_picker: ^0.8.4+8
+  fluttertoast: ^8.0.9
+
+
+
 
 
 dev_dependencies:
@@ -74,6 +81,7 @@ flutter:
     - language/ar.json
     - language/en.json
     - assets/images/
+    - assets/emirates/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -30,5 +30,17 @@
   "about" : "About",
   "light_mode" : "Light mode",
   "dark_mode" : "Dark Mode",
-  "sign_out" : "Sign out"
+  "sign_out" : "Sign out",
+  "add_photo" : "Add Photo",
+  "mobile_number" : "Mobile number",
+  "enter_your_mobile_number" : "Enter your mobile number",
+  "mobile_number_is_required" : "Mobile number is required",
+  "choose_the_rent_per_day" : "Choose the rent per day",
+  "save" : "Save",
+  "price" : "Price",
+  "enter_the_price_you_went" : "Enter the price you went",
+  "hid_or_show" : "Hide or show",
+  "brand" : "Brand",
+  "car_model" : "Car Model",
+  "color" : "Color"
 }

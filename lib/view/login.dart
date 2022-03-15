@@ -1,10 +1,8 @@
-import 'dart:math';
-
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/login_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class LogIn extends StatelessWidget {
 
@@ -23,7 +21,9 @@ class LogIn extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height *0.96,
               child: loginController.loading.value ?
-              const Center(child: CircularProgressIndicator(),)
+              Container(
+                child: Lottie.asset('assets/images/Animation.json'),
+              )
                   : Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
