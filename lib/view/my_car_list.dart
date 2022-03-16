@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 
 class MyCarList extends StatelessWidget {
@@ -20,7 +21,13 @@ class MyCarList extends StatelessWidget {
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              _body(context),
+              AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: myCarListController.loading.value == true
+                    ? Center(
+                      child: Container(child: Lottie.asset('assets/images/Animation.json'))) :
+                _body(context),
+              ),
               _background(context),
               _filterInterface(context),
               _sortInterface(context),
@@ -99,8 +106,8 @@ class MyCarList extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-
-                    },
+                      print(myCarListController.myCarList[index].id);
+                      },
                     child: Row(
                       children: [
                         Icon(Icons.edit, color: Theme.of(context).backgroundColor,size: 20),
@@ -111,7 +118,7 @@ class MyCarList extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: (){
-
+                      myCarListController.deleteCarFromMyList(index);
                     },
                     child: Row(
                       children: [

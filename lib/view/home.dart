@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 
 
 class Home extends StatelessWidget {
+
   HomeController homeController = Get.put(HomeController());
-  CarListController carListController = Get.put(CarListController());
 
 
   @override
@@ -79,7 +79,11 @@ class Home extends StatelessWidget {
             width: 50,
             child: GestureDetector(
               onTap: (){
-                homeController.modelOption.value = true;
+                if(homeController.brandName.value == '%' ){
+                  App.info_msg(context, 'You must choose the brand of car');
+                }else{
+                  homeController.modelOption.value = true;
+                }
               },
               child: Text(App_Localization.of(context).translate('next'), style: Theme.of(context).textTheme.headline2),
             ),

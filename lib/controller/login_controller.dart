@@ -16,41 +16,38 @@ class LoginController extends GetxController{
   var sign_up_option = false.obs;
 
   submite(BuildContext context){
-    Api.check_internet().then((internet) {
-      if(internet){
-        if(username.text.isNotEmpty&&password.text.isNotEmpty){
-          submited.value=true;
-          loading.value=true;
-          Api.login(username.text, password.text).then((value) {
-            if(value!=-1){
-              Future.delayed(Duration(milliseconds: 2500)).then((value){
-                loading.value=false;
-              });
-              Global.loginInfo!.email=username.text;
-              Global.loginInfo!.pass=password.text;
-              Store.Save_login();
-              Global.company_id=value;
-              Get.offAll(()=>Home());
-            }else{
-              Future.delayed(Duration(milliseconds: 2500)).then((value){
-                loading.value=false;
-              });
-            }
-
-          }).catchError((err){
-            print(err);
-            loading.value=false;
-          });
+    Future.delayed(Duration(milliseconds: 1500)).then((value){
+      //loading.value = true;
+      Api.check_internet().then((internet) {
+        if(internet){
+          if(username.text.isNotEmpty&&password.text.isNotEmpty){
+            submited.value=true;
+            loading.value=true;
+            Api.login(username.text, password.text).then((value) {
+              if(value!=-1){
+                Global.loginInfo!.email=username.text;
+                Global.loginInfo!.pass=password.text;
+                Store.Save_login();
+                Global.company_id=value;
+                Get.offAll(()=>Home());
+              }else{
+               ///Wrong email pr password
+              }
+            }).catchError((err){
+              print(err);
+              loading.value=false;
+            });
+          }else{
+            submited.value=true;
+          }
         }else{
-          submited.value=true;
+          Get.to(()=>NoInternet())!.then((value) {
+            submite(context);
+          });
         }
-
-      }else{
-        Get.to(()=>NoInternet())!.then((value) {
-          submite(context);
-        });
-      }
+      });
     });
+
   }
 
 }

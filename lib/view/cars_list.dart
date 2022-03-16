@@ -1,23 +1,32 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
+import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/view/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
-class CarsList extends StatelessWidget {
-
-  CarsList(){
-    carListController.update_data();
-    carListController.fillYearList();
-  }
+class CarsList extends StatefulWidget {
 
   CarListController carListController = Get.find();
   IntroController introController = Get.find();
 
+  @override
+  State<CarsList> createState() => _CarsListState();
+}
 
+class _CarsListState extends State<CarsList> {
+
+  CarListController carListController = Get.find();
+  IntroController introController = Get.find();
+
+  _CarsListState(){
+    carListController.update_data();
+    carListController.fillYearList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +47,6 @@ class CarsList extends StatelessWidget {
       }),
     );
   }
-
 
   _app_bar(context){
     return Container(
@@ -170,30 +178,32 @@ class CarsList extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
-      child:carListController.loading.value?Center(
-        child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
-      ): ListView.builder(
-        itemCount: carListController.myCars.length,
-        itemBuilder:(context, index){
-          return  Column(
-            children: [
-              Container(
-                height: MediaQuery.of(context).size.height * 0.44,
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    _companyInfo(context, index),
-                    const SizedBox(height: 10),
-                    _carInfo(context,index),
-                    const SizedBox(height: 10),
-                    _contentOption(context),
-                  ],
+      child:carListController.loading.value
+          ? Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
+          : carListController.myCars.isEmpty
+          ? Center(child: Text('No car'),)
+          : ListView.builder(
+          itemCount: carListController.myCars.length,
+          itemBuilder:(context, index){
+            return  Column(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.44,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 10),
+                      _companyInfo(context, index),
+                      const SizedBox(height: 10),
+                      _carInfo(context,index),
+                      const SizedBox(height: 10),
+                      _contentOption(context),
+                    ],
+                  ),
                 ),
-              ),
-              Divider(thickness: 1, indent: 30,endIndent: 30,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 40,),
-            ],
-          );
-        }
+                Divider(thickness: 1, indent: 30,endIndent: 30,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 40,),
+              ],
+            );
+          }
       ),
     );
   }
@@ -205,7 +215,8 @@ class CarsList extends StatelessWidget {
         children: [
           CircleAvatar(
             maxRadius: 20,
-            child: Image.asset('assets/images/car.png'),
+            child: carListController.myCars[index].companyImage == null ?
+            Image.asset('assets/images/car.png') : Image.network(carListController.myCars[index].companyImage),
           ),
           const SizedBox(width: 10),
           Text(carListController.myCars[index].company,style: Theme.of(context).textTheme.headline3,),
@@ -222,10 +233,15 @@ class CarsList extends StatelessWidget {
           width: MediaQuery.of(context).size.width* 0.9,
           height: MediaQuery.of(context).size.height * 0.2,
           decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(10)
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                  Api.url + 'uploads/' + carListController.myCars[index].image,
+              )
+            ),
           ),
-          child: Image.asset('assets/images/car.png'),
         ),
         const SizedBox(height: 10),
         Container(
@@ -240,7 +256,7 @@ class CarsList extends StatelessWidget {
 
         // Text(),
         // Text(),
-        
+
       ],
     );
   }
@@ -306,32 +322,109 @@ class CarsList extends StatelessWidget {
       curve: Curves.fastOutSlowIn,
       child: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          //alignment: Alignment.bottomCenter,
           children: [
-            SizedBox(height: MediaQuery.of(context).size.height  * 0.1,),
-           _yearFilterMenu(context),
-            const SizedBox(height: 10,),
-            _brandFilterMenu(context),
-            const SizedBox(height: 10,),
-            _modelFilterMenu(context),
-            const SizedBox(height: 10,),
-            _colorFilterMenu(context),
-            const SizedBox(height: 10,),
-            //_priceFilterMenu(context),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 800),
+              curve: Curves.fastOutSlowIn,
+              height: carListController.checkFilterOpen.value ? MediaQuery.of(context).size.height  * 0.52 : 10,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height  * 0.1,),
+                    _yearFilterMenu(context),
+                    const SizedBox(height: 10,),
+                    _brandFilterMenu(context),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      child: carListController.brand.value != '%'
+                          ? _modelFilterMenu(context)
+                          : Text('')
+                    ),
+                    _colorFilterMenu(context),
+                    const SizedBox(height: 10,),
+                    _priceFilterMenu(context),
+                  ],
+                ),
+              ),
+            ),
+            AnimatedContainer(
+                duration: const Duration(milliseconds: 900),
+                curve: Curves.fastOutSlowIn,
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(10),
+                  bottomRight: Radius.circular(10)
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).dividerColor.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 7,
+                    offset: Offset(0, -1),
+                  ),
+                ],
+              ),
+              width: MediaQuery.of(context).size.width,
+              height: carListController.checkFilterOpen.value ? MediaQuery.of(context).size.height  * 0.08 : 0,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Center(
+                          child: Text(
+                            App_Localization.of(context).translate('done'),
+                            style: TextStyle(
+                                color: Theme.of(context).backgroundColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: IconButton(
+                        onPressed: (){
+                          carListController.clearFilterValue();
+                        },
+                        icon: Icon(Icons.delete_outline),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ),
           ],
         ),
       ),
     );
   }
 
-
   _yearFilterMenu(context){
     return AnimatedContainer(
-      duration: Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 800),
       curve: Curves.fastOutSlowIn,
       width: MediaQuery.of(context).size.width * 0.9,
-      height: carListController.yearListOpen.value ? MediaQuery.of(context).size.height * 0.1 : 30,
+      height: carListController.yearListOpen.value ? MediaQuery.of(context).size.height * 0.11 : 30,
       child: SingleChildScrollView(
+        physics: !carListController.yearListOpen.value ? const NeverScrollableScrollPhysics() :null,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,17 +455,33 @@ class CarsList extends StatelessWidget {
                 itemBuilder: (context, index){
                   return Row(
                     children: [
-                        Container(
-                        width: 50,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Theme.of(context).dividerColor,width: 1)
-                        ),
-                        child: Center(
-                          child: Text(carListController.yearModelList[index].toString()),
-                        ),
-                      ),
+                      Obx((){
+                        return  GestureDetector(
+                          onTap: (){
+                            carListController.chooseYearFilter(index);
+                          },
+                          child: Container(
+                            width: 50,
+                            decoration: BoxDecoration(
+                                color: !carListController.yearModelListCheck[index] == true
+                                    ? Theme.of(context).backgroundColor
+                                    : Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: Theme.of(context).dividerColor,width: 1)
+                            ),
+                            child: Center(
+                              child:  Text(
+                                carListController.yearModelList[index].toString(),
+                                style: TextStyle(
+                                    color: carListController.yearModelListCheck[index] == true
+                                        ? Colors.white
+                                        : Theme.of(context).dividerColor
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }),
                       SizedBox(width: 10,),
                     ],
                   );
@@ -392,6 +501,7 @@ class CarsList extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.9,
       height: carListController.brandListOpen.value ? MediaQuery.of(context).size.height * 0.11 : 30,
       child: SingleChildScrollView(
+        physics: !carListController.brandListOpen.value ? const NeverScrollableScrollPhysics() : null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -404,7 +514,7 @@ class CarsList extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(App_Localization.of(context).translate('brand'), style: Theme.of(context).textTheme.headline2,),
+                      Text(App_Localization.of(context).translate('brand'), style: Theme.of(context).textTheme.headline2,maxLines: 2,),
                       carListController.brandListOpen.value ?  Icon(Icons.keyboard_arrow_up_outlined) : Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),
@@ -419,17 +529,32 @@ class CarsList extends StatelessWidget {
                 itemBuilder: (context, index){
                   return Row(
                     children: [
-                      Container(
-                        width: 70,
-                        decoration: BoxDecoration(
-                        color: Theme.of(context).backgroundColor,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Theme.of(context).dividerColor,width: 1)
-                        ),
-                          child: Center(
-                             child: Text(introController.brands[index].title,textAlign: TextAlign.center,style: TextStyle(color: Theme.of(context).dividerColor, fontSize: 11,fontWeight: FontWeight.bold),),
-                        ),
-                      ),
+                     Obx((){
+                       return  GestureDetector(
+                         onTap: (){
+                           carListController.chooseBrandFilter(index);
+                         },
+                         child: Container(
+                           width: 80,
+                           decoration: BoxDecoration(
+                               color: !carListController.brandListCheck![index] == true
+                                   ? Theme.of(context).backgroundColor
+                                   : Theme.of(context).primaryColor,
+                               borderRadius: BorderRadius.circular(10),
+                               border: Border.all(color: Theme.of(context).dividerColor,width: 1)
+                           ),
+                           child: Center(
+                             child: Text(
+                               introController.brands[index].title,textAlign: TextAlign.center,
+                               style: TextStyle(
+                                   color: !carListController.brandListCheck![index] == true
+                                       ? Theme.of(context).dividerColor
+                                       : Colors.white,
+                                   fontSize: 11,fontWeight: FontWeight.bold),),
+                           ),
+                         ),
+                       );
+                     }),
                       SizedBox(width: 8,),
                     ],
                   );
@@ -449,6 +574,7 @@ class CarsList extends StatelessWidget {
       width: MediaQuery.of(context).size.width * 0.9,
       height: carListController.carModelListOpen.value ? MediaQuery.of(context).size.height * 0.11 : 30,
       child: SingleChildScrollView(
+        physics: !carListController.carModelListOpen.value ? const NeverScrollableScrollPhysics() :null,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -461,7 +587,9 @@ class CarsList extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(App_Localization.of(context).translate('car_model'), style: Theme.of(context).textTheme.headline2,),
+                      Center(
+                        child: Text(App_Localization.of(context).translate('car_model'), style: Theme.of(context).textTheme.headline2,),
+                      ),
                       carListController.carModelListOpen.value ?  Icon(Icons.keyboard_arrow_up_outlined) : Icon(Icons.keyboard_arrow_down_outlined),
                     ],
                   ),
@@ -472,21 +600,35 @@ class CarsList extends StatelessWidget {
               height: 30,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: introController.brands[0].models.length,
+                itemCount: introController.brands[carListController.selectedBrand.value].models.length,
                 itemBuilder: (context, index){
                   return Row(
                     children: [
-                      Container(
-                        width: 80,
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).backgroundColor,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Theme.of(context).dividerColor,width: 1)
-                        ),
-                        child: Center(
-                          child: Text(introController.brands[0].models[index].title,textAlign: TextAlign.center,style: TextStyle(color: Theme.of(context).dividerColor, fontSize: 12,fontWeight: FontWeight.bold),),
-                        ),
-                      ),
+                     Obx((){
+                       return  GestureDetector(
+                         onTap: (){
+                           carListController.chooseModelFilter(index);
+                         },
+                         child: Container(
+                           width: 90,
+                           decoration: BoxDecoration(
+                               color: Theme.of(context).backgroundColor,
+                               borderRadius: BorderRadius.circular(10),
+                               border: Border.all(color: Theme.of(context).dividerColor,width: 1)
+                           ),
+                           child: Center(
+                             child: Text(
+                               introController.brands[carListController.selectedBrand.value].models[index].title,textAlign: TextAlign.center,
+                               maxLines: 1,
+                               overflow: TextOverflow.ellipsis,
+                               style: TextStyle(
+                                   color: Theme.of(context).dividerColor,
+                                   fontSize: 12,
+                                   fontWeight: FontWeight.bold),),
+                           ),
+                         ),
+                       );
+                     }),
                       SizedBox(width: 8,),
                     ],
                   );
@@ -556,18 +698,40 @@ class CarsList extends StatelessWidget {
     );
   }
 
-  // _priceFilterMenu(context){
-  //   return Container(
-  //     child: RangeSlider(
-  //       values: carListController.values,
-  //       min: 50,
-  //       max: 8000,
-  //       onChanged: (values){
-  //         carListController.values = values;
-  //       },
-  //     ),
-  //   );
-  // }
+  _priceFilterMenu(context){
+    return Obx((){
+      return Container(
+        child: Row(
+          children: [
+            const SizedBox(width: 15,),
+            Container(
+              child: Text('0',style: Theme.of(context).textTheme.headline3,),
+            ),
+            Expanded(
+              child: Slider(
+                value: carListController.myValue!.value,
+                min: 0,
+                max: carListController.max!.value,
+                divisions: 50,
+                activeColor: Theme.of(context).primaryColor,
+                inactiveColor: Theme.of(context).primaryColor.withOpacity(0.2),
+                label: carListController.myValue!.value.round().toString() + ' AED',
+                onChanged: (value){
+                  setState(() {
+                    carListController.myValue!.value = value;
+                  });
+                },
+              ),
+            ),
+            Container(
+              child: Text(carListController.max!.value.round().toString() + ' AED',style: Theme.of(context).textTheme.headline3,),
+            ),
+            const SizedBox(width: 15,),
+          ],
+        )
+      );
+    });
+  }
 
   _sortInterface(context){
     return AnimatedContainer(
@@ -619,12 +783,6 @@ class CarsList extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
-
 }
 
 

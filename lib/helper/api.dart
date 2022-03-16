@@ -1,7 +1,5 @@
-
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:crc_version_1/model/car.dart';
 import 'package:crc_version_1/model/company.dart';
@@ -12,7 +10,6 @@ import 'package:http/http.dart' as http;
 
 class Api {
 
-  //static String url = "http://10.0.2.2:3000/";
   static String url = "http://phpstack-548447-2482384.cloudwaysapps.com/";
 
   static Future<bool> check_internet()async{
@@ -104,6 +101,56 @@ class Api {
 
   static Future addPerson(String name,File image, String phone, String languages, double companyId)async{
 
+    var request = http.MultipartRequest('POST', Uri.parse(url + 'api/contact_person'));
+    request.fields.addAll({
+      'name': name,
+      'phone': phone,
+      'languages': languages,
+      'company_id': companyId.toString()
+    });
+    request.files.add(await http.MultipartFile.fromPath('file',image.path));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Success');
+    }
+    else {
+      print('Error');
+    }
+
+  }
+
+  static Future addCar(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images, String price,double companyId) async{
+    var request = http.MultipartRequest('POST', Uri.parse(url + 'api/car'));
+    request.fields.addAll({
+      'title': brand + ' - ' + model,
+      'search': brand + ' - ' + model,
+      'avilable': '1',
+      'company_id': companyId.toString(),
+      'brand_id': brandId,
+      'pric_per_day': price,
+      'doors': '4',
+      'passengers': '4',
+      'location': location,
+      'color': color,
+      'model_id': modelId,
+      'year': year
+    });
+
+    for (int i = 0; i < images.length; i++) {
+      request.files.add(await http.MultipartFile.fromPath('files', images[i].path));
+    }
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Success');
+    }
+    else {
+      print('Field');
+    }
+
   }
 
   static Future<List<MyCar>> getMyCarsList(int companyId)async{
@@ -155,6 +202,44 @@ class Api {
     }
     else {
       return <Person>[];
+    }
+
+  }
+
+  static Future deleteCar(int id)async {
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('DELETE', Uri.parse(url + 'api/car'));
+    request.body = json.encode({
+      "id": id.toString()
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Success');
+      return true;
+    }
+    else {
+      print('Field');
+      return false;
+    }
+
+  }
+
+  static Future deletePerson(int id)async{
+
+    var request = http.Request('DELETE', Uri.parse(url + 'api/contact_person'));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Success');
+    }
+    else {
+      print('Field');
     }
 
   }

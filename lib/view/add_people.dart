@@ -164,7 +164,7 @@ class AddPeople extends StatelessWidget {
                 addPeopleController.forwardStep(context);
               },
               child: Text(
-                addPeopleController.currentStep.value == 2 ? App_Localization.of(context).translate('next') : App_Localization.of(context).translate('save') ,
+                addPeopleController.currentStep.value < 3 ? App_Localization.of(context).translate('next') : App_Localization.of(context).translate('save') ,
                 style: const TextStyle(
                     color: Colors.white,
                     fontSize: 25,

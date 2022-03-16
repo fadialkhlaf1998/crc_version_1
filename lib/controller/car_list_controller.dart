@@ -1,10 +1,13 @@
+import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/model/car.dart';
-import 'package:crc_version_1/model/company.dart';
+import 'package:crc_version_1/model/intro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CarListController extends GetxController{
+
+  IntroController introController = Get.find();
 
   var brand="%".obs;
   var model="%".obs;
@@ -22,15 +25,44 @@ class CarListController extends GetxController{
   RxBool carModelListOpen = false.obs;
   RxBool colorListOpen = false.obs;
   RxList<int> yearModelList = List.filled(10, 0).obs;
-  RxDouble min = 0.0.obs;
-  RxDouble max = 5000.0.obs;
- // RangeValues values = RangeValues(min.value, max.value);
+  RxList<bool> yearModelListCheck = List.filled(10, false).obs;
+  RxList<bool>? brandListCheck;
+  RxList<bool>? modelListCheck;
+  RxDouble? myValue;
+  RxInt? minLabel;
+  RxInt? maxLabel;
+  RxInt? divisionsLabel;
+  RxInt selectedBrand = (-1).obs;
+
+  RxDouble? max;
 
 
   @override
   void onInit() {
     super.onInit();
+    max = 5000.0.obs;
+    minLabel = 0.obs;
+    myValue = 2500.0.obs;
+    brandListCheck = List.filled(introController.brands.length, false).obs;
     getCarsList(year.value,brand.value,model.value,color.value,price.value,sort.value);
+  }
+
+  updateCarList(){
+    Future.delayed(const Duration(milliseconds: 1500),(){
+      loading.value = true;
+      Api.check_internet().then((value) async{
+        if(value){
+          myCars.clear();
+          loading.value = true;
+          await Api.filter('%', '%', '%', '%', '999999999999', 'ASC').then((value){
+            myCars.addAll(value);
+          });
+          loading.value = false;
+        }else{
+
+        }
+      });
+    });
   }
 
   fillYearList(){
@@ -42,26 +74,26 @@ class CarListController extends GetxController{
   }
 
   getCarsList(String year, String brand,String model, String color, String price, String sort) async{
-    Api.check_internet().then((value) async{
-      if(value){
-        myCars.clear();
-        loading.value = true;
-        await Api.filter(year, brand, model, color, price, sort).then((value){
-          print('**************');
-          print(value.length);
-          myCars.addAll(value);
-        });
-        loading.value = false;
-      }else{
+    Future.delayed(const Duration(milliseconds: 1000),(){
+      loading.value = true;
+      Api.check_internet().then((value) async{
+        if(value){
+          myCars.clear();
+          loading.value = true;
+          await Api.filter(year, brand, model, color, price, sort).then((value){
+            myCars.addAll(value);
+          });
+          loading.value = false;
+        }else{
 
-      }
+        }
+      });
     });
   }
 
   update_data(){
     Api.check_internet().then((value) async{
       if(value){
-        // myCars.clear();
         loading.value = true;
         print(brand.value);
         print(model.value);
@@ -103,6 +135,49 @@ class CarListController extends GetxController{
   }
   openColorFilterList(){
     colorListOpen.value = !colorListOpen.value;
+  }
+
+  chooseYearFilter(index){
+    for(int i = 0; i < yearModelList.length; i++){
+      yearModelListCheck[i] = false;
+    }
+    yearModelListCheck[index] = true;
+    year.value = yearModelList[index].toString();
+  }
+
+  chooseBrandFilter(index){
+    selectedBrand = introController.brands[index].id.obs;
+    for(int i = 0; i < brandListCheck!.length; i++){
+      brandListCheck![i] = false;
+    }
+    brandListCheck![index] = true;
+    brand.value = introController.brands[index].title;
+
+  }
+
+  chooseModelFilter(index){
+    modelListCheck = List.filled(introController.brands[selectedBrand.value].models.length, false).obs;
+
+    for(int i = 0; i < modelListCheck!.length; i++){
+      modelListCheck![index] = false;
+    }
+    modelListCheck![index] = true;
+    model.value = introController.brands[selectedBrand.value].models[index].title;
+  }
+
+  clearFilterValue(){
+    brand.value  = "%";
+    model.value  = "%";
+    year .value  = "%";
+    color.value  = "%";
+    price.value  = "99999999999";
+    sort .value  = "ASC";
+    brandListCheck = List.filled(introController.brands.length, false).obs;
+    yearModelListCheck = List.filled(yearModelList.length, false).obs;
+    yearListOpen.value = false;
+    brandListOpen.value = false;
+    colorListOpen.value = false;
+
   }
 
 

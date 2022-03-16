@@ -1,9 +1,11 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/people_list_controller.dart';
+import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class PeopleList extends StatelessWidget {
 
@@ -17,7 +19,12 @@ class PeopleList extends StatelessWidget {
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              _body(context),
+              AnimatedSwitcher(
+                duration: Duration(milliseconds: 200),
+                child: peopleListController.loading.value == true ?
+                Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
+                    : _body(context),
+              ),
               _app_bar(context),
             ],
           ),
@@ -73,134 +80,152 @@ class PeopleList extends StatelessWidget {
   }
 
   _body(context){
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.95,
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
-        child: peopleListController.loading.value?Center(
-          child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
-        ):
-        ListView.builder(
-          itemCount: peopleListController.myPeopleList.length,
-          itemBuilder: (context, index){
-            return Container(
-              height:  MediaQuery.of(context).size.height * 0.27,
-              width:  MediaQuery.of(context).size.width * 0.9,
-              child: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Container(
-                  margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        spreadRadius: 1,
-                        blurRadius: 4,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
-                    borderRadius: BorderRadius.circular(10)
-                  ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: (){
-
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(8),
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.edit,size: 20,color: Colors.black,),
-                                    SizedBox(width: 2),
-                                    Text('Edit',style: TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold),),
-                                  ],
-                                ),
-                              )
-                            ),
-                            GestureDetector(
-                                onTap: (){
-
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.delete,size: 20,color: Colors.black,),
-                                      SizedBox(width: 2),
-                                      Text('Delete',style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
-                                )
-                            ),
-                          ],
-                        ),
-                        Text(peopleListController.myPeopleList[index].name,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        Text(peopleListController.myPeopleList[index].languages,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.95,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.08),
+            child: peopleListController.loading.value?Center(
+              child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
+            ):
+            Obx((){
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemCount: peopleListController.myPeopleList.length,
+                itemBuilder: (context, index){
+                  return Column(
+                    children: [
+                      SizedBox(height: 20),
+                      Container(
+                        height:  MediaQuery.of(context).size.height * 0.3,
+                        width:  MediaQuery.of(context).size.width * 0.9,
+                        child: Stack(
+                          alignment: Alignment.topCenter,
                           children: [
                             Container(
-                              width: 28,
-                              height: 28,
+                              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                shape: BoxShape.circle,
+                                  color: Colors.grey[300],
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.2),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: Offset(0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)
                               ),
-                              child: Icon(Icons.phone,size: 20,color: Colors.white),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      GestureDetector(
+                                          onTap: (){
+
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(8),
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.edit,size: 20,color: Colors.black,),
+                                                SizedBox(width: 2),
+                                                Text('Edit',style: TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold),),
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                      GestureDetector(
+                                          onTap: (){
+                                            peopleListController.deletePersonFromTheList(index);
+                                          },
+                                          child: Container(
+                                            padding: EdgeInsets.all(8),
+                                            child: Row(
+                                              children: [
+                                                Icon(Icons.delete,size: 20,color: Colors.black,),
+                                                SizedBox(width: 2),
+                                                Text('Delete',style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
+                                              ],
+                                            ),
+                                          )
+                                      ),
+                                    ],
+                                  ),
+                                  Text(peopleListController.myPeopleList[index].name,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 8),
+                                  Text(peopleListController.myPeopleList[index].languages,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 28,
+                                        height: 28,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).primaryColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Icon(Icons.phone,size: 20,color: Colors.white),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(peopleListController.myPeopleList[index].phone,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
+                                  Divider(thickness: 1,height: 20,indent: 10,endIndent: 10,color: Colors.black.withOpacity(0.2),),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width * 0.9,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text(App_Localization.of(context).translate('hid_or_show'),style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
+                                        Container(
+                                          height: 0,
+                                          width: MediaQuery.of(context).size.width * 0.1,
+                                          child:  Switch(
+                                            activeColor: Theme.of(context).primaryColor,
+                                            value: false,// myCarListController.myCarList[index].avilable,
+                                            onChanged: (bool value) {
+                                              //myCarListController.changeAvailability(index);
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                ],
+                              ),
                             ),
-                            const SizedBox(width: 10),
-                            Text(peopleListController.myPeopleList[index].phone,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              height: MediaQuery.of(context).size.width * 0.2,
+                              decoration: BoxDecoration(
+                                  color: Colors.amber,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.fill,
+                                    image: NetworkImage(Api.url + 'uploads/' + peopleListController.myPeopleList[index].image),
+                                  )
+                              ),
+                            ),
                           ],
                         ),
-                        Divider(thickness: 1,height: 20,indent: 10,endIndent: 10,color: Colors.black.withOpacity(0.2),),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(App_Localization.of(context).translate('hid_or_show'),style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                              Container(
-                                height: 0,
-                                width: MediaQuery.of(context).size.width * 0.1,
-                                child:  Switch(
-                                  activeColor: Theme.of(context).primaryColor,
-                                  value: false,// myCarListController.myCarList[index].avilable,
-                                  onChanged: (bool value) {
-                                    //myCarListController.changeAvailability(index);
-                                  },
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: MediaQuery.of(context).size.width * 0.2,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.contain,
-                        image: NetworkImage(peopleListController.myPeopleList[index].image),
-                      )
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }),
+          ),
+          SizedBox(height: 20,),
+        ],
+      ),
     );
   }
 

@@ -1,8 +1,10 @@
 import 'package:crc_version_1/app_localization.dart';
+import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/setting_controller.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
+import 'package:crc_version_1/view/cars_list.dart';
 import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:crc_version_1/view/people_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -85,7 +87,7 @@ class Settings extends StatelessWidget {
             width: 80,
             child: IconButton(
               onPressed: (){
-                Get.back();
+                settingController.goToCarList();
               },
               icon: Icon(Icons.arrow_back_ios),
             ),
@@ -129,7 +131,7 @@ class Settings extends StatelessWidget {
         Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
         GestureDetector(
           onTap: (){
-            Get.to(PeopleList());
+            Get.to(()=>PeopleList());
           },
           child: Container(
             color: Colors.transparent,

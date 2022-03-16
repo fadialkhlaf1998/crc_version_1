@@ -3,7 +3,11 @@
 import 'dart:io';
 
 import 'package:crc_version_1/controller/intro_controller.dart';
+import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
+import 'package:crc_version_1/helper/global.dart';
+import 'package:crc_version_1/view/cars_list.dart';
+import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -16,7 +20,6 @@ class AddCarController extends GetxController{
   TextEditingController search = TextEditingController();
   TextEditingController carPrice = TextEditingController();
   RxList<bool>? selectBrandIndex;
-  RxInt? brandId;
   RxList<bool>? selectModelIndex;
   RxList<bool>? selectYearIndex;
   RxList<bool>? selectColorIndex;
@@ -36,8 +39,9 @@ class AddCarController extends GetxController{
   String? emiratesSelect;
   String? brand;
   String? model;
-
-
+  int? brandId;
+  int? modelId;
+  double? companyId;
 
   @override
   void onInit() {
@@ -47,6 +51,7 @@ class AddCarController extends GetxController{
     selectYearIndex = List.filled(10, false).obs;
     selectColorIndex = List.filled(introController.colors.length, false).obs;
     selectEmiratesIndex = List.filled(emirates.length, false).obs;
+    companyId = Global.company_id.toDouble();
   }
 
   selectBrand(index){
@@ -63,6 +68,7 @@ class AddCarController extends GetxController{
     }
     selectModelIndex![index] = true;
     modelIndex.value = index;
+    //modelId.value = model
   }
 
   fillYearList(){
@@ -109,15 +115,16 @@ class AddCarController extends GetxController{
 
 
   forwardStep(context){
-
       if(currentStep.value == 0){
         brand = introController.brands[brandIndex.value].title;
+        brandId = introController.brands[brandIndex.value].id;
         selectModelIndex = List.filled(introController.brands[brandIndex.value].models.length, false).obs;
         selectModelIndex![0] = true;
         currentStep.value +=1;
       }
       else if(currentStep.value == 1){
         model = introController.brands[brandIndex.value].models[modelIndex.value].title;
+        modelId = introController.brands[brandIndex.value].models[modelIndex.value].id;
         fillYearList();
         currentStep.value +=1;
       }
@@ -154,6 +161,10 @@ class AddCarController extends GetxController{
           App.info_msg(context, 'You must enter the price');
         }else{
           /** Upload Information*/
+          Api.addCar(brand!,brandId.toString(), model!, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!);
+          Future.delayed(Duration(milliseconds: 3000)).then((value){
+            Get.off(MyCarList());
+          });
         }
       }
     }

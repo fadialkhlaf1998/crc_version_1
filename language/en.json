@@ -42,5 +42,6 @@
   "hid_or_show" : "Hide or show",
   "brand" : "Brand",
   "car_model" : "Car Model",
-  "color" : "Color"
+  "color" : "Color",
+  "done" : "Done"
 }

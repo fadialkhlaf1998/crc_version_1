@@ -2,6 +2,7 @@
 
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:crc_version_1/model/my_car.dart';
 
@@ -26,18 +27,23 @@ class MyCarListController extends GetxController{
 
   getCarList(int companyId){
     myCarList.clear();
-    Api.check_internet().then((internet)async{
-      if(internet){
-        loading.value = true;
-        Api.getMyCarsList(companyId).then((value)async{
-          myCarList.addAll(value);
-        });
-        loading.value = false;
-      }else{
+    loading.value = true;
+    Future.delayed(Duration(milliseconds: 1200),(){
+      Api.check_internet().then((internet)async{
+        if(internet){
+          loading.value = true;
+          Api.getMyCarsList(companyId).then((value)async{
+            myCarList.addAll(value);
+          });
+          loading.value = false;
+        }else{
 
-      }
+        }
+      });
     });
   }
+
+
   openFiler(){
     checkFilterOpen.value = !checkFilterOpen.value;
     if(checkSortOpen.value == true){
@@ -56,6 +62,26 @@ class MyCarListController extends GetxController{
 
   changeAvailability(index){
 
+  }
+
+  deleteCarFromMyList(index){
+    int delete_id = myCarList[index].id;
+    print(delete_id);
+    loading.value = true;
+    Api.check_internet().then((internet){
+      if(internet){
+        Api.deleteCar(delete_id).then((value){
+          if(value){
+            print('Delete');
+          }else{
+            print('Not delete');
+          }
+        });
+      }else{
+        print('Field');
+      }
+    });
+    loading.value = false;
   }
 
 
