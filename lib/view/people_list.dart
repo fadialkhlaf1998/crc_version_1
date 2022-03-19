@@ -20,12 +20,15 @@ class PeopleList extends StatelessWidget {
             alignment: Alignment.topCenter,
             children: [
               AnimatedSwitcher(
-                duration: Duration(milliseconds: 200),
+                duration: const Duration(milliseconds: 200),
                 child: peopleListController.loading.value == true ?
-                Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
-                    : _body(context),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.89,
+                    child: Lottie.asset('assets/images/Animation.json')
+                ) : _body(context),
               ),
-              _app_bar(context),
+              _appBar(context),
             ],
           ),
         ),
@@ -34,7 +37,7 @@ class PeopleList extends StatelessWidget {
   }
 
 
-  _app_bar(context){
+  _appBar(context){
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.08,
@@ -45,7 +48,7 @@ class PeopleList extends StatelessWidget {
             color: Colors.grey.withOpacity(0.4),
             spreadRadius: 1,
             blurRadius: 10,
-            offset: Offset(0, 6), // changes position of shadow
+            offset: const Offset(0, 3), // changes position of shadow
           ),
         ],
         borderRadius: const BorderRadius.only(
@@ -62,14 +65,14 @@ class PeopleList extends StatelessWidget {
                 onPressed: (){
                   Get.back();
                 },
-                icon: Icon(Icons.arrow_back_ios,size: 20,),
+                icon: const Icon(Icons.arrow_back_ios,size: 20,),
               )
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.5,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: MyTheme.isDarkTheme ?  AssetImage('assets/images/logo_dark.png') : AssetImage('assets/images/logo_light.png'),
+                image: MyTheme.isDarkTheme.value ? const AssetImage('assets/images/logo_dark.png') : const AssetImage('assets/images/logo_light.png'),
               )
             ),
           ),
@@ -86,18 +89,27 @@ class PeopleList extends StatelessWidget {
           Container(
             width: MediaQuery.of(context).size.width * 0.95,
             padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.08),
-            child: peopleListController.loading.value?Center(
-              child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),
-            ):
-            Obx((){
-              return ListView.builder(
+            child: Obx((){
+              print( peopleListController.myPeopleList.isEmpty);
+              return peopleListController.myPeopleList.isEmpty
+                  ? Container(
+                width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: Center(
+                      child: Text(
+                        App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
+                        style: Theme.of(context).textTheme.bodyText2
+                      ),
+                    ),
+              )
+                  :ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: peopleListController.myPeopleList.length,
                 itemBuilder: (context, index){
-                  return Column(
+                  return  Column(
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Container(
                         height:  MediaQuery.of(context).size.height * 0.3,
                         width:  MediaQuery.of(context).size.width * 0.9,
@@ -144,6 +156,7 @@ class PeopleList extends StatelessWidget {
                                             peopleListController.deletePersonFromTheList(index);
                                           },
                                           child: Container(
+                                            color: Colors.transparent,
                                             padding: EdgeInsets.all(8),
                                             child: Row(
                                               children: [
@@ -223,7 +236,7 @@ class PeopleList extends StatelessWidget {
               );
             }),
           ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20),
         ],
       ),
     );

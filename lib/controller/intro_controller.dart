@@ -18,7 +18,6 @@ class IntroController extends GetxController{
   }
 
   get_data(){
-
     Api.check_internet().then((internet) {
       if(internet){
         Api.get_data().then((data) {

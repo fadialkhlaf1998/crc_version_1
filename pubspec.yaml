@@ -48,6 +48,9 @@ dependencies:
   flutter_speed_dial: ^5.0.0+1
   lottie: ^1.2.2
   image_picker: ^0.8.4+8
+  carousel_slider: ^4.0.0
+  flutter_image_slideshow: ^0.1.2
+
 
 
 
@@ -80,6 +83,7 @@ flutter:
     - language/en.json
     - assets/images/
     - assets/emirates/
+    - assets/icons/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

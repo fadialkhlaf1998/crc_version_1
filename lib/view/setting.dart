@@ -53,6 +53,7 @@ class Settings extends StatelessWidget {
       closeManually: false,
       activeIcon: Icons.close,
       icon: Icons.add,
+      overlayColor: Theme.of(context).dividerColor,
       backgroundColor: Theme.of(context).primaryColor,
       openCloseDial: settingController.isDialOpen,
       children: [
@@ -98,7 +99,7 @@ class Settings extends StatelessWidget {
           decoration: BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.contain,
-              image: MyTheme.isDarkTheme ? const AssetImage('assets/images/logo_dark.png') : const AssetImage('assets/images/logo_light.png'),
+              image: MyTheme.isDarkTheme.value ? const AssetImage('assets/images/logo_dark.png') : const AssetImage('assets/images/logo_light.png'),
             )
           ),
 
@@ -189,20 +190,20 @@ class Settings extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              settingController.mode_value.value ?
+              MyTheme.isDarkTheme.value ?
               Text(App_Localization.of(context).translate('light_mode'), style: Theme.of(context).textTheme.bodyText1,)
               : Text(App_Localization.of(context).translate('dark_mode'), style: Theme.of(context).textTheme.bodyText1,),
               Row(
                 children: [
-                  settingController.mode_value.value ?
-                  Icon(Icons.light_mode) : Icon(Icons.dark_mode),
-                  SizedBox(width: 10,),
+                  MyTheme.isDarkTheme.value ?
+                  const Icon(Icons.light_mode) : const Icon(Icons.dark_mode),
+                  const SizedBox(width: 10,),
                   CupertinoSwitch(
                     activeColor: Colors.grey,
                     thumbColor: Theme.of(context).dividerColor,
-                    value: settingController.mode_value.value,
+                    value:MyTheme.isDarkTheme.value ,
                     onChanged: (bool value) {
-                      settingController.changeMode();
+                      settingController.changeMode(context);
                     },
                   ),
                 ],

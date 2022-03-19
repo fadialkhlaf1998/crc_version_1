@@ -1,9 +1,13 @@
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
+import 'package:crc_version_1/view/people_list.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'dart:io';
 
 
@@ -19,6 +23,7 @@ class AddPeopleController extends GetxController{
   TextEditingController mobileNumber = TextEditingController();
   List<File> userImage = <File>[].obs;
   double? companyID;
+  RxBool loadingUpload = false.obs;
 
 
   @override
@@ -31,7 +36,7 @@ class AddPeopleController extends GetxController{
     select[index] = !select[index];
   }
 
-  forwardStep(context){
+  forwardStep(context)async{
     if(currentStep.value >= 3){
       selectLanguages = '';
       for(int i = 0; i < select.length; i++){
@@ -41,13 +46,15 @@ class AddPeopleController extends GetxController{
           selectLanguages += language[i];
         }
       }
-      Future.delayed(Duration(milliseconds: 1000)).then((value){
-        print('1');
-        Api.addPerson(username.text, userImage.first, mobileNumber.text, selectLanguages, companyID!);
+      currentStep.value += 1;
+      loadingUpload.value = true;
+      Api.addPerson(username.text, userImage.first, mobileNumber.text, selectLanguages, companyID!);
+      Future.delayed(const Duration(milliseconds: 1500),(){
+        loadingUpload.value = false;
+        Get.off(()=>PeopleList());
       });
     }
     else if(currentStep.value == 0){
-      //RegExp exp = RegExp(r"\s+");
       if( username.text.isEmpty){
         App.info_msg(context, 'Name can\'t be empty');
       }else{
@@ -55,6 +62,12 @@ class AddPeopleController extends GetxController{
       }
     }
     else if (currentStep.value == 1){
+      if(userImage.isEmpty){
+        final byteData = await rootBundle.load('assets/images/profile_picture.png');
+        final file = File('${(await getTemporaryDirectory()).path}/profile_picture.png');
+        await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+        userImage.add(file);
+      }
       currentStep.value +=1;
     }
     else if(currentStep.value == 2){

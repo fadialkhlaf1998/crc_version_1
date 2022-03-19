@@ -43,7 +43,8 @@
   "brand" : "Brand",
   "car_model" : "Car Model",
   "color" : "Color",
-  "done" : "Done"
+  "done" : "Done",
+  "there_are_no_people_at_the_moment" : "There are no people at the moment"
 
 
 }

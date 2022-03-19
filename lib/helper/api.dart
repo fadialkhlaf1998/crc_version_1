@@ -6,6 +6,7 @@ import 'package:crc_version_1/model/company.dart';
 import 'package:crc_version_1/model/intro.dart';
 import 'package:crc_version_1/model/my_car.dart';
 import 'package:crc_version_1/model/person.dart';
+import 'package:crc_version_1/model/person_for_company.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
@@ -230,8 +231,38 @@ class Api {
   }
 
   static Future deletePerson(int id)async{
-
+    var headers = {
+      'Content-Type': 'application/json',
+    };
     var request = http.Request('DELETE', Uri.parse(url + 'api/contact_person'));
+    request.body = json.encode({
+      "id": id
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Success');
+      return true;
+    }
+    else {
+      return false;
+    }
+
+
+  }
+
+  static Future changeCarAvailability(String availability,int carId)async{
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url + 'api/update_avaliblity'));
+    request.body = json.encode({
+      "avilable": availability,
+      "id": carId
+    });
+    request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
@@ -244,4 +275,30 @@ class Api {
 
   }
 
+  static Future <List<PersonForCompany>> getCompanyContactInfo(int id)async{
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url + 'api/contact_person_for_company'));
+    request.body = json.encode({
+      "company_id": id
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String jsondata = await response.stream.bytesToString();
+      var list = jsonDecode(jsondata) as List;
+      List<PersonForCompany> personsList = <PersonForCompany>[];
+      for(var c in list){
+        personsList.add(PersonForCompany.fromMap(c));
+      }
+      return personsList;
+    }
+    else {
+      return <PersonForCompany>[];
+    }
+
+  }
 }

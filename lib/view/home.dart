@@ -20,19 +20,21 @@ class Home extends StatelessWidget {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(height: 30,),
-              _header(context),
-              const SizedBox(height: 30,),
-              _searchBar(context),
-              const SizedBox(height: 30,),
-              AnimatedSwitcher(
-                duration: Duration(milliseconds: 300),
-                child: !homeController.modelOption.value ?
-                _brandBody(context) : _modelsBody(context),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 30,),
+                _header(context),
+                const SizedBox(height: 30,),
+                _searchBar(context),
+                const SizedBox(height: 30,),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 300),
+                  child: !homeController.modelOption.value ?
+                  _brandBody(context) : _modelsBody(context),
+                ),
+              ],
+            ),
           ),
         ),
       );
@@ -66,7 +68,7 @@ class Home extends StatelessWidget {
               Container(
                 width: MediaQuery.of(context).size.width * 0.35,
                 height: MediaQuery.of(context).size.height * 0.07,
-                child: MyTheme.isDarkTheme ?  Image.asset('assets/images/logo_dark.png'): Image.asset('assets/images/logo_light.png'),
+                child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png'): Image.asset('assets/images/logo_light.png'),
               ),
               Text(App_Localization.of(context).translate('welcome_to_crc'), style: Theme.of(context).textTheme.headline2),
               !homeController.modelOption.value ?

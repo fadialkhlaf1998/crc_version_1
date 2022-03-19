@@ -19,7 +19,6 @@ class PeopleListController extends GetxController{
   }
 
   getInfo(companyId) async {
-    Future.delayed(const Duration(milliseconds: 1000),() async{
       loading.value = true;
       await Api.check_internet().then((internet) async{
         if(internet){
@@ -33,16 +32,24 @@ class PeopleListController extends GetxController{
 
         }
       });
-    });
   }
 
   deletePersonFromTheList(index){
     int id = myPeopleList[index].id;
+    loading.value = true;
     Api.check_internet().then((internet){
       if(internet){
-        Api.deletePerson(id);
+        Api.deletePerson(id).then((value){
+          if(value){
+            loading.value = false;
+            myPeopleList.removeAt(index);
+          }else{
+            loading.value = false;
+          }
+        });
       }else{
         print('No internet');
+        loading.value = false;
       }
     });
   }

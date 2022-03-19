@@ -1,13 +1,15 @@
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/model/car.dart';
-import 'package:crc_version_1/model/intro.dart';
-import 'package:flutter/material.dart';
+import 'package:crc_version_1/model/person_for_company.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class CarListController extends GetxController{
 
   IntroController introController = Get.find();
+  RxList<PersonForCompany> companyContactsList = <PersonForCompany>[].obs;
+
 
   var brand="%".obs;
   var model="%".obs;
@@ -28,13 +30,23 @@ class CarListController extends GetxController{
   RxList<bool> yearModelListCheck = List.filled(10, false).obs;
   RxList<bool>? brandListCheck;
   RxList<bool>? modelListCheck;
+  RxList<bool>? colorListFilter;
   RxDouble? myValue;
   RxInt? minLabel;
   RxInt? maxLabel;
   RxInt? divisionsLabel;
   RxInt selectedBrand = (-1).obs;
-
   RxDouble? max;
+  RxBool contactInfo = false.obs;
+  /// Filter Variable */
+  RxString brandFilter = '%'.obs;
+  RxString modelFilter = '%'.obs;
+  RxString yearFilter = '%'.obs;
+  RxString colorFilter = '%'.obs;
+  RxString priceFilter = "9999999999999".obs;
+  RxString sortFilter = 'ASC'.obs;
+  RxBool loadingContact = false.obs;
+  final isDialOpen = ValueNotifier(false);
 
 
   @override
@@ -42,13 +54,28 @@ class CarListController extends GetxController{
     super.onInit();
     max = 5000.0.obs;
     minLabel = 0.obs;
-    myValue = 2500.0.obs;
+    myValue = 5000.0.obs;
     brandListCheck = List.filled(introController.brands.length, false).obs;
+    colorListFilter = List.filled(introController.colors.length, false).obs;
     getCarsList(year.value,brand.value,model.value,color.value,price.value,sort.value);
   }
 
+  getContactData(int id){
+    loadingContact.value = true;
+    Api.check_internet().then((internet){
+      if(internet){
+        companyContactsList.clear();
+        Api.getCompanyContactInfo(id).then((value){
+          companyContactsList.addAll(value);
+        });
+        loadingContact.value = false;
+      }else{
+        loadingContact.value = false;
+      }
+    });
+  }
+
   updateCarList(){
-    Future.delayed(const Duration(milliseconds: 1500),(){
       loading.value = true;
       Api.check_internet().then((value) async{
         if(value){
@@ -62,7 +89,7 @@ class CarListController extends GetxController{
 
         }
       });
-    });
+
   }
 
   fillYearList(){
@@ -74,7 +101,7 @@ class CarListController extends GetxController{
   }
 
   getCarsList(String year, String brand,String model, String color, String price, String sort) async{
-    Future.delayed(const Duration(milliseconds: 1000),(){
+    Future.delayed(const Duration(milliseconds: 500),(){
       loading.value = true;
       Api.check_internet().then((value) async{
         if(value){
@@ -138,47 +165,114 @@ class CarListController extends GetxController{
   }
 
   chooseYearFilter(index){
-    for(int i = 0; i < yearModelList.length; i++){
-      yearModelListCheck[i] = false;
+    if(yearModelListCheck[index] == true){
+      yearModelListCheck[index] = false;
+      yearFilter.value = '%';
+    }else{
+      for(int i = 0; i < yearModelList.length; i++){
+        yearModelListCheck[i] = false;
+      }
+      yearModelListCheck[index] = true;
+      yearFilter.value = yearModelList[index].toString();
     }
-    yearModelListCheck[index] = true;
-    year.value = yearModelList[index].toString();
+
   }
 
   chooseBrandFilter(index){
-    selectedBrand = introController.brands[index].id.obs;
-    for(int i = 0; i < brandListCheck!.length; i++){
-      brandListCheck![i] = false;
+    if(brandListCheck![index] == true){
+      brandListCheck![index] = false;
+      brandFilter.value = '%';
+    }else{
+      selectedBrand = introController.brands[index].id.obs;
+      modelListCheck = List.filled(introController.brands[selectedBrand.value].models.length, false).obs;
+      for(int i = 0; i < brandListCheck!.length; i++){
+        brandListCheck![i] = false;
+      }
+      brandListCheck![index] = true;
+      brandFilter.value = introController.brands[index].title;
+      carModelListOpen.value = true;
     }
-    brandListCheck![index] = true;
-    brand.value = introController.brands[index].title;
 
   }
 
   chooseModelFilter(index){
-    modelListCheck = List.filled(introController.brands[selectedBrand.value].models.length, false).obs;
-
-    for(int i = 0; i < modelListCheck!.length; i++){
+    if(modelListCheck![index] == true){
       modelListCheck![index] = false;
+      modelFilter.value = '%';
+    }else{
+      for(int i = 0; i < modelListCheck!.length; i++){
+        modelListCheck![i] = false;
+      }
+      modelListCheck![index] = true;
+      modelFilter.value = introController.brands[selectedBrand.value].models[index].title;
     }
-    modelListCheck![index] = true;
-    model.value = introController.brands[selectedBrand.value].models[index].title;
+
+  }
+
+  chooseColorFilter(index){
+    if(colorListFilter![index] == true){
+      colorListFilter![index] = false;
+      colorFilter.value = '%';
+    }else{
+      for(int i = 0; i < colorListFilter!.length; i++){
+        colorListFilter![i] = false;
+      }
+      colorListFilter![index] = true;
+      colorFilter.value = introController.colors[index].title;    }
   }
 
   clearFilterValue(){
-    brand.value  = "%";
-    model.value  = "%";
-    year .value  = "%";
-    color.value  = "%";
-    price.value  = "99999999999";
-    sort .value  = "ASC";
+    brandFilter.value  = "%";
+    modelFilter.value  = "%";
+    yearFilter.value  = "%";
+    colorFilter.value  = "%";
+    priceFilter.value  = "99999999999";
+    sortFilter.value  = "ASC";
     brandListCheck = List.filled(introController.brands.length, false).obs;
     yearModelListCheck = List.filled(yearModelList.length, false).obs;
+    colorListFilter = List.filled(introController.colors.length, false).obs;
     yearListOpen.value = false;
     brandListOpen.value = false;
     colorListOpen.value = false;
+    checkFilterOpen.value = false;
+    getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
+  }
+
+  getFilterResult(){
+    checkFilterOpen.value = false;
+    getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
 
   }
+
+
+  selectSortType(value){
+    if(sortFilter.value == 'ASC' && value == 1){
+      sortFilter.value = 'DES';
+      getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
+    }else if(sortFilter.value != 'ASC' && value == 0){
+      sortFilter.value = 'ASC';
+      getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
+    }
+  }
+
+  // openBookList(index,id){
+  //   Future.delayed(Duration(milliseconds: 500),(){
+  //     Api.check_internet().then((internet){
+  //       if(internet){
+  //         Api.getCompanyContactInfo(id).then((value)async{
+  //           if(value.isNotEmpty){
+  //             companyContactsList.clear();
+  //             companyContactsList.addAll(value);
+  //           }else{
+  //           }
+  //         });
+  //       }else{
+  //       }
+  //     });
+  //   });
+  //   myCars[index].bookOption.value = !myCars[index].bookOption.value;
+  // }
+
 
 
 }

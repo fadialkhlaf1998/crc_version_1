@@ -20,6 +20,11 @@ class MyApp extends StatefulWidget {
     state!.set_locale(locale);
   }
 
+  static void set_theme(BuildContext context){
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.set_dark();
+  }
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -29,6 +34,12 @@ class _MyAppState extends State<MyApp> {
   void set_locale(Locale locale){
     setState(() {
       _locale=locale;
+    });
+  }
+
+  void set_dark(){
+    setState(() {
+      myTheme.value.myTheme;
     });
   }
 
@@ -43,12 +54,12 @@ class _MyAppState extends State<MyApp> {
     });
 
   }
-
+  Rx<MyTheme> myTheme = MyTheme().obs;
 
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        themeMode: myTheme.myTheme,
+        themeMode: myTheme.value.myTheme,
         theme: MyTheme.lightTheme,
         darkTheme: MyTheme.darkTheme,
         locale: _locale,

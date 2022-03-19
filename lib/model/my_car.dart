@@ -1,6 +1,8 @@
 
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 class MyCar {
   MyCar({
     required this.id,
@@ -20,7 +22,13 @@ class MyCar {
     required this.company,
     required this.brand,
     required this.model,
-  });
+  }){
+    if(avilable == 1){
+      availableSwitch = true.obs;
+    }else if(avilable == 0){
+      availableSwitch = false.obs;
+    }
+  }
 
   int id;
   String title;
@@ -39,6 +47,7 @@ class MyCar {
   String company;
   String brand;
   String model;
+  RxBool availableSwitch = false.obs;
 
   factory MyCar.fromJson(String str) => MyCar.fromMap(json.decode(str));
 

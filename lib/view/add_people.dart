@@ -5,6 +5,7 @@ import 'package:crc_version_1/controller/add_people_controller.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class AddPeople extends StatelessWidget {
 
@@ -17,10 +18,33 @@ class AddPeople extends StatelessWidget {
       return Scaffold(
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Column(
+            child: Stack(
               children: [
-                _header(context),
-                _body(context),
+                Column(
+                  children: [
+                    _header(context),
+                    _body(context),
+                  ],
+                ),
+                addPeopleController.loadingUpload.value
+                    ? WillPopScope(
+                    onWillPop: ()async => false,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height,
+                          color: Theme.of(context).dividerColor.withOpacity(0.9),
+                          child: Container(
+                            child: Lottie.asset('assets/images/data.json'),
+                          ),
+                        ),
+                        Text('Saving your person information',
+                            style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Theme.of(context).backgroundColor)),
+                      ],
+                    )
+                ) : Text(''),
               ],
             ),
           ),
@@ -31,14 +55,8 @@ class AddPeople extends StatelessWidget {
 
   _header(context) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
-      height: MediaQuery
-          .of(context)
-          .size
-          .height * 0.22,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height * 0.22,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
@@ -82,7 +100,7 @@ class AddPeople extends StatelessWidget {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                       fit: BoxFit.contain,
-                      image: MyTheme.isDarkTheme ? const AssetImage(
+                      image: MyTheme.isDarkTheme.value ? const AssetImage(
                           'assets/images/logo_dark.png') : const AssetImage(
                           'assets/images/logo_light.png'),
                     )
@@ -143,32 +161,54 @@ class AddPeople extends StatelessWidget {
 
   _body(context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
+      height: MediaQuery.of(context).size.height * 0.75,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AnimatedSwitcher(
-            duration: Duration(milliseconds: 200),
-            child: addPeopleController.currentStep.value == 0 ?
-            _personName(context) : addPeopleController.currentStep.value == 1 ?
-            _personPhoto(context) : addPeopleController.currentStep.value == 2 ? _personMobile(context) :  _personLanguage(context),
+          Expanded(
+            flex: 6,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: addPeopleController.currentStep.value == 0 ?
+              _personName(context) : addPeopleController.currentStep.value == 1 ?
+              _personPhoto(context) : addPeopleController.currentStep.value == 2 ?
+              _personMobile(context) : _personLanguage(context),
+            ),
           ),
-          Container(
-            height: 50,
-            width: MediaQuery.of(context).size.width * 0.6,
-            decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(5)),
-            child: TextButton(
-              onPressed: () async {
-                addPeopleController.forwardStep(context);
-              },
-              child: Text(
-                addPeopleController.currentStep.value < 3 ? App_Localization.of(context).translate('next') : App_Localization.of(context).translate('save') ,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold),
+          Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).dividerColor.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 7,
+                    offset: const Offset(0, -3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Center(
+                child: Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: TextButton(
+                    onPressed: () async {
+                      addPeopleController.forwardStep(context);
+                    },
+                    child: Text(
+                      addPeopleController.currentStep.value < 3 ? App_Localization.of(context).translate('next') : App_Localization.of(context).translate('save') ,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -330,15 +370,14 @@ class AddPeople extends StatelessWidget {
 
   _personLanguage(context){
     return Container(
-      padding: EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 20),
       child: ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        // shrinkWrap: true,
+        // physics: const NeverScrollableScrollPhysics(),
         itemCount: addPeopleController.language.length,
         itemBuilder: (context, index){
           return GestureDetector(
             onTap: (){
-              print('1111');
               addPeopleController.selectLanguage(index);
             },
             child: Container(
@@ -371,52 +410,6 @@ class AddPeople extends StatelessWidget {
       ),
     );
   }
-
-  Future<void> _showMyDialog(context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true, // user must tap button!
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Pick your choice'),
-          titleTextStyle: TextStyle(color: Theme.of(context).primaryColor,fontSize: 20),
-          content: SingleChildScrollView(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: ()async{
-                  // final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                  //   if(image == null) return;
-                  //   final imageTemporary = File(image.path);
-                  //   this.image = imageTemporary;
-                  },
-                  child: Column(
-                    children: [
-                      Icon(Icons.image,size: 50,color: Theme.of(context).primaryColor,),
-                      Text('Gallery',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 14),),
-                    ],
-                  ),
-                ),
-                GestureDetector(
-                  onTap: (){
-
-                  },
-                  child: Column(
-                    children: [
-                      Icon(Icons.camera,size: 50,color: Theme.of(context).primaryColor,),
-                      Text('Camera',style: TextStyle(color: Theme.of(context).primaryColor,fontSize: 14),),
-                    ],
-                  ),
-                ),
-              ],
-            )
-          ),
-        );
-      },
-    );
-  }
-
 
 
 }

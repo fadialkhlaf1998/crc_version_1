@@ -31,7 +31,7 @@ class AddCarController extends GetxController{
   List<String> emiratesPhoto = ['dubai.png', 'Abu_Dhabi.png', 'Ajman.png', 'Dubai_eye.png', 'Ras_Al_Khaimah.png', 'Sharjah.png','Umm_Al_Quwain.png'];
   final ImagePicker _picker = ImagePicker();
   RxList<File> imageList = <File>[].obs;
-
+  RxBool loadingUpload = false.obs;
 
   /// Variable to send to the server */
   String? yearModelSelect;
@@ -161,9 +161,13 @@ class AddCarController extends GetxController{
           App.info_msg(context, 'You must enter the price');
         }else{
           /** Upload Information*/
+          currentStep.value += 1;
+          FocusManager.instance.primaryFocus?.unfocus();
           Api.addCar(brand!,brandId.toString(), model!, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!);
-          Future.delayed(Duration(milliseconds: 3000)).then((value){
-            Get.off(MyCarList());
+          loadingUpload.value = true;
+          Future.delayed(Duration(milliseconds: 1500),(){
+            loadingUpload.value = false;
+            Get.off(()=>MyCarList());
           });
         }
       }
