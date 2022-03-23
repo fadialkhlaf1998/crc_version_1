@@ -1,14 +1,17 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/edit_car_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
+import 'package:crc_version_1/controller/my_car_list_controller.dart';
+import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 class EditCar extends StatelessWidget {
 
   EditCarController editCarController = Get.put(EditCarController());
+  MyCarListController myCarListController = Get.find();
   IntroController introController = Get.find();
 
 
@@ -39,7 +42,9 @@ class EditCar extends StatelessWidget {
                     ),
                 ),
               )
-              : _editImageList(context),
+              : SingleChildScrollView(
+                child: _editImageList(context),
+              ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -50,6 +55,26 @@ class EditCar extends StatelessWidget {
                   ),
                 ],
               ),
+              editCarController.loading.value == false
+                  ? Text('')
+                  :  WillPopScope(
+                  onWillPop: ()async => false,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        color: Theme.of(context).dividerColor.withOpacity(0.9),
+                        child: Container(
+                          child: Lottie.asset('assets/images/data.json'),
+                        ),
+                      ),
+                      Text('Saving your person information',
+                          style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Theme.of(context).backgroundColor)),
+                    ],
+                  )
+              )
             ],
           ),
         ),
@@ -157,7 +182,7 @@ class EditCar extends StatelessWidget {
       child: Center(
         child: GestureDetector(
           onTap: (){
-
+            editCarController.saveInfo();
           },
           child: Container(
             width: MediaQuery.of(context).size.width * 0.5,
@@ -484,44 +509,121 @@ class EditCar extends StatelessWidget {
 
   _editImageList(context){
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.85,
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.08),
-      child: ListView.builder(
-        itemCount: introController.brands.length,
-        itemBuilder: (context, index){
-          return GestureDetector(
-            onTap: (){
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.15),
+      child: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: editCarController.imageList.length,
+              itemBuilder: (context, index){
+                return GestureDetector(
+                  onTap: (){
 
-            },
-            child: Column(
-              children: [
-                Container(
-                  child: Row(
+                  },
+                  child: Column(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.13,
-                        height: MediaQuery.of(context).size.width * 0.13,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(introController.brands[index].image)
-                          )
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              height: MediaQuery.of(context).size.height * 0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(Api.url + 'uploads/' + editCarController.imageList[index].path)
+                                  )
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              child: GestureDetector(
+                                onTap: (){
+                                  editCarController.removeImage(index);
+                                },
+                                child: const Icon(Icons.delete,size: 22),
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      SizedBox(width: 20),
-                      Text(
-                          introController.brands[index].title,
-                        style: Theme.of(context).textTheme.bodyText2,
-                      ),
+                      Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 20,)
                     ],
                   ),
-                ),
-                Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 10,)
-              ],
+                );
+              },
             ),
-          );
-        },
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: editCarController.newImageList.length,
+              itemBuilder: (context, index){
+                return GestureDetector(
+                  onTap: (){
 
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              height: MediaQuery.of(context).size.height * 0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: FileImage(editCarController.newImageList[index])
+                                  )
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              child: GestureDetector(
+                                onTap: (){
+                                  editCarController.removeNewImage(index);
+                                },
+                                child: const Icon(Icons.delete,size: 22),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 20,)
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          GestureDetector(
+            onTap: (){
+              editCarController.addImage(context);
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.12,
+              height: MediaQuery.of(context).size.width * 0.12,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Center(
+                child: Icon(Icons.add,color: Theme.of(context).backgroundColor,),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

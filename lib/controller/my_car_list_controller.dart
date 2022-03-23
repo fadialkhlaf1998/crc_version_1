@@ -35,9 +35,12 @@ class MyCarListController extends GetxController{
   RxString? year;
   RxString? color;
   RxString? price;
-  RxString? id;
+  RxString? carId;
+  RxString? modelId;
+  RxString? brandId;
+  RxString? available;
   RxString? location;
-  RxList<Image> carImages = <Image>[].obs;
+  RxList<myImage> carImages = <myImage>[].obs;
 
 
 
@@ -142,19 +145,19 @@ class MyCarListController extends GetxController{
   }
 
   goToEditCarPage(index){
-    print('**********');
     Api.getCarInfo(tempCarList[index].id).then((value) {
-      print(value!);
-      if(value!=null){
+      if(value != null){
         brand = tempCarList[index].brand.obs;
         model = tempCarList[index].model.obs;
         year = tempCarList[index].year.toString().obs;
         color = tempCarList[index].color.obs;
         price = tempCarList[index].pricPerDay.toString().obs;
-        id = tempCarList[index].id.toString().obs;
+        carId = tempCarList[index].id.toString().obs;
+        brandId = tempCarList[index].brandId.toString().obs;
+        available = tempCarList[index].avilable.toString().obs;
+        modelId = tempCarList[index].modelId.toString().obs;
         location=tempCarList[index].location.obs;
         carImages = value.images.obs;
-        // print(carImages.value.length);
         Get.to(()=>EditCar());
       }else{
         //todo error msg

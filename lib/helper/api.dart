@@ -8,6 +8,8 @@ import 'package:crc_version_1/model/my_car.dart';
 import 'package:crc_version_1/model/person.dart';
 import 'package:crc_version_1/model/person_for_company.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class Api {
 
@@ -338,16 +340,65 @@ class Api {
 
     if (response.statusCode == 200) {
       String data = (await response.stream.bytesToString());
-      // print(data);
       var jsonData  = jsonDecode(data) ;
-      // print(jsonData.toString());
       return Car.fromMap(jsonData);
     }
     else {
-      print(response.reasonPhrase);
       return null;
     }
 
   }
+
+  static Future updateCarInfo(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images,List<File> newImagesList, String price,double companyId, String carId,String avilable )async{
+
+    var request = http.MultipartRequest('PUT', Uri.parse(url + 'api/car'));
+    request.fields.addAll({
+      'title': brand + ' - ' + model,
+      'search': brand + ' - ' + model,
+      'avilable': avilable,
+      'company_id': companyId.toString(),
+      'brand_id': brandId,
+      'pric_per_day': price,
+      'doors': '4',
+      'passengers': '4',
+      'location': location,
+      'color': color,
+      'model_id': modelId,
+      'year': year,
+      'id': carId
+    });
+
+    for (int i = 0; i < images.length; i++) {
+      File f = await _fileFromImageUrl(url + "uploads/" + images[i].path);
+      request.files.add(await http.MultipartFile.fromPath('files', f.path));
+    }
+
+    for(int i = 0; i < newImagesList.length; i++){
+      request.files.add(await http.MultipartFile.fromPath('files', newImagesList[i].path));
+    }
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    else {
+      return false;
+    }
+
+  }
+
+  static Future<File> _fileFromImageUrl(String path) async {
+    final response = await http.get(Uri.parse(path));
+
+    final documentDirectory = await getApplicationDocumentsDirectory();
+
+    final file = File(join(documentDirectory.path, DateTime.now().millisecondsSinceEpoch.toString()+'.png'));
+
+    file.writeAsBytesSync(response.bodyBytes);
+
+    return file;
+  }
+
 
 }
