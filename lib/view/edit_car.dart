@@ -351,6 +351,7 @@ class EditCar extends StatelessWidget {
                   height: 45,
                   child: TextField(
                     controller: editCarController.editingController,
+                    style:  TextStyle(color: Theme.of(context).dividerColor),
                     decoration: InputDecoration(
                         labelText: "Enter a new price",
                         labelStyle: TextStyle(color: Theme.of(context).dividerColor),

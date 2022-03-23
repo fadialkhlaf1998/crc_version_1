@@ -223,8 +223,6 @@ class MyCarList extends StatelessWidget {
               padding: const EdgeInsets.only(right: 5,left: 5),
               child: IconButton(
                 onPressed: (){
-                  myCarListController.checkSortOpen.value = false;
-                  myCarListController.checkFilterOpen.value = false;
                   Get.back();
                 },
                 icon: Icon(Icons.arrow_back_ios,size: 20,),

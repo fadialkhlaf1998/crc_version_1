@@ -61,7 +61,7 @@ class _CarsListState extends State<CarsList> {
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withOpacity(0.2),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, 2), // changes position of shadow
@@ -245,7 +245,7 @@ class _CarsListState extends State<CarsList> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width* 0.9,
-              height: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.height * 0.3,
               decoration: BoxDecoration(
                 color: Theme.of(context).dividerColor,
                 borderRadius: BorderRadius.circular(10),
@@ -946,6 +946,7 @@ class _CarsListState extends State<CarsList> {
   _contactsMenu(index){
     return showModalBottomSheet(
       barrierColor: Theme.of(context).dividerColor.withOpacity(0.7),
+
       backgroundColor: Theme.of(context).backgroundColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -954,63 +955,131 @@ class _CarsListState extends State<CarsList> {
         ),
       context: context,
       builder: (context){
-        return Obx((){
-          return Stack(
-            children: [
-              carListController.loadingContact.value
-                  ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),)
-                  : Text(''),
-              carListController.companyContactsList.isEmpty
-              ? Center(
-                child: Text(
-                  App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              )
-              : Container(
-                padding: EdgeInsets.only(top: 20),
-                child: ListView.builder(
-                  itemCount: carListController.companyContactsList.length,
-                  itemBuilder: (context,index){
-                    return  Column(
-                      children: [
-                        Container(
-                          //height: 80,
-                          width: MediaQuery.of(context).size.width  * 0.9,
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
-                                radius: 30,
-                              ),
-                              SizedBox(width: 20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      carListController.companyContactsList[index].name,
-                                    style: Theme.of(context).textTheme.headline3,
-                                    maxLines: 1,
+        return Container(
+          height: 250,
+          child: Obx((){
+            return Stack(
+              children: [
+                carListController.loadingContact.value
+                    ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),)
+                    : Text(''),
+                carListController.companyContactsList.isEmpty
+                ? Center(
+                  child: Text(
+                    App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                )
+                : Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 5,),
+                    Text(
+                      App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),indent: 80,endIndent: 80,height: 10,),
+                    Container(
+                      height: 180,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: carListController.companyContactsList.length,
+                        itemBuilder: (context,index){
+                          return  Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  height: 130,
+                                  width: 300-20,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Theme.of(context).dividerColor.withOpacity(0.2),
+                                        spreadRadius: 1,
+                                        blurRadius: 5,
+                                        offset: Offset(2, 3),
+                                      )
+                                    ]
                                   ),
-                                  Text(
-                                    carListController.companyContactsList[index].languages,
-                                    style: Theme.of(context).textTheme.headline3,
-                                    maxLines: 1,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context).backgroundColor,
+                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                                            image: DecorationImage(
+                                                image: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
+                                                fit: BoxFit.cover
+                                            )
+                                        ),
+                                      ),),
+                                      Expanded(
+                                        flex: 1,
+                                        child:   Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                          color: Theme.of(context).backgroundColor,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    carListController.companyContactsList[index].name,
+                                                    style: Theme.of(context).textTheme.headline2,
+                                                    maxLines: 1,
+                                                  ),
+                                                ],
+                                              ),
+                                              Text(
+                                                carListController.companyContactsList[index].phone,
+                                                style: Theme.of(context).textTheme.headline3,
+                                                maxLines: 1,
+                                              ),
+
+                                              Text(
+                                                carListController.companyContactsList[index].languages,
+                                                style: Theme.of(context).textTheme.headline3,
+                                                textAlign: TextAlign.center,
+                                                maxLines: 2,
+                                              ),
+
+                                              SizedBox(width: 10),
+                                              Column(
+                                                children: [
+
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),),
+
+
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),indent: 25,endIndent: 25,height: 30,)
-                      ],
-                    );
-                  },
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          );
-        });
+              ],
+            );
+          }),
+        );
       }
     );
   }

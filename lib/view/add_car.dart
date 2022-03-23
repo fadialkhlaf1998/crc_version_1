@@ -267,11 +267,12 @@ class AddCar extends StatelessWidget {
               child: TextField(
                 controller: addCarController.search,
                 autofocus: false,
+                style:  TextStyle(color: Theme.of(context).dividerColor),
                 decoration: InputDecoration(
                   hintText: 'search',
-                  prefixIcon: const Icon(Icons.search,),
+                  prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor),
                   contentPadding: const EdgeInsets.all(5),
-                  hintStyle: const TextStyle(fontSize: 14),
+                  hintStyle: TextStyle(color: Theme.of(context).dividerColor,fontSize: 14),
                   filled: true,
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
@@ -350,12 +351,12 @@ class AddCar extends StatelessWidget {
               child: TextField(
                 controller: addCarController.search,
                 autofocus: false,
-
+                style: TextStyle(color: Theme.of(context).dividerColor),
                 decoration: InputDecoration(
                   hintText: 'search',
-                  prefixIcon: const Icon(Icons.search,),
+                  prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor),
                   contentPadding: EdgeInsets.all(5),
-                  hintStyle: TextStyle(fontSize: 14),
+                  hintStyle: TextStyle(fontSize: 14,color: Theme.of(context).dividerColor),
                   filled: true,
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
@@ -422,35 +423,6 @@ class AddCar extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20,),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                controller: addCarController.search,
-                autofocus: false,
-                decoration: InputDecoration(
-                  hintText: 'search',
-                  prefixIcon: const Icon(Icons.search,),
-                  contentPadding: EdgeInsets.all(5),
-                  hintStyle: TextStyle(fontSize: 14),
-                  filled: true,
-                  border: InputBorder.none,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  focusColor: Colors.grey.withOpacity(0.5),
-                  hoverColor: Colors.grey.withOpacity(0.5),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
@@ -503,13 +475,14 @@ class AddCar extends StatelessWidget {
               height: 40,
               width: MediaQuery.of(context).size.width * 0.9,
               child: TextField(
+                style: TextStyle(color: Theme.of(context).dividerColor),
                 controller: addCarController.search,
                 autofocus: false,
                 decoration: InputDecoration(
                   hintText: 'search',
-                  prefixIcon: const Icon(Icons.search,),
+                  prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor,),
                   contentPadding: EdgeInsets.all(5),
-                  hintStyle: TextStyle(fontSize: 14),
+                  hintStyle: TextStyle(fontSize: 14,color: Theme.of(context).dividerColor),
                   filled: true,
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(

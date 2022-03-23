@@ -202,7 +202,7 @@ class Settings extends StatelessWidget {
                   CupertinoSwitch(
                     activeColor: Colors.grey,
                     thumbColor: Theme.of(context).dividerColor,
-                    value:MyTheme.isDarkTheme.value ,
+                    value: MyTheme.isDarkTheme.value ,
                     onChanged: (bool value) {
                       settingController.changeMode(context);
                       Store.saveTheme(!value);
