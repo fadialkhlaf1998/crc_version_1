@@ -1,12 +1,8 @@
-
-
 import 'dart:io';
-
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
-import 'package:crc_version_1/view/cars_list.dart';
 import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -103,9 +99,19 @@ class AddCarController extends GetxController{
     emiratesSelect = emirates[index];
   }
 
-  Future selectImage()async{
-    _picker.pickImage(source: ImageSource.gallery).then((value){
-      imageList.add(File(value!.path));
+  Future selectImage(context)async{
+    _picker.pickMultiImage().then((value){
+      if(value!.length < 3){
+        App.info_msg(context, 'You must upload at least three photos');
+      }else if (value.length > 8){
+        App.info_msg(context, 'You can\'t upload more than 8 photos');
+      }else if ((value.length + imageList.length) > 8){
+        App.info_msg(context, 'You can\'t upload more than 8 photos');
+      }else{
+        for(int i=0;i<value.length;i++){
+          imageList.add(File(value[i].path));
+        }
+      }
     });
   }
 

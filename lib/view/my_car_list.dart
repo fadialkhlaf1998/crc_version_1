@@ -1,6 +1,8 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/my_car_list_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
+import 'package:crc_version_1/helper/myTheme.dart';
+import 'package:crc_version_1/view/edit_car.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -101,7 +103,7 @@ class MyCarList extends StatelessWidget {
                   fit: BoxFit.cover,
                   image: NetworkImage(Api.url + 'uploads/' + myCarListController.tempCarList[index].image),
                   colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.3),
+                    Colors.black.withOpacity(0.4),
                     BlendMode.darken,
                   ),
                 )
@@ -113,13 +115,14 @@ class MyCarList extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      print(myCarListController.tempCarList[index].id);
+                      // print(myCarListController);
+                        myCarListController.goToEditCarPage(index);
                       },
                     child: Row(
-                      children: [
-                        Icon(Icons.edit, color: Theme.of(context).backgroundColor,size: 22),
+                      children: const [
+                        Icon(Icons.edit, color: Colors.white,size: 22),
                         SizedBox(width: 3),
-                        Text('Edit', style: TextStyle(color: Theme.of(context).backgroundColor, fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text('Edit', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
                       ],
                     )
                   ),
@@ -129,9 +132,9 @@ class MyCarList extends StatelessWidget {
                     },
                     child: Row(
                       children: [
-                        Icon(Icons.delete, color: Theme.of(context).backgroundColor,size: 22),
+                        Icon(Icons.delete, color: Colors.white,size: 22),
                         SizedBox(width: 3),
-                        Text('Delete', style: TextStyle(color: Theme.of(context).backgroundColor, fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text('Delete', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
                       ],
                     )
                   ),
@@ -194,7 +197,6 @@ class MyCarList extends StatelessWidget {
       ),
     );
   }
-
   _app_bar(context){
     return Container(
       width: MediaQuery.of(context).size.width,
@@ -203,10 +205,10 @@ class MyCarList extends StatelessWidget {
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.4),
+            color: Colors.grey.withOpacity(0.3),
             spreadRadius: 1,
-            blurRadius: 10,
-            offset: Offset(0, 3), // changes position of shadow
+            blurRadius: 5,
+            offset: Offset(0, 2), // changes position of shadow
           ),
         ],
         borderRadius: const BorderRadius.only(
@@ -233,7 +235,7 @@ class MyCarList extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.05,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/logo_light.png')
+                image: MyTheme.isDarkTheme.value ? AssetImage('assets/images/logo_dark.png') :  AssetImage('assets/images/logo_light.png')
               )
             ),
           ),
@@ -302,7 +304,6 @@ class MyCarList extends StatelessWidget {
       ),
     );
   }
-
   _search(context){
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,

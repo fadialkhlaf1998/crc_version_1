@@ -9,6 +9,7 @@
   "username" : "Username",
   "enter_your_username" : "Enter your Username",
   "password_length" : "Password must be at least 6 characters long",
+  "password_empty" : "Password cannot be empty",
   "password" : "Password",
   "enter_your_password" : "Enter your password",
   "login" : "Log In",
@@ -44,7 +45,8 @@
   "car_model" : "Car Model",
   "color" : "Color",
   "done" : "Done",
-  "there_are_no_people_at_the_moment" : "There are no people at the moment"
+  "there_are_no_people_at_the_moment" : "There are no people at the moment",
+  "no_car" : "There are no cars yet"
 
 
 }

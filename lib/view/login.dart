@@ -1,6 +1,7 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/login_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -33,10 +34,10 @@ class LogIn extends StatelessWidget {
                       return ScaleTransition(scale: animation, child: child);
                     },
                     duration: const Duration(milliseconds: 250),
-                    child: !loginController.sign_up_option.value ? _inputInfo(context) :  _sign_up_options(context),
+                    child: !loginController.sign_up_option.value ? _inputInfo(context) :  _signUpOptions(context),
                   ),
                   const SizedBox(height: 30,),
-                  _sign_up_button(context),
+                  _signUpButton(context),
                 ],
               )
             ),
@@ -127,7 +128,10 @@ class LogIn extends StatelessWidget {
                   obscuringCharacter: '*',
                   controller: loginController.password,
                   validator: (pass) {
-                    if (pass!.length < 6) {
+                    if(pass!.isEmpty){
+                      return App_Localization.of(context).translate('password_empty');
+                    }
+                    else if (pass.length < 6) {
                       return App_Localization.of(context).translate('password_length');
                     }
                     return null;
@@ -178,7 +182,7 @@ class LogIn extends StatelessWidget {
     );
   }
 
-  _sign_up_button(context){
+  _signUpButton(context){
     return GestureDetector(
       onTap: (){
         loginController.sign_up_option.value = !loginController.sign_up_option.value;
@@ -195,13 +199,14 @@ class LogIn extends StatelessWidget {
     );
   }
 
-  _sign_up_options(context){
+  _signUpOptions(context){
     return Container(
       height: MediaQuery.of(context).size.height * 0.2,
       child: Column(
         children: [
-          GestureDetector(
-            onTap: (){
+          Bounce(
+            duration: (const Duration(milliseconds: 90)),
+            onPressed: (){
 
             },
             child: Container(
@@ -226,9 +231,10 @@ class LogIn extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 20,),
-          GestureDetector(
-            onTap: (){
+          const SizedBox(height: 20,),
+          Bounce(
+            duration: const Duration(milliseconds: 90),
+            onPressed: (){
 
             },
             child: Container(
@@ -240,8 +246,8 @@ class LogIn extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.call,color: Colors.white,),
-                  SizedBox(width: 10),
+                  const Icon(Icons.call,color: Colors.white,),
+                  const SizedBox(width: 10),
                   Text(
                     App_Localization.of(context).translate('call_us'),
                     style: const TextStyle(

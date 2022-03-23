@@ -68,6 +68,29 @@ class Api {
     }
   }
 
+  static Future<bool> update_person(int avilable , int company_id , int id)async{
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url+'api/contact_person_avilable'));
+    request.body = json.encode({
+      "avilable": avilable,
+      "id": id,
+      "company_id": company_id,
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsondata = await response.stream.bytesToString();
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
   static Future<List<Car>> filter(String year,String brand, String model, String color, String price, String sort ) async{
     var headers = {
       'Content-Type': 'application/json',
@@ -301,4 +324,28 @@ class Api {
     }
 
   }
+
+  static Future<Car?> getCarInfo(int id)async {
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url + 'api/car_info'));
+    request.body = json.encode({
+      "id": id
+    });
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      String data = (await response.stream.bytesToString());
+      var jsonData  = jsonDecode(data) as List;
+      return Car.fromMap(jsonData[0]);
+    }
+    else {
+      print(response.reasonPhrase);
+      return null;
+    }
+
+  }
+
 }

@@ -1,18 +1,15 @@
 import 'package:crc_version_1/app_localization.dart';
-import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/home_controller.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
-import 'package:crc_version_1/view/cars_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 
 class Home extends StatelessWidget {
 
   HomeController homeController = Get.put(HomeController());
-
+  TextEditingController editingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +23,7 @@ class Home extends StatelessWidget {
                 const SizedBox(height: 30,),
                 _header(context),
                 const SizedBox(height: 30,),
-                _searchBar(context),
+                _search(context),
                 const SizedBox(height: 30,),
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
@@ -56,6 +53,7 @@ class Home extends StatelessWidget {
               child: GestureDetector(
                 onTap: (){
                   homeController.modelOption.value = false;
+                  editingController.text = '';
                 },
                 child: Icon(Icons.arrow_back_ios, color: Theme.of(context).dividerColor,),
               ),
@@ -85,12 +83,38 @@ class Home extends StatelessWidget {
                   App.info_msg(context, 'You must choose the brand of car');
                 }else{
                   homeController.modelOption.value = true;
+                  editingController.text = '';
                 }
               },
               child: Text(App_Localization.of(context).translate('next'), style: Theme.of(context).textTheme.headline2),
             ),
           ) : SizedBox(width: 50,),
         ],
+      ),
+    );
+  }
+
+  _search(context){
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: 40,
+      child: TextField(
+        onChanged: (value){
+          homeController.filterSearchResults(value);
+        },
+        controller: editingController,
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.only(bottom: 0),
+            labelText: "Search",
+            labelStyle: TextStyle(color: Theme.of(context).dividerColor,fontSize: 14),
+            prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor,),
+            prefixIconColor: Theme.of(context).primaryColor,
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.5)),
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),)),
       ),
     );
   }
@@ -157,7 +181,7 @@ class Home extends StatelessWidget {
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: homeController.brands.length,
+                itemCount: homeController.tempBrandsList.length,
                 itemBuilder: (context, index){
                   return Obx((){
                     return Column(
@@ -165,7 +189,6 @@ class Home extends StatelessWidget {
                       children: [
                         GestureDetector(
                           onTap: (){
-                            homeController.brandIndex = index.obs;
                             homeController.chooseBrand(index);
                           },
                           child: Container(
@@ -176,8 +199,8 @@ class Home extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text(homeController.brands[index].title, style: homeController.brands[index].selected.value ? TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold) : Theme.of(context).textTheme.headline3),
-                                homeController.brands[index].selected.value ? Icon(Icons.check,size: 25, color: Theme.of(context).primaryColor) : Text(''),
+                                Text(homeController.tempBrandsList[index].title, style: homeController.tempBrandsList[index].selected.value ? TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold) : Theme.of(context).textTheme.headline3),
+                                homeController.tempBrandsList[index].selected.value ? Icon(Icons.check,size: 25, color: Theme.of(context).primaryColor) : Text(''),
                               ],
                             ),
                           ),
@@ -222,7 +245,7 @@ class Home extends StatelessWidget {
             ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: homeController.brands[homeController.brandIndex.value].models.length,
+              itemCount: homeController.tempModelsList.length,//homeController.brands[homeController.brandIndex.value].models.length,
               itemBuilder: (context, index){
                 return Obx((){
                   return Column(
@@ -230,6 +253,8 @@ class Home extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: (){
+                          print(homeController.brands.length);
+                          print("homeController.brands.length");
                           homeController.chooseModel(index);
                         },
                         child: Container(
@@ -240,7 +265,7 @@ class Home extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(homeController.brands[homeController.brandIndex.value].models[index].title, style: Theme.of(context).textTheme.headline3),
+                              Text(homeController.tempModelsList[index].title, style: Theme.of(context).textTheme.headline3),
                             ],
                           ),
                         ),

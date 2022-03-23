@@ -1,12 +1,15 @@
+import 'dart:io';
 
-
+import 'package:crc_version_1/controller/edit_car_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crc_version_1/model/car.dart';
+import 'package:crc_version_1/view/edit_car.dart';
 import 'package:get/get.dart';
 import 'package:crc_version_1/model/my_car.dart';
 
 class MyCarListController extends GetxController{
+
 
 
   RxBool checkFilterOpen = false.obs;
@@ -26,6 +29,16 @@ class MyCarListController extends GetxController{
   RxString priceFilter = '%'.obs;
   RxString sortFilter = 'ASC'.obs;
 
+  /// Edit Variable */
+  RxString? brand;
+  RxString? model;
+  RxString? year;
+  RxString? color;
+  RxString? price;
+  RxString? id;
+  RxString? location;
+  RxList<Image> carImages = <Image>[].obs;
+
 
 
   @override
@@ -40,7 +53,6 @@ class MyCarListController extends GetxController{
     myCarList.clear();
     tempCarList.clear();
     loading.value = true;
-    Future.delayed(Duration(milliseconds: 0),(){
       Api.check_internet().then((internet)async{
         if(internet){
           loading.value = true;
@@ -53,7 +65,6 @@ class MyCarListController extends GetxController{
 
         }
       });
-    });
   }
 
   openFiler(){
@@ -130,5 +141,27 @@ class MyCarListController extends GetxController{
     }
   }
 
+  goToEditCarPage(index){
+    print('**********');
+    Api.getCarInfo(tempCarList[index].id).then((value) {
+      print(value!);
+      if(value!=null){
+        brand = value.brand.obs;
+        model = value.model.obs;
+        year = value.year.toString().obs;
+        color = value.color.obs;
+        price = value.pricPerDay.toString().obs;
+        id = value.id.toString().obs;
+        location=value.location.obs;
+        carImages = value.images.obs;
+        print(carImages.value.length);
+        Get.to(()=>EditCar());
+      }else{
+        //todo error msg
+      }
+    });
+
+
+  }
 
 }

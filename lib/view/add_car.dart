@@ -1,13 +1,10 @@
 import 'dart:io';
-
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/add_car_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -70,10 +67,10 @@ class AddCar extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.grey.withOpacity(0.3),
             spreadRadius: 1,
-            blurRadius: 7,
-            offset: Offset(0, 3), // changes position of shadow
+            blurRadius: 5,
+            offset: Offset(0, 2), // changes position of shadow
           ),
         ],
         color: Theme
@@ -222,10 +219,10 @@ class AddCar extends StatelessWidget {
                 color: Theme.of(context).backgroundColor,
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context).dividerColor.withOpacity(0.3),
+                    color: Theme.of(context).dividerColor.withOpacity(0.1),
                     spreadRadius: 1,
-                    blurRadius: 7,
-                    offset: Offset(0, -3), // changes position of shadow
+                    blurRadius: 5,
+                    offset: Offset(0, -1), // changes position of shadow
                   ),
                 ],
               ),
@@ -644,7 +641,6 @@ class AddCar extends StatelessWidget {
   }
 
   _carImage(context){
-    
     return Container(
       width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
@@ -695,7 +691,7 @@ class AddCar extends StatelessWidget {
                   if(addCarController.imageList.length == 10){
                     App.info_msg(context, 'You can upload just 10 photos');
                   }else{
-                    addCarController.selectImage();
+                    addCarController.selectImage(context);
                   }
                 },
                 child: Container(

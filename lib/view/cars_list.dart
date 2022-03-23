@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
@@ -6,13 +5,13 @@ import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
 import 'package:crc_version_1/view/setting.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CarsList extends StatefulWidget {
 
@@ -46,7 +45,7 @@ class _CarsListState extends State<CarsList> {
               _background(context),
               _filterInterface(context),
               _sortInterface(context),
-              _app_bar(context),
+              _appBar(context),
             ],
           ),
         );
@@ -54,7 +53,7 @@ class _CarsListState extends State<CarsList> {
     );
   }
 
-  _app_bar(context){
+  _appBar(context){
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height * 0.07,
@@ -62,10 +61,10 @@ class _CarsListState extends State<CarsList> {
         color: Theme.of(context).backgroundColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.4),
+            color: Colors.grey.withOpacity(0.3),
             spreadRadius: 1,
-            blurRadius: 7,
-            offset: Offset(0, 2), // changes position of shadow
+            blurRadius: 5,
+            offset: const Offset(0, 2), // changes position of shadow
           ),
         ],
         borderRadius: const BorderRadius.only(
@@ -84,7 +83,7 @@ class _CarsListState extends State<CarsList> {
                   carListController.checkFilterOpen.value = false;
                   Get.back();
                 },
-                icon: Icon(Icons.arrow_back_ios,size: 20,),
+                icon: const Icon(Icons.arrow_back_ios,size: 20,),
               )
           ),
           GestureDetector(
@@ -95,7 +94,7 @@ class _CarsListState extends State<CarsList> {
               color: Colors.transparent,
               child: Row(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 20,
                     height: 20,
                     child: SvgPicture.asset('assets/images/filter.svg',
@@ -172,12 +171,12 @@ class _CarsListState extends State<CarsList> {
         carListController.checkFilterOpen.value = false;
       },
       child:  AnimatedSwitcher(
-        duration: Duration(milliseconds: 800),
+        duration: const Duration(milliseconds: 800),
         child: carListController.checkFilterOpen.value || carListController.checkSortOpen.value ? Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           color: Theme.of(context).dividerColor.withOpacity(0.7),
-        ) : Text(''),
+        ) : const Text(''),
       ),
     );
   }
@@ -189,7 +188,7 @@ class _CarsListState extends State<CarsList> {
       child:carListController.loading.value
           ? Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
           : carListController.myCars.isEmpty
-          ? Center(child: Text('No car'),)
+          ? Center(child: Text(App_Localization.of(context).translate('no_car')))
           : ListView.builder(
           itemCount: carListController.myCars.length,
           itemBuilder:(context, index){
