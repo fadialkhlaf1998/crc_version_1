@@ -146,15 +146,15 @@ class MyCarListController extends GetxController{
     Api.getCarInfo(tempCarList[index].id).then((value) {
       print(value!);
       if(value!=null){
-        brand = value.brand.obs;
-        model = value.model.obs;
-        year = value.year.toString().obs;
-        color = value.color.obs;
-        price = value.pricPerDay.toString().obs;
-        id = value.id.toString().obs;
-        location=value.location.obs;
+        brand = tempCarList[index].brand.obs;
+        model = tempCarList[index].model.obs;
+        year = tempCarList[index].year.toString().obs;
+        color = tempCarList[index].color.obs;
+        price = tempCarList[index].pricPerDay.toString().obs;
+        id = tempCarList[index].id.toString().obs;
+        location=tempCarList[index].location.obs;
         carImages = value.images.obs;
-        print(carImages.value.length);
+        // print(carImages.value.length);
         Get.to(()=>EditCar());
       }else{
         //todo error msg

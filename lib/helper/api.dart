@@ -338,8 +338,10 @@ class Api {
 
     if (response.statusCode == 200) {
       String data = (await response.stream.bytesToString());
-      var jsonData  = jsonDecode(data) as List;
-      return Car.fromMap(jsonData[0]);
+      // print(data);
+      var jsonData  = jsonDecode(data) ;
+      // print(jsonData.toString());
+      return Car.fromMap(jsonData);
     }
     else {
       print(response.reasonPhrase);
