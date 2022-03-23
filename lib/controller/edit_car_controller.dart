@@ -109,7 +109,7 @@ class EditCarController extends GetxController{
     newImageList.removeAt(index);
   }
 
-    Future addImage(context)async{
+  Future addImage(context)async{
       _picker.pickMultiImage().then((value){
        if (value!.length > 8){
           App.info_msg(context, 'You can\'t upload more than 8 photos');
@@ -123,7 +123,7 @@ class EditCarController extends GetxController{
       });
     }
 
-    saveInfo(context){
+  saveInfo(context){
      if(imagePage.value == true){
        imagePage.value = false;
      }else{

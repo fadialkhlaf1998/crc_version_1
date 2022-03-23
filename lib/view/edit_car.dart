@@ -110,8 +110,8 @@ class EditCar extends StatelessWidget {
                 child: IconButton(
                   onPressed: (){
                     //Get.back();
-                    editCarController.editPriceOpenList.value = false;
-                    editCarController.editImageList.value = false;
+                    // editCarController.editPriceOpenList.value = false;
+                    // editCarController.editImageList.value = false;
                   },
                   icon: const Icon(Icons.arrow_back_ios,size: 20,),
                 )
