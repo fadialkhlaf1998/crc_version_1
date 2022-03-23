@@ -340,6 +340,7 @@ class Api {
 
     if (response.statusCode == 200) {
       String data = (await response.stream.bytesToString());
+      print(data);
       var jsonData  = jsonDecode(data) ;
       return Car.fromMap(jsonData);
     }

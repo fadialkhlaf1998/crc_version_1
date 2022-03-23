@@ -182,7 +182,7 @@ class EditCar extends StatelessWidget {
       child: Center(
         child: GestureDetector(
           onTap: (){
-            editCarController.saveInfo();
+            editCarController.saveInfo(context);
           },
           child: Container(
             width: MediaQuery.of(context).size.width * 0.5,

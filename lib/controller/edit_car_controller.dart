@@ -5,6 +5,7 @@ import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/model/intro.dart';
+import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -112,7 +113,7 @@ class EditCarController extends GetxController{
       _picker.pickMultiImage().then((value){
        if (value!.length > 8){
           App.info_msg(context, 'You can\'t upload more than 8 photos');
-        }else if ((value.length + imageList.length) > 8){
+        }else if ((value.length + imageList.length + newImageList.length) > 8){
           App.info_msg(context, 'You can\'t upload more than 8 photos');
         }else{
           for(int i = 0; i<value.length; i++){
@@ -122,7 +123,7 @@ class EditCarController extends GetxController{
       });
     }
 
-    saveInfo(){
+    saveInfo(context){
      if(imagePage.value == true){
        imagePage.value = false;
      }else{
@@ -144,9 +145,11 @@ class EditCarController extends GetxController{
              if(value == true){
                print('Update successfully');
                loading.value = false;
+               Get.off(()=>MyCarList());
              }else{
                print('Error Update');
                loading.value = false;
+               App.error_msg(context, 'Something went wrong');
              }
            });
      }
