@@ -17,7 +17,7 @@ class MyTheme with ChangeNotifier {
 
   static ThemeData get lightTheme {
     return ThemeData(
-       // primarySwatch: generateMaterialColor(App.primery),
+        primarySwatch: generateMaterialColor( Color(0XFFFD6001)),
         fontFamily: "OpenSans",
         primaryColor: Color(0XFFFD6001),
         dividerColor: Colors.black,
@@ -38,7 +38,7 @@ class MyTheme with ChangeNotifier {
 
   static ThemeData get darkTheme {
     return ThemeData(
-       // primarySwatch: generateMaterialColor(App.primery),
+        primarySwatch: generateMaterialColor( Color(0XFFFD6001)),
         fontFamily: "OpenSans",
         primaryColor: Color(0XFFFD6001),
         dividerColor: Colors.white,

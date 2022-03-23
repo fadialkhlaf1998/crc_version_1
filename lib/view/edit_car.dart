@@ -497,9 +497,9 @@ class EditCar extends StatelessWidget {
                 Text('Image',style: Theme.of(context).textTheme.bodyText1),
                 Row(
                   children: [
-                    Text(editCarController.imageList.length.toString() + editCarController.newImageList.length.toString(),style: TextStyle(fontSize: 15,color: Colors.grey)),
-                    SizedBox(width: 10,),
-                    Icon(Icons.arrow_forward_ios,size: 18),
+                    Text((editCarController.imageList.length + editCarController.newImageList.length).toString(),style: TextStyle(fontSize: 15,color: Colors.grey)),
+                    const SizedBox(width: 10,),
+                    const Icon(Icons.arrow_forward_ios,size: 18),
                   ],
                 ),
               ],

@@ -247,7 +247,7 @@ class _CarsListState extends State<CarsList> {
               width: MediaQuery.of(context).size.width* 0.9,
               height: MediaQuery.of(context).size.height * 0.2,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
+                color: Theme.of(context).dividerColor,
                 borderRadius: BorderRadius.circular(10),
                 ),
               child:ImageSlideshow(
@@ -268,7 +268,7 @@ class _CarsListState extends State<CarsList> {
                   )).toList()
                 ,
                 autoPlayInterval: 0,
-                isLoop: true,
+                isLoop: false,
               ),
             ),
             carListController.myCars[index].avilable == 0
@@ -960,19 +960,19 @@ class _CarsListState extends State<CarsList> {
               carListController.loadingContact.value
                   ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),)
                   : Text(''),
-              Container(
+              carListController.companyContactsList.isEmpty
+              ? Center(
+                child: Text(
+                  App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
+                  style: Theme.of(context).textTheme.headline3,
+                ),
+              )
+              : Container(
                 padding: EdgeInsets.only(top: 20),
                 child: ListView.builder(
                   itemCount: carListController.companyContactsList.length,
                   itemBuilder: (context,index){
-                    return carListController.companyContactsList.isEmpty
-                        ? Center(
-                      child: Text(
-                        App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
-                        style: Theme.of(context).textTheme.headline3,
-                      ),
-                    ) :
-                      Column(
+                    return  Column(
                       children: [
                         Container(
                           //height: 80,
