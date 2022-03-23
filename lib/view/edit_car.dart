@@ -70,7 +70,7 @@ class EditCar extends StatelessWidget {
                           child: Lottie.asset('assets/images/data.json'),
                         ),
                       ),
-                      Text('Saving your person information',
+                      Text('Saving your car information',
                           style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Theme.of(context).backgroundColor)),
                     ],
                   )
