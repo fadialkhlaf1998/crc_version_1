@@ -109,6 +109,7 @@ class EditCar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 5,left: 5),
                 child: IconButton(
                   onPressed: (){
+                    editCarController.goBack();
                     //Get.back();
                     // editCarController.editPriceOpenList.value = false;
                     // editCarController.editImageList.value = false;
@@ -494,7 +495,13 @@ class EditCar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Image',style: Theme.of(context).textTheme.bodyText1),
-                Icon(Icons.arrow_forward_ios,size: 18),
+                Row(
+                  children: [
+                    Text(editCarController.imageList.length.toString() + editCarController.newImageList.length.toString(),style: TextStyle(fontSize: 15,color: Colors.grey)),
+                    SizedBox(width: 10,),
+                    Icon(Icons.arrow_forward_ios,size: 18),
+                  ],
+                ),
               ],
             ),
           ),

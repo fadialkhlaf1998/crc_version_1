@@ -156,7 +156,15 @@ class EditCarController extends GetxController{
 
     }
 
-
+  goBack(){
+    if(imagePage.value == true){
+      imagePage.value = false;
+    }else{
+      editLocationOpenList.value = false;
+      editPriceOpenList.value = false;
+      Get.off(()=>MyCarList());
+    }
+  }
 
 
 }
