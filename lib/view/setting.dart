@@ -2,6 +2,7 @@ import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/setting_controller.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
+import 'package:crc_version_1/helper/store.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
 import 'package:crc_version_1/view/cars_list.dart';
@@ -204,6 +205,7 @@ class Settings extends StatelessWidget {
                     value:MyTheme.isDarkTheme.value ,
                     onChanged: (bool value) {
                       settingController.changeMode(context);
+                      Store.saveTheme(!value);
                     },
                   ),
                 ],

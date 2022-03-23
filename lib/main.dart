@@ -3,6 +3,7 @@ import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
+import 'package:crc_version_1/helper/store.dart';
 import 'package:crc_version_1/view/intro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -45,6 +46,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    Store.loadTheme().then((value) {
+      MyTheme.isDarkTheme.value = !value;
+    });
     super.initState();
     Global.load_language().then((language) {
       setState(() {
