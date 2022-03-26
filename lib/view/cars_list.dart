@@ -11,7 +11,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CarsList extends StatefulWidget {
 
@@ -175,44 +174,50 @@ class _CarsListState extends State<CarsList> {
         child: carListController.checkFilterOpen.value || carListController.checkSortOpen.value ? Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
-          color: Theme.of(context).dividerColor.withOpacity(0.7),
+          color: Theme.of(context).dividerColor.withOpacity(0.5),
         ) : const Text(''),
       ),
     );
   }
 
   _body(context){
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
-      child:carListController.loading.value
-          ? Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
-          : carListController.myCars.isEmpty
-          ? Center(child: Text(App_Localization.of(context).translate('no_car')))
-          : ListView.builder(
-          itemCount: carListController.myCars.length,
-          itemBuilder:(context, index){
-            return  Column(
-              children: [
-                Container(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      _companyInfo(context, index),
-                      const SizedBox(height: 10),
-                      _carInfo(context,index),
-                      const SizedBox(height: 10),
-                      _contactOptions(context,index),
-                    ],
+    return RefreshIndicator(
+      onRefresh: ()async {
+        await carListController.getCarsList('%', '%', '%', '%', '999999999999', 'ASE');
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
+        child:carListController.loading.value
+            ? Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
+            : carListController.myCars.isEmpty
+            ? Center(child: Text(App_Localization.of(context).translate('no_car')))
+            : ListView.builder(
+            itemCount: carListController.myCars.length,
+            itemBuilder:(context, index){
+              return  Column(
+                children: [
+                  Container(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        _companyInfo(context, index),
+                        const SizedBox(height: 10),
+                        _carInfo(context,index),
+                        const SizedBox(height: 10),
+                        _contactOptions(context,index),
+                      ],
+                    ),
                   ),
-                ),
-                Divider(thickness: 1, indent: 30,endIndent: 30,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
-              ],
-            );
-          }
+                  Divider(thickness: 1, indent: 30,endIndent: 30,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
+                ],
+              );
+            }
+        ),
       ),
     );
   }
+
 
   _companyInfo(context, index){
     return Container(
@@ -248,7 +253,7 @@ class _CarsListState extends State<CarsList> {
               height: MediaQuery.of(context).size.height * 0.3,
               decoration: BoxDecoration(
                 color: Theme.of(context).dividerColor,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
                 ),
               child:ImageSlideshow(
                 width: double.infinity,
@@ -322,97 +327,68 @@ class _CarsListState extends State<CarsList> {
   _contactOptions(context,index) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Container(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-             Obx((){
-               return  GestureDetector(
-                 onTap: () {
-                   if(carListController.myCars[index].avilable == 1){
-                     carListController.getContactData(carListController.myCars[index].companyId);
-                     _contactsMenu(index);
-                   }
-                 },
-                 child: AnimatedSwitcher(
-                     duration: const Duration(milliseconds: 500),
-                     child:  !carListController.myCars[index].bookOption.value
-                         ? Container(
-                       width: MediaQuery.of(context).size.width * 0.43,
-                       height: 45,
-                       decoration: BoxDecoration(
-                         borderRadius: BorderRadius.circular(10),
-                         color: carListController.myCars[index].avilable == 1 ?Theme.of(context).primaryColor : Colors.grey,
-                       ),
-                       child: Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                         children: [
-                           Icon(Icons.whatsapp,color: Colors.white,),
-                           Text('Book on whatsApp',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
-                         ],
-                       ),
-                     )
-                         : SingleChildScrollView(
-                       child: Container(
-                         height: 50,
-                         child: ListView.builder(
-                           shrinkWrap: true,
-                           physics: const NeverScrollableScrollPhysics(),
-                           scrollDirection: Axis.horizontal,
-                           itemCount: carListController.companyContactsList.length,
-                           itemBuilder: (context,index){
-                             return Row(
-                               children: [
-                                 Stack(
-                                   alignment: Alignment.centerLeft,
-                                   children: [
-                                     Container(
-                                       width: MediaQuery.of(context).size.width * 0.27,
-                                       height: 40,
-                                       decoration: BoxDecoration(
-                                           color: Theme.of(context).primaryColor,
-                                           borderRadius: BorderRadius.circular(20)
-                                       ),
-                                     ),
-                                     CircleAvatar(
-                                       radius: 25,
-                                     ),
-                                   ],
-                                 ),
-                                 SizedBox(width: 10,)
-                               ],
-                             );
-                           },
-                         ),
-                       ),
-                     )
-                 ),
-               );
-             }),
-              const SizedBox(width: 10),
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 500),
-                width: MediaQuery.of(context).size.width * 0.43,
+      child:  Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Obx((){
+            return  GestureDetector(
+              onTap: () {
+                if(carListController.myCars[index].avilable == 1){
+                  carListController.getContactData(carListController.myCars[index].companyId);
+                  carListController.bookOnWhatsappCheck = true.obs;
+                  _contactsMenu(index);
+                }
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.45 - 5,
                 height: 45,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color:  carListController.myCars[index].avilable == 1 ?Theme.of(context).primaryColor : Colors.grey,
+                  color: carListController.myCars[index].avilable == 1 ?Theme.of(context).primaryColor : Colors.grey,
                 ),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.phone,color: Colors.white,),
-                    Text('Call us to book',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
+                    const Icon(Icons.whatsapp,color: Colors.white,),
+                    const SizedBox(width: 10,),
+                    Text(App_Localization.of(context).translate('book_on_whatsapp'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
+            );
+          }),
+          const SizedBox(width: 10),
+         Obx((){
+           return  GestureDetector(
+             onTap: (){
+               if(carListController.myCars[index].avilable == 1){
+                 carListController.getContactData(carListController.myCars[index].companyId);
+                 carListController.bookOnWhatsappCheck = false.obs;
+                 _contactsMenu(index);
+               }
+             },
+             child: AnimatedContainer(
+               duration: const Duration(milliseconds: 500),
+               width: MediaQuery.of(context).size.width * 0.45 - 5,
+               height: 45,
+               decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(10),
+                 color:  carListController.myCars[index].avilable == 1 ?Theme.of(context).primaryColor : Colors.grey,
+               ),
+               child: Row(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 children: [
+                   const Icon(Icons.phone,color: Colors.white,),
+                   const SizedBox(width: 10,),
+                   Text(App_Localization.of(context).translate('call_us_to_book'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
+                 ],
+               ),
+             ),
+           );
+         }),
+        ],
       ),
     );
   }
@@ -460,67 +436,67 @@ class _CarsListState extends State<CarsList> {
               ),
             ),
             AnimatedContainer(
-                duration: const Duration(milliseconds: 900),
-                curve: Curves.fastOutSlowIn,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10)
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).dividerColor.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 7,
-                    offset: Offset(0, -1),
+                  duration: const Duration(milliseconds: 900),
+                  curve: Curves.fastOutSlowIn,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(10),
+                        bottomRight: Radius.circular(10)
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).dividerColor.withOpacity(0.2),
+                        spreadRadius: 1,
+                        blurRadius: 7,
+                        offset: Offset(0, -1),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              width: MediaQuery.of(context).size.width,
-              height: carListController.checkFilterOpen.value ? MediaQuery.of(context).size.height  * 0.08 : 0,
-              child: Container(
-                width: MediaQuery.of(context).size.width * 0.9,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: (){
-                        carListController.getFilterResult();
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.height * 0.04,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        child: Center(
-                          child: Text(
-                            App_Localization.of(context).translate('done'),
-                            style: TextStyle(
-                                color: Theme.of(context).backgroundColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15
+                  width: MediaQuery.of(context).size.width,
+                  height: carListController.checkFilterOpen.value ? MediaQuery.of(context).size.height  * 0.08 : 0,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: (){
+                            carListController.getFilterResult();
+                          },
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20),
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Center(
+                              child: Text(
+                                App_Localization.of(context).translate('done'),
+                                style: TextStyle(
+                                    color: Theme.of(context).backgroundColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10),
+                          child: IconButton(
+                            onPressed: (){
+                              carListController.clearFilterValue();
+                            },
+                            icon: Icon(Icons.delete_outline),
+                          ),
+                        ),
+                      ],
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: IconButton(
-                        onPressed: (){
-                          carListController.clearFilterValue();
-                        },
-                        icon: Icon(Icons.delete_outline),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ),
+                  )
+              ),
           ],
         ),
       ),
@@ -577,7 +553,7 @@ class _CarsListState extends State<CarsList> {
                                     ? Theme.of(context).backgroundColor
                                     : Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Theme.of(context).dividerColor,width: 1)
+                                border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4),width: 1)
                             ),
                             child: Center(
                               child:  Text(
@@ -651,7 +627,7 @@ class _CarsListState extends State<CarsList> {
                                    ? Theme.of(context).backgroundColor
                                    : Theme.of(context).primaryColor,
                                borderRadius: BorderRadius.circular(10),
-                               border: Border.all(color: Theme.of(context).dividerColor,width: 1)
+                               border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4),width: 1)
                            ),
                            child: Center(
                              child: Text(
@@ -720,13 +696,14 @@ class _CarsListState extends State<CarsList> {
                            carListController.chooseModelFilter(index);
                          },
                          child: Container(
-                           width: 90,
+                           //width: 90,
+                           padding: EdgeInsets.symmetric(horizontal: 10),
                            decoration: BoxDecoration(
                                color: !carListController.modelListCheck![index] == true
                                    ? Theme.of(context).backgroundColor
                                : Theme.of(context).primaryColor,
                                borderRadius: BorderRadius.circular(10),
-                               border: Border.all(color: Theme.of(context).dividerColor,width: 1)
+                               border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4),width: 1)
                            ),
                            child: Center(
                              child: Text(
@@ -801,7 +778,7 @@ class _CarsListState extends State<CarsList> {
                                     ? Theme.of(context).backgroundColor
                                     : Theme.of(context).primaryColor,
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: Theme.of(context).dividerColor,width: 1)
+                                border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4),width: 1)
                             ),
                             child: Center(
                               child: Text(
@@ -945,8 +922,7 @@ class _CarsListState extends State<CarsList> {
 
   _contactsMenu(index){
     return showModalBottomSheet(
-      barrierColor: Theme.of(context).dividerColor.withOpacity(0.7),
-
+      barrierColor: Theme.of(context).dividerColor.withOpacity(0.3),
       backgroundColor: Theme.of(context).backgroundColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
@@ -974,9 +950,9 @@ class _CarsListState extends State<CarsList> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 5,),
+                    const SizedBox(height: 5,),
                     Text(
-                      App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
+                      App_Localization.of(context).translate('contact_list'),
                       style: Theme.of(context).textTheme.headline3,
                     ),
                     Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),indent: 80,endIndent: 80,height: 10,),
@@ -988,87 +964,92 @@ class _CarsListState extends State<CarsList> {
                         itemBuilder: (context,index){
                           return  Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  height: 130,
-                                  width: 300-20,
-                                  decoration: BoxDecoration(
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Theme.of(context).dividerColor.withOpacity(0.2),
-                                        spreadRadius: 1,
-                                        blurRadius: 5,
-                                        offset: Offset(2, 3),
-                                      )
-                                    ]
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).backgroundColor,
-                                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
-                                            image: DecorationImage(
-                                                image: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
-                                                fit: BoxFit.cover
-                                            )
-                                        ),
-                                      ),),
-                                      Expanded(
-                                        flex: 1,
-                                        child:   Container(
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
-                                          color: Theme.of(context).backgroundColor,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    carListController.companyContactsList[index].name,
-                                                    style: Theme.of(context).textTheme.headline2,
-                                                    maxLines: 1,
-                                                  ),
-                                                ],
-                                              ),
-                                              Text(
-                                                carListController.companyContactsList[index].phone,
-                                                style: Theme.of(context).textTheme.headline3,
-                                                maxLines: 1,
-                                              ),
-
-                                              Text(
-                                                carListController.companyContactsList[index].languages,
-                                                style: Theme.of(context).textTheme.headline3,
-                                                textAlign: TextAlign.center,
-                                                maxLines: 2,
-                                              ),
-
-                                              SizedBox(width: 10),
-                                              Column(
-                                                children: [
-
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),),
-
-
-                                    ],
-                                  ),
+                            child: GestureDetector(
+                              onTap: () async{
+                                if(carListController.bookOnWhatsappCheck!.value){
+                                 await carListController.bookOnWhatsapp(context, index);
+                                }else{
+                                  carListController.bookOnPhone(index);
+                                }
+                              },
+                              child: Container(
+                                height: 130,
+                                width: 300-20,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Theme.of(context).dividerColor.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: Offset(2, 2),
+                                    )
+                                  ]
                                 ),
-                              ],
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).backgroundColor,
+                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
+                                          image: DecorationImage(
+                                              image: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
+                                              fit: BoxFit.cover
+                                          )
+                                      ),
+                                    ),),
+                                    Expanded(
+                                      flex: 1,
+                                      child:   Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
+                                        color: Theme.of(context).backgroundColor,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  carListController.companyContactsList[index].name,
+                                                  style: Theme.of(context).textTheme.headline2,
+                                                  maxLines: 1,
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              carListController.companyContactsList[index].phone,
+                                              style: Theme.of(context).textTheme.headline3,
+                                              maxLines: 1,
+                                            ),
+
+                                            Text(
+                                              carListController.companyContactsList[index].languages,
+                                              style: Theme.of(context).textTheme.headline3,
+                                              textAlign: TextAlign.center,
+                                              maxLines: 2,
+                                            ),
+
+                                            SizedBox(width: 10),
+                                            Column(
+                                              children: [
+
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),),
+
+
+                                  ],
+                                ),
+                              ),
                             ),
                           );
                         },
@@ -1091,7 +1072,7 @@ class _CarsListState extends State<CarsList> {
       activeIcon: Icons.close,
       icon: Icons.add,
       backgroundColor: Theme.of(context).primaryColor,
-      overlayColor: Theme.of(context).dividerColor,
+      overlayColor: Theme.of(context).backgroundColor.withOpacity(0.2),
       openCloseDial: carListController.isDialOpen,
       children: [
         SpeedDialChild(

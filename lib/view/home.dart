@@ -41,7 +41,7 @@ class Home extends StatelessWidget {
 
   _header(BuildContext context){
     return Container(
-      height: MediaQuery.of(context).size.height  * 0.13,
+      height: MediaQuery.of(context).size.height  * 0.14,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,19 +1,17 @@
 import 'package:crc_version_1/app_localization.dart';
-import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/setting_controller.dart';
+import 'package:crc_version_1/helper/api.dart';
+import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:crc_version_1/helper/store.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
-import 'package:crc_version_1/view/cars_list.dart';
 import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:crc_version_1/view/people_list.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:lottie/lottie.dart';
 
 class Settings extends StatelessWidget {
 
@@ -84,6 +82,7 @@ class Settings extends StatelessWidget {
   _header(context){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
             width: 80,
@@ -94,19 +93,64 @@ class Settings extends StatelessWidget {
               icon: Icon(Icons.arrow_back_ios),
             ),
         ),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.5,
-          height: 45,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.contain,
-              image: MyTheme.isDarkTheme.value ? const AssetImage('assets/images/logo_dark.png') : const AssetImage('assets/images/logo_light.png'),
-            )
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width * 0.3,
+              height: 35,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.contain,
+                    image: MyTheme.isDarkTheme.value ? const AssetImage('assets/images/logo_dark.png') : const AssetImage('assets/images/logo_light.png'),
+                  )
+              ),
 
+            ),
+            SizedBox(height: 20),
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                GestureDetector(
+                  onTap: (){
+
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.22,
+                    height: MediaQuery.of(context).size.width * 0.22,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4)),
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(Global.companyImage)
+                      )
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: (){
+                    settingController.changeCompanyImage();
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.07,
+                    height: MediaQuery.of(context).size.width * 0.07,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        shape: BoxShape.circle,
+                    ),
+                    child: Icon(Icons.edit,color: Colors.white,size: 18),
+                  ),
+                ),
+
+              ],
+            ),
+            const SizedBox(height: 10),
+            Text(Global.companyTitle, style: Theme.of(context).textTheme.headline3,)
+          ],
         ),
         SizedBox(width: 80),
-
       ],
     );
   }

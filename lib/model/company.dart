@@ -2,7 +2,6 @@
 //
 //     final company = companyFromMap(jsonString);
 
-import 'package:meta/meta.dart';
 import 'dart:convert';
 
 class Company {

@@ -47,7 +47,7 @@ class Api {
 
   }
 
-  static Future<int> login(String username,String password)async{
+  static Future<Company> login(String username,String password)async{
     var headers = {
       'Content-Type': 'application/json',
     };
@@ -63,10 +63,10 @@ class Api {
     if (response.statusCode == 200) {
       var jsondata = await response.stream.bytesToString();
       var data = jsonDecode(jsondata) as List;
-      return Company.fromMap(data[0]).id;
+      return Company.fromMap(data[0]);
     }
     else {
-      return -1;
+      return Company(id: -1, username: '', password: '', profileImage: '', coverImage: '', title: '');
     }
   }
 

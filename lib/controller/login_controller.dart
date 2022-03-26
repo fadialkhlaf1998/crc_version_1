@@ -21,12 +21,14 @@ class LoginController extends GetxController{
       if(internet){
         if(username.text.isNotEmpty&&password.text.isNotEmpty){
           submited.value=true;
-          Api.login(username.text, password.text).then((value) {
-            if(value!=-1){
+          Api.login(username.text, password.text).then((company) {
+            if(company!=-1){
               Global.loginInfo!.email=username.text;
               Global.loginInfo!.pass=password.text;
               Store.Save_login();
-              Global.company_id=value;
+              Global.company_id=company.id;
+              Global.companyImage = company.profileImage;
+              Global.companyTitle = company.title;
               Get.offAll(()=>Home());
             }else{
               ///Wrong email pr password

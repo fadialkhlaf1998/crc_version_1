@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
+import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/model/car.dart';
 import 'package:crc_version_1/model/person_for_company.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarListController extends GetxController{
 
@@ -47,7 +51,7 @@ class CarListController extends GetxController{
   RxString sortFilter = 'ASC'.obs;
   RxBool loadingContact = false.obs;
   final isDialOpen = ValueNotifier(false);
-
+  RxBool? bookOnWhatsappCheck;
 
   @override
   void onInit() {
@@ -244,7 +248,6 @@ class CarListController extends GetxController{
 
   }
 
-
   selectSortType(value){
     if(sortFilter.value == 'ASC' && value == 1){
       sortFilter.value = 'DES';
@@ -253,6 +256,27 @@ class CarListController extends GetxController{
       sortFilter.value = 'ASC';
       getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
     }
+  }
+
+  bookOnWhatsapp(context, index)async{
+    if(await canLaunch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse('Hi')}")){
+      if (Platform.isAndroid) {
+        await launch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse('Hi')}");
+      } else {
+        return "https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}";
+      }
+    }else{
+      App.error_msg(context, 'can\'t open Whatsapp');
+    }
+  }
+
+  bookOnPhone(index)async{
+      final Uri launchUri = Uri(
+        scheme: 'tel',
+        path: companyContactsList[index].phone,
+      );
+      await launch(launchUri.toString());
+
   }
 
   // openBookList(index,id){

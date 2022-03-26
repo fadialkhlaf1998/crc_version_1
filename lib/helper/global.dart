@@ -1,4 +1,4 @@
-
+import 'dart:io';
 import 'package:crc_version_1/model/login_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,12 +8,14 @@ class Global{
   static bool remember_pass=false;
   static LoginInfo? loginInfo;
   static String remember_password="non";
+  static String companyImage = '';
+  static String companyTitle = '';
+
   static save_language(String locale){
     SharedPreferences.getInstance().then((prefs){
       prefs.setString("lang", locale);
     });
   }
-
 
 
   static Future<String> load_language()async{

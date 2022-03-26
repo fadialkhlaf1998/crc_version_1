@@ -30,6 +30,7 @@ class HomeController extends GetxController{
   get_data(){
     brands=introController.brands.obs;
     tempBrandsList.addAll(brands);
+
     colors=introController.colors.obs;
   }
 
@@ -40,6 +41,7 @@ class HomeController extends GetxController{
     tempBrandsList[index].selected.value = true;
     brandName.value = tempBrandsList[index].title;
     brandIndex.value = brands.indexOf(tempBrandsList[index]);
+    tempModelsList.value = brands[brands.indexOf(tempBrandsList[index])].models;
   }
 
   getAll(){

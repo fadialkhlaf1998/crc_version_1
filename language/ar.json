@@ -46,7 +46,10 @@
   "color" : "Color",
   "done" : "Done",
   "there_are_no_people_at_the_moment" : "There are no people at the moment",
-  "no_car" : "There are no cars yet"
+  "no_car" : "There are no cars yet",
+  "call_us_to_book" : "Call us to book",
+  "contact_list" : "Contact list",
+  "book_on_whatsapp" : "Book on whatsApp"
 
 
 }
