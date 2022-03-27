@@ -1,8 +1,9 @@
 import 'package:crc_version_1/app_localization.dart';
+import 'package:crc_version_1/controller/edit_person_controller.dart';
 import 'package:crc_version_1/controller/people_list_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:crc_version_1/view/edit_person.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -10,6 +11,7 @@ import 'package:lottie/lottie.dart';
 class PeopleList extends StatelessWidget {
 
   PeopleListController peopleListController = Get.put(PeopleListController());
+  //EditPersonController editPersonController = Get.put(EditPersonController());
 
   @override
   Widget build(BuildContext context) {
@@ -110,126 +112,131 @@ class PeopleList extends StatelessWidget {
                   return  Column(
                     children: [
                       const SizedBox(height: 20),
-                      Container(
-                        height:  MediaQuery.of(context).size.height * 0.3,
-                        width:  MediaQuery.of(context).size.width * 0.9,
-                        child: Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.2),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: Offset(0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(10)
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                          onTap: (){
-
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.all(8),
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.edit,size: 20,color: Colors.black,),
-                                                SizedBox(width: 2),
-                                                Text('Edit',style: TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold),),
-                                              ],
-                                            ),
-                                          )
-                                      ),
-                                      GestureDetector(
-                                          onTap: (){
-                                            peopleListController.deletePersonFromTheList(index);
-                                          },
-                                          child: Container(
-                                            color: Colors.transparent,
-                                            padding: EdgeInsets.all(8),
-                                            child: Row(
-                                              children: [
-                                                Icon(Icons.delete,size: 20,color: Colors.black,),
-                                                SizedBox(width: 2),
-                                                Text('Delete',style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                                              ],
-                                            ),
-                                          )
+                      Obx((){
+                        return Container(
+                          height:  MediaQuery.of(context).size.height * 0.3,
+                          width:  MediaQuery.of(context).size.width * 0.9,
+                          child: Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.06),
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).dividerColor,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey.withOpacity(0.2),
+                                        spreadRadius: 1,
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 3), // changes position of shadow
                                       ),
                                     ],
-                                  ),
-                                  Text(peopleListController.myPeopleList[index].name,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 8),
-                                  Text(peopleListController.myPeopleList[index].languages,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 28,
-                                        height: 28,
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).primaryColor,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(Icons.phone,size: 20,color: Colors.white),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Text(peopleListController.myPeopleList[index].phone,style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                                    ],
-                                  ),
-                                  Divider(thickness: 1,height: 20,indent: 10,endIndent: 10,color: Colors.black.withOpacity(0.2),),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width * 0.9,
-                                    child: Row(
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Text(App_Localization.of(context).translate('hid_or_show'),style:  TextStyle(color: Colors.black,fontSize: 15, fontWeight: FontWeight.bold)),
-                                        Container(
-                                          height: 0,
-                                          width: MediaQuery.of(context).size.width * 0.1,
-                                          child:  Switch(
-                                            activeColor: Theme.of(context).primaryColor,
-                                            value: false,// myCarListController.myCarList[index].avilable,
-                                            onChanged: (bool value) {
-                                              //myCarListController.changeAvailability(index);
+                                        GestureDetector(
+                                            onTap: (){
+                                              peopleListController.currentIndex = index.obs;
+                                              //editPersonController.personIndex = index.obs;
+                                              Get.to(()=>EditPerson());
                                             },
-                                          ),
-                                        )
+                                            child: Container(
+                                              padding: EdgeInsets.all(10),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.edit,size: 20,color: Theme.of(context).backgroundColor,),
+                                                  const SizedBox(width: 2),
+                                                  Text('Edit',style: TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold),),
+                                                ],
+                                              ),
+                                            )
+                                        ),
+                                        GestureDetector(
+                                            onTap: (){
+                                              peopleListController.deletePersonFromTheList(index);
+                                            },
+                                            child: Container(
+                                              color: Colors.transparent,
+                                              padding: EdgeInsets.all(8),
+                                              child: Row(
+                                                children: [
+                                                  Icon(Icons.delete,size: 20,color: Theme.of(context).backgroundColor),
+                                                  SizedBox(width: 2),
+                                                  Text('Delete',style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
+                                                ],
+                                              ),
+                                            )
+                                        ),
                                       ],
                                     ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                ],
+                                    Text(peopleListController.myPeopleList[index].name,style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
+                                    const SizedBox(height: 8),
+                                    Text(peopleListController.myPeopleList[index].languages,style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 28,
+                                          height: 28,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).primaryColor,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: const Icon(Icons.phone,size: 20,color: Colors.white),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(peopleListController.myPeopleList[index].phone,style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
+                                    Divider(thickness: 1,height: 20,indent: 10,endIndent: 10,color: Colors.black.withOpacity(0.2),),
+                                    Container(
+                                      width: MediaQuery.of(context).size.width * 0.85,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Text(App_Localization.of(context).translate('hid_or_show'),style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
+                                          Container(
+                                            height: 30,
+                                            width: MediaQuery.of(context).size.width * 0.1,
+                                            child:  Switch(
+                                              activeColor: Theme.of(context).primaryColor,
+                                              value: peopleListController.myPeopleList[index].availableSwitch.value,
+                                              onChanged: (bool value) {
+                                                peopleListController.changeAvailability(index);
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.2,
-                              height: MediaQuery.of(context).size.width * 0.2,
-                              decoration: BoxDecoration(
-                                  color: Colors.amber,
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(Api.url + 'uploads/' + peopleListController.myPeopleList[index].image),
-                                  )
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.2,
+                                height: MediaQuery.of(context).size.width * 0.2,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Theme.of(context).dividerColor,
+                                    border: Border.all(width: 1,color:Theme.of(context).dividerColor.withOpacity(0.3)),
+                                    image: DecorationImage(
+                                      fit: BoxFit.fill,
+                                      image: NetworkImage(Api.url + 'uploads/' + peopleListController.myPeopleList[index].image),
+                                    )
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
+                            ],
+                          ),
+                        );
+                      }),
                     ],
                   );
                 },

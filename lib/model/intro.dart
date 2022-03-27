@@ -60,6 +60,7 @@ class Models {
   late final int id;
   late final String title;
   late final int brandId;
+  var selected = false.obs;
 
   Models.fromJson(Map<String, dynamic> json){
     id = json['id'];

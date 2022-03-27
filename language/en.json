@@ -49,5 +49,7 @@
   "no_car" : "There are no cars yet",
   "call_us_to_book" : "Call us to book",
   "contact_list" : "Contact list",
-  "book_on_whatsapp" : "Book on whatsApp"
+  "book_on_whatsapp" : "Book on whatsApp",
+  "arabic" : "Arabic",
+  "english" : "English"
 }

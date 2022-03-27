@@ -1,4 +1,5 @@
 import 'package:crc_version_1/controller/intro_controller.dart';
+import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -25,7 +26,7 @@ class IntroView extends StatelessWidget {
             children: [
               _header(),
               _carImage(),
-             // _title(context),
+              _title(context),
             ],
           ),
         ),
@@ -39,7 +40,7 @@ class IntroView extends StatelessWidget {
         Expanded(
           flex: 1,
           child: Container(
-            child: Image.asset('assets/images/logo_light.png'),
+            child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png') : Image.asset('assets/images/logo_light.png'),
           ),
         ),
         Expanded(
@@ -58,21 +59,26 @@ class IntroView extends StatelessWidget {
     );
   }
   _title(context){
-    return Row(
-      children: [
-        Expanded(
-          flex: 1,
-          child: Container(
-            child: SvgPicture.asset('assets/images/arabic_title.svg'),
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.45,
+    child: Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: Image.asset('assets/images/english_title.png',fit: BoxFit.contain,),
+            ),
           ),
-        ),
-        Expanded(
-          flex: 1,
-          child: Container(
-            child: SvgPicture.asset('assets/images/arabic_title.svg'),
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.35,
+              child: Image.asset('assets/images/arabic_title.png'),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

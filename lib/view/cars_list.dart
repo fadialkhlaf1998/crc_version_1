@@ -183,9 +183,17 @@ class _CarsListState extends State<CarsList> {
   _body(context){
     return RefreshIndicator(
       onRefresh: ()async {
-        await carListController.getCarsList('%', '%', '%', '%', '999999999999', 'ASE');
+        await carListController.getCarsList(
+            carListController.yearFilter.value,
+            carListController.brandFilter.value,
+            carListController.modelFilter.value,
+            carListController.colorFilter.value,
+            carListController.priceFilter.value,
+          carListController.sortFilter.value
+        );
       },
       child: Container(
+        color: Colors.transparent,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
         child:carListController.loading.value
@@ -217,7 +225,6 @@ class _CarsListState extends State<CarsList> {
       ),
     );
   }
-
 
   _companyInfo(context, index){
     return Container(
@@ -282,9 +289,9 @@ class _CarsListState extends State<CarsList> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width* 0.9,
-                      height: MediaQuery.of(context).size.height * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.3,
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.4),
+                        color: Colors.white.withOpacity(0.7),
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),

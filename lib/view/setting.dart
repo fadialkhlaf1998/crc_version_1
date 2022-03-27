@@ -52,8 +52,8 @@ class Settings extends StatelessWidget {
       closeManually: false,
       activeIcon: Icons.close,
       icon: Icons.add,
-      overlayColor: Theme.of(context).dividerColor,
       backgroundColor: Theme.of(context).primaryColor,
+      overlayColor: Theme.of(context).backgroundColor.withOpacity(0.2),
       openCloseDial: settingController.isDialOpen,
       children: [
         SpeedDialChild(
@@ -113,7 +113,8 @@ class Settings extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: (){
-
+                    print('show');
+                    showAlertDialog(context);
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.22,
@@ -200,7 +201,32 @@ class Settings extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(App_Localization.of(context).translate('language'), style: Theme.of(context).textTheme.bodyText1,),
-              const Icon(Icons.arrow_forward_ios, size: 20),
+              DropdownButton(
+                hint: Text(
+                  Global.lang_code == 'en'
+                      ? App_Localization.of(context).translate('english')
+                      : App_Localization.of(context).translate('arabic'),
+                ),
+                value: settingController.languages[0][Global.lang_code],
+                style: TextStyle(color: Colors.red,fontSize: 17),
+                dropdownColor: Theme.of(context).backgroundColor,
+                icon: Icon(Icons.arrow_forward_ios, size: 20,color: Theme.of(context).dividerColor,),
+                items: settingController.languages.map((items) {
+                  return DropdownMenuItem(
+                    value: items["id"],
+                    child: Text(items["name"],style: Theme.of(context).textTheme.headline3),
+                  );
+                }).toList(),
+                onChanged: (newValue) {
+                  print(newValue);
+                  settingController.changeLanguage(context,newValue!.toString());
+                  if(newValue == "en"){
+                    settingController.currentLanguage.value = settingController.languages[0]["name"];
+                  }else{
+                    settingController.currentLanguage.value = settingController.languages[1]["name"];
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -273,8 +299,51 @@ class Settings extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).primaryColor,
         ),
-        child: Center(child: Text('Sign out', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold ,fontSize: 22))),
+        child: Center(child: Text(App_Localization.of(context).translate('sign_out'), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold ,fontSize: 22))),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+
+    Widget closeButton = TextButton(
+      child: Text("Close",style: Theme.of(context).textTheme.headline3,),
+      onPressed: () {
+        Get.back();
+      },
+    );
+
+    Widget editButton = TextButton(
+      child: Text("Edit",style: Theme.of(context).textTheme.headline3,),
+      onPressed: () {
+
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      backgroundColor: Theme.of(context).backgroundColor,
+      content: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.4))
+        ),
+        width: MediaQuery.of(context).size.width * 0.5,
+        height: MediaQuery.of(context).size.width * 0.5,
+        child: Image.network(Global.companyImage,fit: BoxFit.contain,),
+      ),
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+      actions: [
+        editButton,
+        closeButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

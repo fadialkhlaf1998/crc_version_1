@@ -3,6 +3,7 @@ import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
+import 'package:crc_version_1/model/intro.dart';
 import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ class AddCarController extends GetxController{
 
   RxInt currentStep = 0.obs;
   TextEditingController search = TextEditingController();
+  TextEditingController searchModel = TextEditingController();
   TextEditingController carPrice = TextEditingController();
   RxList<bool>? selectBrandIndex;
   RxList<bool>? selectModelIndex;
@@ -28,13 +30,18 @@ class AddCarController extends GetxController{
   final ImagePicker _picker = ImagePicker();
   RxList<File> imageList = <File>[].obs;
   RxBool loadingUpload = false.obs;
+  RxBool choosePhotoCheck = false.obs;
+
+  /// Search Lists
+  RxList<Brands> tempBrandsList = <Brands>[].obs;
+  RxList<Models> tempModelsList = <Models>[].obs;
 
   /// Variable to send to the server */
   String? yearModelSelect;
   String? colorSelect;
   String? emiratesSelect;
-  String? brand;
-  String? model;
+  RxString? brand;
+  RxString? model;
   int? brandId;
   int? modelId;
   double? companyId;
@@ -42,6 +49,7 @@ class AddCarController extends GetxController{
   @override
   void onInit() {
     super.onInit();
+    tempBrandsList.addAll(introController.brands);
     selectBrandIndex = List.filled(introController.brands.length, false).obs;
     selectBrandIndex![0] = true;
     selectYearIndex = List.filled(10, false).obs;
@@ -51,20 +59,30 @@ class AddCarController extends GetxController{
   }
 
   selectBrand(index){
-    for(int i = 0; i < selectBrandIndex!.length; i++){
-      selectBrandIndex![i] = false;
+    for(int i = 0; i < tempBrandsList.length; i++) {
+      tempBrandsList[i].selected.value = false;
     }
+    tempBrandsList[index].selected.value = true;
+    brand = tempBrandsList[index].title.obs;
     selectBrandIndex![index] = true;
-    brandIndex.value = index;
+    brandIndex.value = introController.brands.indexOf(tempBrandsList[index]);
   }
 
   selectModel(index){
-    for(int i = 0; i < selectModelIndex!.length; i++){
-      selectModelIndex![i] = false;
+    for(int i = 0; i < tempModelsList.length; i++) {
+      tempModelsList[i].selected.value = false;
     }
+    tempModelsList[index].selected.value = true;
+    modelIndex.value = introController.brands[brandIndex.value].models.indexOf(tempModelsList[index]);
+    model = introController.brands[brandIndex.value].models[modelIndex.value].title.obs;
     selectModelIndex![index] = true;
-    modelIndex.value = index;
-    //modelId.value = model
+    ////////
+    // for(int i = 0; i < selectModelIndex!.length; i++){
+    //   selectModelIndex![i] = false;
+    // }
+    // selectModelIndex![index] = true;
+    // modelIndex.value = index;
+    // //modelId.value = model
   }
 
   fillYearList(){
@@ -122,17 +140,27 @@ class AddCarController extends GetxController{
 
   forwardStep(context){
       if(currentStep.value == 0){
-        brand = introController.brands[brandIndex.value].title;
-        brandId = introController.brands[brandIndex.value].id;
-        selectModelIndex = List.filled(introController.brands[brandIndex.value].models.length, false).obs;
-        selectModelIndex![0] = true;
-        currentStep.value +=1;
+        if(brand == null){
+          App.info_msg(context, 'You should select brand');
+        }else{
+          brand!.value = introController.brands[brandIndex.value].title;
+          brandId = introController.brands[brandIndex.value].id;
+          selectModelIndex = List.filled(introController.brands[brandIndex.value].models.length, false).obs;
+          selectModelIndex![0] = true;
+          tempModelsList = introController.brands[brandIndex.value].models.obs;
+          currentStep.value +=1;
+        }
       }
       else if(currentStep.value == 1){
-        model = introController.brands[brandIndex.value].models[modelIndex.value].title;
-        modelId = introController.brands[brandIndex.value].models[modelIndex.value].id;
-        fillYearList();
-        currentStep.value +=1;
+        print(model);
+      if(model == null){
+          App.info_msg(context, 'You should select model');
+        }else{
+          model = introController.brands[brandIndex.value].models[modelIndex.value].title.obs;
+          modelId = introController.brands[brandIndex.value].models[modelIndex.value].id;
+          fillYearList();
+          currentStep.value +=1;
+        }
       }
       else if(currentStep.value == 2){
         if(yearModelSelect == null){
@@ -169,7 +197,7 @@ class AddCarController extends GetxController{
           /** Upload Information*/
           currentStep.value += 1;
           FocusManager.instance.primaryFocus?.unfocus();
-          Api.addCar(brand!,brandId.toString(), model!, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!);
+          Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!);
           loadingUpload.value = true;
           Future.delayed(Duration(milliseconds: 1500),(){
             loadingUpload.value = false;
@@ -185,6 +213,63 @@ class AddCarController extends GetxController{
     }else{
       currentStep.value -=1;
     }
+  }
+
+  filterSearchBrand(query) {
+    for (int i = 0; i < tempBrandsList.length; i++) {
+      tempBrandsList[i].selected.value = false;
+    }
+    List<Brands> dummySearchList = <Brands>[];
+    dummySearchList.addAll(introController.brands);
+    if (query.isNotEmpty) {
+      List<Brands> dummyListData = <Brands>[];
+      for (var brand in dummySearchList) {
+        if (brand.title.toLowerCase().contains(query)) {
+          dummyListData.add(brand);
+        }
+      }
+      tempBrandsList.clear();
+      tempBrandsList.addAll(dummyListData);
+      print(tempBrandsList.length);
+
+      return;
+    } else {
+      tempBrandsList.clear();
+      tempBrandsList.addAll(introController.brands);
+    }
+  }
+
+  filterModelSearch(query){
+    for (int i = 0; i < tempModelsList.length; i++) {
+      tempModelsList[i].selected.value = false;
+    }
+    List<Models> dummySearchList = <Models>[];
+    dummySearchList.addAll(introController.brands[brandIndex.value].models);
+    if (query.isNotEmpty) {
+      List<Models> dummyListData = <Models>[];
+      for (var model in dummySearchList) {
+        if (model.title.toLowerCase().contains(query)) {
+          dummyListData.add(model);
+        }
+      }
+      tempModelsList.clear();
+      tempModelsList.addAll(dummyListData);
+      print(tempBrandsList.length);
+
+      return;
+    } else {
+      tempModelsList.clear();
+      tempModelsList.addAll(introController.brands[brandIndex.value].models);
+    }
+  }
+
+  chooseOption(){
+    choosePhotoCheck.value = !choosePhotoCheck.value;
+  }
+
+  selectPhotosFromCamera()async{
+    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+    imageList.add(File(photo!.path));
   }
 
 }

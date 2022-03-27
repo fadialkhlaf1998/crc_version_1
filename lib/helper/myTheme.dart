@@ -20,7 +20,7 @@ class MyTheme with ChangeNotifier {
         primarySwatch: generateMaterialColor( Color(0XFFFD6001)),
         fontFamily: "OpenSans",
         primaryColor: Color(0XFFFD6001),
-        dividerColor: Colors.black,
+        dividerColor: Color(0XFF202428),
         iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,

@@ -26,12 +26,12 @@
   "year" : "Year",
   "car_list" : "Car list",
   "people_list" : "People list",
-  "language": "Language",
+  "language": "اللغة",
   "connect_to_us" : "Connect to us",
   "about" : "About",
   "light_mode" : "Light mode",
-  "dark_mode" : "Dark Mode",
-  "sign_out" : "Sign out",
+  "dark_mode" : "الوضع الليلي",
+  "sign_out" : "تسجيل خروج",
   "add_photo" : "Add Photo",
   "mobile_number" : "Mobile number",
   "enter_your_mobile_number" : "Enter your mobile number",
@@ -49,7 +49,9 @@
   "no_car" : "There are no cars yet",
   "call_us_to_book" : "Call us to book",
   "contact_list" : "Contact list",
-  "book_on_whatsapp" : "Book on whatsApp"
+  "book_on_whatsapp" : "Book on whatsApp",
+  "arabic" : "العربية",
+  "english" : "English"
 
 
 }

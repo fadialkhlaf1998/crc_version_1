@@ -2,14 +2,15 @@
 
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
-import 'package:crc_version_1/model/person.dart';
+import 'package:crc_version_1/model/person_for_company.dart';
 import 'package:get/get.dart';
 
 class PeopleListController extends GetxController{
 
-  RxList<Person> myPeopleList = <Person>[].obs;
+  RxList<PersonForCompany> myPeopleList = <PersonForCompany>[].obs;
   int companyId = -1;
   RxBool loading = false.obs;
+  RxInt? currentIndex ;
 
   @override
   void onInit() {
@@ -52,6 +53,23 @@ class PeopleListController extends GetxController{
         loading.value = false;
       }
     });
+  }
+
+  changeAvailability(index){
+    print('1234567');
+    int personId = myPeopleList[index].id;
+    if(myPeopleList[index].availableSwitch.value == true){
+      myPeopleList[index].availableSwitch.value = false;
+      Api.changePersonAvailability(0, Global.company_id ,personId).then((value){
+        if(value){
+          print('Success');
+        }
+      });
+    }else if(myPeopleList[index].availableSwitch.value == false){
+      myPeopleList[index].availableSwitch.value = true;
+      Api.changePersonAvailability(1, Global.company_id ,personId);
+    }
+
   }
 
 }

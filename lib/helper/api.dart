@@ -5,8 +5,8 @@ import 'package:crc_version_1/model/car.dart';
 import 'package:crc_version_1/model/company.dart';
 import 'package:crc_version_1/model/intro.dart';
 import 'package:crc_version_1/model/my_car.dart';
-import 'package:crc_version_1/model/person.dart';
 import 'package:crc_version_1/model/person_for_company.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -67,29 +67,6 @@ class Api {
     }
     else {
       return Company(id: -1, username: '', password: '', profileImage: '', coverImage: '', title: '');
-    }
-  }
-
-  static Future<bool> update_person(int avilable , int company_id , int id)async{
-    var headers = {
-      'Content-Type': 'application/json',
-    };
-    var request = http.Request('POST', Uri.parse(url+'api/contact_person_avilable'));
-    request.body = json.encode({
-      "avilable": avilable,
-      "id": id,
-      "company_id": company_id,
-    });
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      var jsondata = await response.stream.bytesToString();
-      return true;
-    }
-    else {
-      return false;
     }
   }
 
@@ -205,13 +182,13 @@ class Api {
     }
   }
 
-  static Future <List<Person>> getPeopleList(int companyId)async{
+  static Future <List<PersonForCompany>> getPeopleList(int companyId)async{
     var headers = {
       'Content-Type': 'application/json',
     };
-    var request = http.Request('POST', Uri.parse(url + 'api/contact_person_for_company'));
+    var request = http.Request('POST', Uri.parse(url + 'api/contact_person_for_company_without_availbilty'));
     request.body = json.encode({
-      "company_id": companyId
+      "company_id": companyId.toString()
     });
     request.headers.addAll(headers);
 
@@ -220,14 +197,14 @@ class Api {
     if (response.statusCode == 200) {
       String jsondata = await response.stream.bytesToString();
       var list = jsonDecode(jsondata) as List;
-      List<Person> personsList = <Person>[];
+      List<PersonForCompany> personsList = <PersonForCompany>[];
       for(var c in list){
-        personsList.add(Person.fromMap(c));
+        personsList.add(PersonForCompany.fromMap(c));
       }
       return personsList;
     }
     else {
-      return <Person>[];
+      return <PersonForCompany>[];
     }
 
   }
@@ -391,15 +368,74 @@ class Api {
 
   static Future<File> _fileFromImageUrl(String path) async {
     final response = await http.get(Uri.parse(path));
-
     final documentDirectory = await getApplicationDocumentsDirectory();
-
     final file = File(join(documentDirectory.path, DateTime.now().millisecondsSinceEpoch.toString()+'.png'));
-
     file.writeAsBytesSync(response.bodyBytes);
-
     return file;
   }
 
+  static Future changePersonAvailability(int available , int companyId , int id) async{
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url+'api/contact_person_avilable'));
+    request.body = json.encode({
+      "avilable": available,
+      "id": id,
+      "company_id": companyId,
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var jsondata = await response.stream.bytesToString();
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  static Future updatePersonInformation(String name, String phone,String languages, String companyId,String id,File personImage,checkImageStatus)async{
+
+    var request = http.MultipartRequest('PUT', Uri.parse(url + 'api/contact_person'));
+    request.fields.addAll({
+      'name': name,
+      'phone': phone,
+      'languages': languages,
+      'company_id': companyId,
+      'id': id
+    });
+
+    if(checkImageStatus == 1){
+      print('-------------- \nUpload image from gallery \n-------------');
+      request.files.add(await http.MultipartFile.fromPath('file', personImage.path));
+    }else if (checkImageStatus == 2){
+      print('-------------- \nUpload image from assets / No photo /  \n-------------');
+      final byteData = await rootBundle.load(personImage.path);
+      final file = File('${(await getTemporaryDirectory()).path}/profile_picture.png');
+      await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+      request.files.add(await http.MultipartFile.fromPath('file', file.path));
+    }else{
+      print('-------------- \n the same photo / no change happen/ \n-------------');
+      print(url + "uploads/" + personImage.path);
+      File f = await _fileFromImageUrl(url + "uploads/" + personImage.path);
+      request.files.add(await http.MultipartFile.fromPath('files', f.path));
+    }
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Successfully update');
+      return true;
+    }
+    else {
+      print(response.reasonPhrase);
+      print('Failed');
+      return false;
+    }
+
+  }
 
 }

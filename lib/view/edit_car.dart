@@ -27,7 +27,6 @@ class EditCar extends StatelessWidget {
               ? SingleChildScrollView(
                 child: Container(
                     padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.09,bottom: MediaQuery.of(context).size.height * 0.13),
-                    //height: MediaQuery.of(context).size.height - MediaQuery.of(context).size.height * 0.09,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

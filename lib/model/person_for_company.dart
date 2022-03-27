@@ -1,8 +1,8 @@
-
 // To parse this JSON data, do
 //
 //     final personForCompany = personForCompanyFromMap(jsonString);
 
+import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -14,7 +14,14 @@ class PersonForCompany {
     required this.image,
     required this.languages,
     required this.companyId,
-  });
+    required this.avilable,
+  }){
+    if(avilable == 1){
+      availableSwitch = true.obs;
+    }else{
+      availableSwitch = false.obs;
+    }
+  }
 
   int id;
   String name;
@@ -22,6 +29,8 @@ class PersonForCompany {
   String image;
   String languages;
   int companyId;
+  int avilable;
+  RxBool availableSwitch = false.obs;
 
   factory PersonForCompany.fromJson(String str) => PersonForCompany.fromMap(json.decode(str));
 
@@ -34,6 +43,7 @@ class PersonForCompany {
     image: json["image"],
     languages: json["languages"],
     companyId: json["company_id"],
+    avilable: json["avilable"] ,
   );
 
   Map<String, dynamic> toMap() => {
@@ -43,5 +53,6 @@ class PersonForCompany {
     "image": image,
     "languages": languages,
     "company_id": companyId,
+    "avilable": avilable,
   };
 }

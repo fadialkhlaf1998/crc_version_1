@@ -3,6 +3,7 @@ import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/add_car_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/app.dart';
+import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -212,43 +213,45 @@ class AddCar extends StatelessWidget {
                 : addCarController.currentStep.value == 5 ? _carImage(context)
                 : _carPrice(context)
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Theme.of(context).dividerColor.withOpacity(0.1),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: Offset(0, -1), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: Center(
-                child:   Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.6,
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(5)),
-                  child: TextButton(
-                    onPressed: () async {
-                      addCarController.forwardStep(context);
-                    },
-                    child: Text(
-                      addCarController.currentStep.value >= 6 ? App_Localization.of(context).translate('save') : App_Localization.of(context).translate('next') ,
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
+            MediaQuery.of(context).viewInsets.bottom == 0
+                ? Expanded(
+              flex: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).dividerColor.withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: Offset(0, -1), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child:  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: TextButton(
+                      onPressed: () async {
+                        addCarController.forwardStep(context);
+                      },
+                      child: Text(
+                        addCarController.currentStep.value >= 6 ? App_Localization.of(context).translate('save') : App_Localization.of(context).translate('next') ,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ),
+            )
+                : Text(''),
         ],
       ),
     );
@@ -265,6 +268,9 @@ class AddCar extends StatelessWidget {
               height: 40,
               width: MediaQuery.of(context).size.width * 0.9,
               child: TextField(
+                onChanged: (value){
+                  addCarController.filterSearchBrand(value);
+                },
                 controller: addCarController.search,
                 autofocus: false,
                 style:  TextStyle(color: Theme.of(context).dividerColor),
@@ -274,9 +280,8 @@ class AddCar extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(5),
                   hintStyle: TextStyle(color: Theme.of(context).dividerColor,fontSize: 14),
                   filled: true,
-                  border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.3)),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -293,8 +298,8 @@ class AddCar extends StatelessWidget {
             const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount:  introController.brands.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: addCarController.tempBrandsList.length,// introController.brands.length,
               itemBuilder: (context, index){
                 return Column(
                   children: [
@@ -315,13 +320,13 @@ class AddCar extends StatelessWidget {
                                   Container(
                                     width: 50,
                                     height: 50,
-                                    child:  Image.network(introController.brands[index].image),
+                                    child:  Image.network(addCarController.tempBrandsList[index].image),
                                   ),
                                   const SizedBox(width: 20),
-                                  Text(introController.brands[index].title,style: Theme.of(context).textTheme.bodyText1,),
+                                  Text(addCarController.tempBrandsList[index].title,style: Theme.of(context).textTheme.bodyText1,),
                                 ],
                               ),
-                              addCarController.selectBrandIndex![index] ? Icon(Icons.check,color: Theme.of(context).primaryColor,) : Text(''),
+                              addCarController.tempBrandsList[index].selected.value ? Icon(Icons.check,color: Theme.of(context).primaryColor,) : Text(''),
                             ],
                           ),
                         ),
@@ -349,7 +354,10 @@ class AddCar extends StatelessWidget {
               height: 40,
               width: MediaQuery.of(context).size.width * 0.9,
               child: TextField(
-                controller: addCarController.search,
+                onChanged: (value){
+                  addCarController.filterModelSearch(value);
+                },
+                controller: addCarController.searchModel,
                 autofocus: false,
                 style: TextStyle(color: Theme.of(context).dividerColor),
                 decoration: InputDecoration(
@@ -360,7 +368,7 @@ class AddCar extends StatelessWidget {
                   filled: true,
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
+                    borderSide: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.3)),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   focusedBorder: OutlineInputBorder(
@@ -377,8 +385,8 @@ class AddCar extends StatelessWidget {
             const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount:  introController.brands[addCarController.brandIndex.value].models.length,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount:  addCarController.tempModelsList.length,
               itemBuilder: (context, index){
                 return Column(
                   children: [
@@ -396,10 +404,10 @@ class AddCar extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Text(introController.brands[addCarController.brandIndex.value].models[index].title,style: Theme.of(context).textTheme.bodyText1,),
+                                  Text(addCarController.tempModelsList[index].title,style: Theme.of(context).textTheme.bodyText1,),
                                 ],
                               ),
-                              addCarController.selectModelIndex![index] ? Icon(Icons.check,color: Theme.of(context).primaryColor,) : Text(''),
+                              addCarController.tempModelsList[index].selected.value ? Icon(Icons.check,color: Theme.of(context).primaryColor,) : Text(''),
                             ],
                           ),
                         ),
@@ -471,39 +479,9 @@ class AddCar extends StatelessWidget {
         child: Column(
           children: [
             const SizedBox(height: 20,),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TextField(
-                style: TextStyle(color: Theme.of(context).dividerColor),
-                controller: addCarController.search,
-                autofocus: false,
-                decoration: InputDecoration(
-                  hintText: 'search',
-                  prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor,),
-                  contentPadding: EdgeInsets.all(5),
-                  hintStyle: TextStyle(fontSize: 14,color: Theme.of(context).dividerColor),
-                  filled: true,
-                  border: InputBorder.none,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  focusColor: Colors.grey.withOpacity(0.5),
-                  hoverColor: Colors.grey.withOpacity(0.5),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount:  introController.colors.length,
               itemBuilder: (context, index){
                 return Column(
@@ -661,20 +639,78 @@ class AddCar extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: () async{
-                  if(addCarController.imageList.length == 10){
-                    App.info_msg(context, 'You can upload just 10 photos');
-                  }else{
-                    addCarController.selectImage(context);
-                  }
+                  addCarController.chooseOption();
                 },
                 child: Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusDirectional.circular(10),
-                    color: Theme.of(context).primaryColor,
+                  width: 180,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      AnimatedContainer(
+                        duration: Duration(milliseconds: 350),
+                          width:  50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: addCarController.choosePhotoCheck.value
+                                ? BorderRadiusDirectional.circular(0)
+                            :  BorderRadiusDirectional.circular(10),
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          child:  AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 500),
+                            child: addCarController.choosePhotoCheck.value ?  Icon(Icons.close, color: Colors.white,) : Icon(Icons.add, color: Colors.white,),
+                          )
+                      ),
+                      AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 350),
+                        child: addCarController.choosePhotoCheck.value
+                            ?  Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: (){
+                                    addCarController.selectPhotosFromCamera();
+                                  },
+                                  child: Container(
+                                    width:  60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(25),
+                                          topLeft: Radius.circular(25)
+                                      ),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    child:const Icon(Icons.camera, color: Colors.white,),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: (){
+                                    if(addCarController.imageList.length == 10){
+                                      App.info_msg(context, 'You can upload just 10 photos');
+                                    }else{
+                                      addCarController.selectImage(context);
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(25),
+                                          topRight: Radius.circular(25)
+                                      ),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    child:  Icon(Icons.photo, color: Colors.white,),
+                                  ),
+                                ),
+                              ],
+                        )
+                            : Text(''),
+                      ),
+                    ],
                   ),
-                  child:  Icon(Icons.add, color: Colors.white,),
                 )
             ),
           ],
@@ -735,5 +771,69 @@ class AddCar extends StatelessWidget {
       child: Lottie.asset('assets/images/data.json'),
     );
   }
+
+  _choosePhotoOption(){
+
+  }
+
+  showAlertDialog(BuildContext context) {
+
+    Widget closeButton = TextButton(
+      child: Text("Close",style: Theme.of(context).textTheme.headline3,),
+      onPressed: () {
+        Get.back();
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      insetPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      backgroundColor: Theme.of(context).backgroundColor,
+      shape: const RoundedRectangleBorder(
+          borderRadius:
+          BorderRadius.all(
+              Radius.circular(10.0))),
+      content: Builder(
+        builder: (context) {
+          return Container(
+            height: 70,
+            width: 100,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: (){
+
+                    },
+                    icon: Icon(Icons.camera,size: 50,),
+                  ),
+                  SizedBox(width: 50,),
+                  IconButton(
+                    onPressed: (){
+
+                    },
+                    icon: Icon(Icons.photo,size: 50,),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      actions: [
+        closeButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
 
 }

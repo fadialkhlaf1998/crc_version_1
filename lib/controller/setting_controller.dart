@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/helper/global.dart';
@@ -17,8 +16,29 @@ class SettingController extends GetxController{
   Rx<MyTheme> myTheme = MyTheme().obs;
   final isDialOpen = ValueNotifier(false);
   final ImagePicker _picker = ImagePicker();
+  var currentLanguage = 'English'.obs;
 
 
+  @override
+  void onInit() {
+    super.onInit();
+    if(Global.lang_code == "en"){
+      currentLanguage.value = 'English';
+    }else{
+      currentLanguage.value = 'العربية';
+    }
+  }
+
+  List languages = [
+    {
+      "name" : "English",
+      "id" : "en"
+    },
+    {
+      "name" : "Arabic",
+      "id" : "ar"
+    }
+  ];
 
   changeMode(BuildContext context){
     myTheme.value.toggleTheme();
@@ -39,6 +59,13 @@ class SettingController extends GetxController{
     _picker.pickImage(source: ImageSource.gallery).then((value){
       /// Edit Image
     });
+  }
+
+  changeLanguage(BuildContext context, String language){
+    MyApp.set_local(context,Locale(language));
+    Get.updateLocale(Locale(language));
+    Global.save_language(language);
+    Global.load_language();
   }
 
 }

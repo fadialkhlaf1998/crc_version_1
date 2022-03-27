@@ -4,15 +4,26 @@ import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:new_version/new_version.dart';
 
 
 class Home extends StatelessWidget {
 
   HomeController homeController = Get.put(HomeController());
-  TextEditingController editingController = TextEditingController();
+
+  // _checkVersion(BuildContext context)async{
+  //   //todo change IDS
+  //   final newVersion = NewVersion(
+  //     iOSId: "com.Maxart.ZyoAe",
+  //     androidId: 'com.maxart.crc_version_1',
+  //   );
+  //   final state = await newVersion.getVersionStatus();
+  //   newVersion.showUpdateDialog(context: context, versionStatus: state!);
+  // }
 
   @override
   Widget build(BuildContext context) {
+   // _checkVersion(context);
     return Obx((){
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
@@ -52,8 +63,7 @@ class Home extends StatelessWidget {
               width: 50,
               child: GestureDetector(
                 onTap: (){
-                  homeController.modelOption.value = false;
-                  editingController.text = '';
+                  homeController.goToBrandMenu();
                 },
                 child: Icon(Icons.arrow_back_ios, color: Theme.of(context).dividerColor,),
               ),
@@ -83,7 +93,7 @@ class Home extends StatelessWidget {
                   App.info_msg(context, 'You must choose the brand of car');
                 }else{
                   homeController.modelOption.value = true;
-                  editingController.text = '';
+                 homeController.editingController.text = '';
                 }
               },
               child: Text(App_Localization.of(context).translate('next'), style: Theme.of(context).textTheme.headline2),
@@ -102,7 +112,7 @@ class Home extends StatelessWidget {
         onChanged: (value){
           homeController.filterSearchResults(value);
         },
-        controller: editingController,
+        controller: homeController.editingController,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.only(bottom: 0),
             labelText: "Search",
@@ -165,8 +175,6 @@ class Home extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: (){
-                      homeController.brandName.value= "%";
-                      homeController.modelName.value= "%";
                       homeController.getAll();
                     },
                     child: Container(

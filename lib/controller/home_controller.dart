@@ -2,12 +2,15 @@ import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/model/intro.dart';
 import 'package:crc_version_1/view/cars_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController{
 
   IntroController introController = Get.find();
   CarListController carListController = Get.put(CarListController());
+  TextEditingController editingController = TextEditingController();
+
 
 
   RxList<Brands> brands = <Brands>[].obs;
@@ -28,9 +31,9 @@ class HomeController extends GetxController{
     get_data();
   }
   get_data(){
+
     brands=introController.brands.obs;
     tempBrandsList.addAll(brands);
-
     colors=introController.colors.obs;
   }
 
@@ -45,11 +48,18 @@ class HomeController extends GetxController{
   }
 
   getAll(){
-    print('========');
-    carListController.brand = brandName;
-    carListController.model = modelName;
-    print('========');
+    brandName.value= "%";
+    modelName.value= "%";
+    tempBrandsList[brandIndex.value].selected.value = false;
+    // carListController.brand = brandName;
+    // carListController.model = modelName;
     Get.to(()=>CarsList());
+  }
+
+  goToBrandMenu(){
+    modelOption.value = false;
+    tempBrandsList[brandIndex.value].selected.value = false;
+    editingController.text = '';
   }
 
   chooseModel(index){
