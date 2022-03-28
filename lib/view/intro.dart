@@ -11,24 +11,22 @@ class IntroView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          // decoration: BoxDecoration(
-          //   image: DecorationImage(
-          //     fit: BoxFit.cover,
-          //     image: AssetImage('assets/images/background2_light.png')
-          //   )
-          // ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _header(),
-              _carImage(),
-              _title(context),
-            ],
-          ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        // decoration: BoxDecoration(
+        //   image: DecorationImage(
+        //     fit: BoxFit.cover,
+        //     image: AssetImage('assets/images/background2_light.png')
+        //   )
+        // ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _header(),
+            _carImage(),
+            _title(context),
+          ],
         ),
       ),
     );
