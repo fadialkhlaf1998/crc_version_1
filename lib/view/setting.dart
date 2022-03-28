@@ -6,6 +6,7 @@ import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:crc_version_1/helper/store.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
+import 'package:crc_version_1/view/contact_to_us.dart';
 import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:crc_version_1/view/people_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -231,17 +232,24 @@ class Settings extends StatelessWidget {
           ),
         ),
         Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: 45,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(App_Localization.of(context).translate('connect_to_us'), style: Theme.of(context).textTheme.bodyText1,),
-              const Icon(Icons.arrow_forward_ios, size: 20),
-            ],
+        GestureDetector(
+          onTap: (){
+            Get.to(()=>ContactToUs());
+          },
+          child: Container(
+            color: Colors.transparent,
+            width: MediaQuery.of(context).size.width * 0.9,
+            height: 45,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(App_Localization.of(context).translate('connect_to_us'), style: Theme.of(context).textTheme.bodyText1,),
+                const Icon(Icons.arrow_forward_ios, size: 20),
+              ],
+            ),
           ),
         ),
+        /*
         Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
         Container(
           width: MediaQuery.of(context).size.width * 0.9,
@@ -254,6 +262,8 @@ class Settings extends StatelessWidget {
             ],
           ),
         ),
+         */
+
         Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
         Container(
           width: MediaQuery.of(context).size.width * 0.9,

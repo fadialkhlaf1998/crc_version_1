@@ -51,7 +51,8 @@ class AddCarController extends GetxController{
     super.onInit();
     tempBrandsList.addAll(introController.brands);
     selectBrandIndex = List.filled(introController.brands.length, false).obs;
-    selectBrandIndex![0] = true;
+    //selectBrandIndex![0] = true;
+
     selectYearIndex = List.filled(10, false).obs;
     selectColorIndex = List.filled(introController.colors.length, false).obs;
     selectEmiratesIndex = List.filled(emirates.length, false).obs;
@@ -119,12 +120,18 @@ class AddCarController extends GetxController{
 
   Future selectImage(context)async{
     _picker.pickMultiImage().then((value){
-      if(value!.length < 3){
-        App.info_msg(context, 'You must upload at least three photos');
-      }else if (value.length > 8){
+      if ((value!.length + imageList.length) > 8 && value.isNotEmpty){
         App.info_msg(context, 'You can\'t upload more than 8 photos');
-      }else if ((value.length + imageList.length) > 8){
+        int listLength = imageList.length;
+        for(int i = 0; i < (8 - listLength); i++){
+          print(i);
+          imageList.add(File(value[i].path));
+        }
+      } else if (value.length > 8){
         App.info_msg(context, 'You can\'t upload more than 8 photos');
+        for(int i = 0; i < 8; i++){
+          imageList.add(File(value[i].path));
+        }
       }else{
         for(int i=0;i<value.length;i++){
           imageList.add(File(value[i].path));

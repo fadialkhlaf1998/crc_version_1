@@ -61,7 +61,7 @@ class EditCarController extends GetxController{
    brandId = myCarListController.brandId;
    modelId = myCarListController.modelId;
    available = myCarListController.available;
-   editingController =  TextEditingController(text: price!.value);
+   editingController = TextEditingController(text: price!.value);
    location = myCarListController.location;
 
    for(int  i = 0; i < myCarListController.carImages.length; i++){
@@ -138,7 +138,7 @@ class EditCarController extends GetxController{
            location!.value,
            imageList,
            newImageList,
-           price!.value,
+           editingController!.text.toString(),
            Global.company_id.toDouble(),
            carId!.value,
            available!.value).then((value){
@@ -163,7 +163,7 @@ class EditCarController extends GetxController{
     }else{
       editLocationOpenList.value = false;
       editPriceOpenList.value = false;
-      Get.off(()=>MyCarList());
+      Get.back();
     }
   }
 

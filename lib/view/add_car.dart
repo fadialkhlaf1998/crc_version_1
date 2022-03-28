@@ -601,7 +601,7 @@ class AddCar extends StatelessWidget {
             const SizedBox(height: 20,),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: addCarController.imageList.length,
               itemBuilder: (context, int index){
                 return Column(
@@ -639,7 +639,7 @@ class AddCar extends StatelessWidget {
             ),
             GestureDetector(
                 onTap: () async{
-                  addCarController.chooseOption();
+                    addCarController.chooseOption();
                 },
                 child: Container(
                   width: 180,
@@ -669,7 +669,11 @@ class AddCar extends StatelessWidget {
                               children: [
                                 GestureDetector(
                                   onTap: (){
-                                    addCarController.selectPhotosFromCamera();
+                                    if(addCarController.imageList.length == 8){
+                                      App.info_msg(context, 'you can\'t upload than 8 photos');
+                                    }else {
+                                      addCarController.selectPhotosFromCamera();
+                                    }
                                   },
                                   child: Container(
                                     width:  60,
@@ -686,8 +690,8 @@ class AddCar extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: (){
-                                    if(addCarController.imageList.length == 10){
-                                      App.info_msg(context, 'You can upload just 10 photos');
+                                    if(addCarController.imageList.length == 8){
+                                      App.info_msg(context, 'You can upload just 8 photos');
                                     }else{
                                       addCarController.selectImage(context);
                                     }
@@ -712,7 +716,7 @@ class AddCar extends StatelessWidget {
                     ],
                   ),
                 )
-            ),
+            )
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/car_list_controller.dart';
+import 'package:crc_version_1/controller/home_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/view/add_car.dart';
@@ -16,6 +17,7 @@ class CarsList extends StatefulWidget {
 
   CarListController carListController = Get.find();
   IntroController introController = Get.find();
+  HomeController homeController = Get.find();
 
   @override
   State<CarsList> createState() => _CarsListState();
@@ -25,6 +27,8 @@ class _CarsListState extends State<CarsList> {
 
   CarListController carListController = Get.find();
   IntroController introController = Get.find();
+  HomeController homeController = Get.find();
+
 
   _CarsListState(){
     carListController.update_data();
@@ -84,6 +88,7 @@ class _CarsListState extends State<CarsList> {
               padding: const EdgeInsets.only(right: 5,left: 5),
               child: IconButton(
                 onPressed: (){
+                  homeController.
                   carListController.openContactList.value = false;
                   carListController.checkSortOpen.value = false;
                   carListController.checkFilterOpen.value = false;
@@ -208,7 +213,7 @@ class _CarsListState extends State<CarsList> {
           Container(
             color: Colors.transparent,
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.08),
             child:carListController.loading.value
                 ? Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
                 : carListController.myCars.isEmpty

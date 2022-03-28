@@ -50,6 +50,7 @@ dependencies:
   image_picker: ^0.8.4+8
   flutter_image_slideshow: ^0.1.2
   flutter_bounce: ^1.1.0
+  flutter_launcher_icons: ^0.9.2
 
 
 
@@ -58,6 +59,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/application_logo.jpg"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

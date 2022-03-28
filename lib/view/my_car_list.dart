@@ -24,10 +24,7 @@ class MyCarList extends StatelessWidget {
           child: Stack(
             alignment: Alignment.topCenter,
             children: [
-              AnimatedSwitcher(
-                duration: const Duration(milliseconds: 200),
-                child: _body(context),
-              ),
+              _body(context),
               // _filterInterface(context),
               // _sortInterface(context),
               _app_bar(context),
@@ -53,7 +50,7 @@ class MyCarList extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 height:  MediaQuery.of(context).size.height * 0.89,
                 child: Lottie.asset('assets/images/Animation.json')) :
-               myCarListController.myCarList.isEmpty
+               myCarListController.tempCarList.isEmpty
                    ? Container(
                 width: MediaQuery.of(context).size.width,
                 height:  MediaQuery.of(context).size.height * 0.7,
@@ -313,10 +310,10 @@ class MyCarList extends StatelessWidget {
         controller: editingController,
         decoration: InputDecoration(
             labelText: "Search",
-            labelStyle: TextStyle(color: Theme.of(context).primaryColor),
+            labelStyle: TextStyle(color: Theme.of(context).dividerColor),
             hintText: "Search",
             hintStyle: Theme.of(context).textTheme.bodyText2,
-            prefixIcon: Icon(Icons.search,color: Theme.of(context).primaryColor,),
+            prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor,),
             prefixIconColor: Theme.of(context).primaryColor,
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

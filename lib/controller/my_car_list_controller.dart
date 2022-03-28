@@ -49,7 +49,7 @@ class MyCarListController extends GetxController{
     super.onInit();
     companyId = Global.company_id;
     getCarList(companyId);
-    //tempCarList.addAll(myCarList);
+    tempCarList.addAll(myCarList);
   }
 
   getCarList(int companyId){

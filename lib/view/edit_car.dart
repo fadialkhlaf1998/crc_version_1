@@ -356,6 +356,10 @@ class EditCar extends StatelessWidget {
                         labelStyle: TextStyle(color: Theme.of(context).dividerColor),
                         suffixIcon: GestureDetector(
                           onTap: (){
+                            FocusScopeNode currentFocus = FocusScope.of(context);
+                            if (!currentFocus.hasPrimaryFocus) {
+                              currentFocus.unfocus();
+                            }
                             editCarController.getNewPrice();
                             },
                             child: Icon(Icons.check,color: Theme.of(context).primaryColor,)
