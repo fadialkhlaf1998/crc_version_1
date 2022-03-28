@@ -285,7 +285,6 @@ class CarListController extends GetxController{
       await launch(launchUri.toString());
 
     }else if (Platform.isIOS){
-      print(companyContactsList[index].phone);
       launch("tel://${companyContactsList[index].phone}");
     }
   }
