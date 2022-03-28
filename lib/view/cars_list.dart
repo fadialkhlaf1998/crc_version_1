@@ -33,22 +33,28 @@ class _CarsListState extends State<CarsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: _floatButton(context),
-      body:Obx((){
-        return  SafeArea(
-          child: Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              _body(context),
-              _background(context),
-              _filterInterface(context),
-              _sortInterface(context),
-              _appBar(context),
-            ],
-          ),
-        );
-      }),
+    return WillPopScope(
+      onWillPop: () async {
+        Get.back();
+        return carListController.openContactList.value = false;
+      },
+      child: Scaffold(
+        floatingActionButton: _floatButton(context),
+        body:Obx((){
+          return  SafeArea(
+            child: Stack(
+              alignment: Alignment.topCenter,
+              children: [
+                _body(context),
+                _background(context),
+                _filterInterface(context),
+                _sortInterface(context),
+                _appBar(context),
+              ],
+            ),
+          );
+        }),
+      ),
     );
   }
 
@@ -78,6 +84,7 @@ class _CarsListState extends State<CarsList> {
               padding: const EdgeInsets.only(right: 5,left: 5),
               child: IconButton(
                 onPressed: (){
+                  carListController.openContactList.value = false;
                   carListController.checkSortOpen.value = false;
                   carListController.checkFilterOpen.value = false;
                   Get.back();
@@ -87,6 +94,7 @@ class _CarsListState extends State<CarsList> {
           ),
           GestureDetector(
             onTap: (){
+              carListController.openContactList.value = false;
               carListController.openFiler();
             },
             child: Container(
@@ -121,6 +129,7 @@ class _CarsListState extends State<CarsList> {
           ),
           GestureDetector(
             onTap: (){
+              carListController.openContactList.value = false;
               carListController.openSort();
             },
             child: Container(
@@ -151,6 +160,7 @@ class _CarsListState extends State<CarsList> {
             padding: const EdgeInsets.only(right: 15,left: 15),
             child: IconButton(
               onPressed: (){
+                carListController.openContactList.value = false;
                 carListController.checkSortOpen.value = false;
                 carListController.checkFilterOpen.value = false;
                 Get.to(()=>Settings());
