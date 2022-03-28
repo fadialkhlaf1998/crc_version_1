@@ -217,7 +217,7 @@ class _CarsListState extends State<CarsList> {
                       ],
                     ),
                   ),
-                  Divider(thickness: 1, indent: 30,endIndent: 30,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
+                  Divider(thickness: 1, indent: 20,endIndent: 20,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
                 ],
               );
             }
@@ -358,7 +358,7 @@ class _CarsListState extends State<CarsList> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Icon(Icons.whatsapp,color: Colors.white,),
-                    const SizedBox(width: 10,),
+                    const SizedBox(width: 5,),
                     Text(App_Localization.of(context).translate('book_on_whatsapp'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
                   ],
                 ),
@@ -388,7 +388,7 @@ class _CarsListState extends State<CarsList> {
                  crossAxisAlignment: CrossAxisAlignment.center,
                  children: [
                    const Icon(Icons.phone,color: Colors.white,),
-                   const SizedBox(width: 10,),
+                   const SizedBox(width: 5),
                    Text(App_Localization.of(context).translate('call_us_to_book'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
                  ],
                ),

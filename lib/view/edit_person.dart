@@ -544,6 +544,7 @@ class EditPerson extends StatelessWidget {
       },
     );
     AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.zero,
       backgroundColor: Theme.of(context).backgroundColor,
       content: editPersonController.checkImageChange.value == 2
           ? Obx((){
@@ -592,7 +593,6 @@ class EditPerson extends StatelessWidget {
         closeButton,
       ],
     );
-
     showDialog(
       context: context,
       builder: (BuildContext context) {

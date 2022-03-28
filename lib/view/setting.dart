@@ -321,6 +321,7 @@ class Settings extends StatelessWidget {
     );
 
     AlertDialog alert = AlertDialog(
+      contentPadding: EdgeInsets.zero,
       backgroundColor: Theme.of(context).backgroundColor,
       content: Container(
         padding: const EdgeInsets.all(10),

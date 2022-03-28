@@ -114,7 +114,7 @@ class PeopleList extends StatelessWidget {
                       const SizedBox(height: 20),
                       Obx((){
                         return Container(
-                          height:  MediaQuery.of(context).size.height * 0.3,
+                          height:  MediaQuery.of(context).size.height * 0.32,
                           width:  MediaQuery.of(context).size.width * 0.9,
                           child: Stack(
                             alignment: Alignment.topCenter,
@@ -194,7 +194,7 @@ class PeopleList extends StatelessWidget {
                                         Text(peopleListController.myPeopleList[index].phone,style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
                                       ],
                                     ),
-                                    Divider(thickness: 1,height: 20,indent: 10,endIndent: 10,color: Colors.black.withOpacity(0.2),),
+                                    Divider(thickness: 1,height: 20,indent: 10,endIndent: 10,color: Theme.of(context).backgroundColor.withOpacity(0.2),),
                                     Container(
                                       width: MediaQuery.of(context).size.width * 0.85,
                                       child: Row(
