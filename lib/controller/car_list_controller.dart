@@ -277,12 +277,16 @@ class CarListController extends GetxController{
   }
 
   bookOnPhone(index)async{
+    if(Platform.isAndroid){
       final Uri launchUri = Uri(
         scheme: 'tel',
         path: companyContactsList[index].phone,
       );
       await launch(launchUri.toString());
 
+    }else if (Platform.isIOS){
+      launch("tel://${companyContactsList[index].phone}");
+    }
   }
 
   // openBookList(index,id){
