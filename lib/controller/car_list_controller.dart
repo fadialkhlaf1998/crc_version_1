@@ -261,14 +261,18 @@ class CarListController extends GetxController{
   }
 
   bookOnWhatsapp(context, index)async{
-    if(await canLaunch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse('Hi')}")){
-      if (Platform.isAndroid) {
+    if (Platform.isAndroid){
+      if(await canLaunch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse('Hi')}")){
         await launch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse('Hi')}");
-      } else {
-        return "https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}";
+      }else{
+        App.error_msg(context, 'can\'t open Whatsapp');
       }
-    }else{
-      App.error_msg(context, 'can\'t open Whatsapp');
+    }else if(Platform.isIOS){
+      if(await canLaunch("https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}")){
+        return "https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}";
+      }else{
+        App.error_msg(context, 'can\'t open Whatsapp');
+      }
     }
   }
 
