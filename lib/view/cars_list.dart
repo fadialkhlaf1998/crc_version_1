@@ -357,7 +357,10 @@ class _CarsListState extends State<CarsList> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.whatsapp,color: Colors.white,),
+                    Container(
+                      width: 25,
+                      child: Image.asset('assets/images/whatsapp.png'),
+                    ),
                     const SizedBox(width: 5,),
                     Text(App_Localization.of(context).translate('book_on_whatsapp'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
                   ],
