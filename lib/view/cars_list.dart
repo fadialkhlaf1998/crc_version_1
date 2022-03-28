@@ -192,36 +192,42 @@ class _CarsListState extends State<CarsList> {
           carListController.sortFilter.value
         );
       },
-      child: Container(
-        color: Colors.transparent,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
-        child:carListController.loading.value
-            ? Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
-            : carListController.myCars.isEmpty
-            ? Center(child: Text(App_Localization.of(context).translate('no_car')))
-            : ListView.builder(
-            itemCount: carListController.myCars.length,
-            itemBuilder:(context, index){
-              return  Column(
-                children: [
-                  Container(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        _companyInfo(context, index),
-                        const SizedBox(height: 10),
-                        _carInfo(context,index),
-                        const SizedBox(height: 10),
-                        _contactOptions(context,index),
-                      ],
-                    ),
-                  ),
-                  Divider(thickness: 1, indent: 20,endIndent: 20,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
-                ],
-              );
-            }
-        ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            color: Colors.transparent,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.07),
+            child:carListController.loading.value
+                ? Center(child: Container(child: Lottie.asset('assets/images/Animation.json')))
+                : carListController.myCars.isEmpty
+                ? Center(child: Text(App_Localization.of(context).translate('no_car')))
+                : ListView.builder(
+                itemCount: carListController.myCars.length,
+                itemBuilder:(context, index){
+                  return  Column(
+                    children: [
+                      Container(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            _companyInfo(context, index),
+                            const SizedBox(height: 10),
+                            _carInfo(context,index),
+                            const SizedBox(height: 10),
+                            _contactOptions(context,index),
+                          ],
+                        ),
+                      ),
+                      Divider(thickness: 1, indent: 20,endIndent: 20,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
+                    ],
+                  );
+                }
+            ),
+          ),
+          _showContactsList(context),
+        ],
       ),
     );
   }
@@ -344,7 +350,7 @@ class _CarsListState extends State<CarsList> {
                 if(carListController.myCars[index].avilable == 1){
                   carListController.getContactData(carListController.myCars[index].companyId);
                   carListController.bookOnWhatsappCheck = true.obs;
-                  _contactsMenu(index);
+                  //_contactsMenu(index);
                 }
               },
               child: Container(
@@ -1072,6 +1078,74 @@ class _CarsListState extends State<CarsList> {
           }),
         );
       }
+    );
+  }
+
+  _showContactsList(context){
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      color: Color(0XFF202428).withOpacity(0.5),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SingleChildScrollView(
+            child: Container(
+              color: Colors.amber,
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 2,
+                itemBuilder: (context, index){
+                  return Container(
+                    padding: EdgeInsets.only(bottom: 25),
+                    child: Stack(
+                      alignment: Alignment.centerLeft,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(width:  MediaQuery.of(context).size.width * 0.05),
+                            Container(
+                              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.17),
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(25)
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(carListController.companyContactsList[index].name),
+                                  Text(carListController.companyContactsList[index].languages)
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
+                                fit: BoxFit.cover
+                            )
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.2,
+                          height: 85,
+                        ),
+                      ],
+                    )
+                  );
+                },
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

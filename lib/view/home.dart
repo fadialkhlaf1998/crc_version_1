@@ -114,17 +114,24 @@ class Home extends StatelessWidget {
         },
         controller: homeController.editingController,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(bottom: 0),
+          contentPadding: const EdgeInsets.only(bottom: 0),
             labelText: "Search",
             labelStyle: TextStyle(color: Theme.of(context).dividerColor,fontSize: 14),
             prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor,),
             prefixIconColor: Theme.of(context).primaryColor,
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.5)),
+              borderSide: BorderSide(width: 1,color: Theme.of(context).primaryColor),
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),)),
+              borderSide: BorderSide(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.5)),
+              borderRadius: BorderRadius.circular(10),),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Theme.of(context).dividerColor.withOpacity(0.3)),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+
       ),
     );
   }
