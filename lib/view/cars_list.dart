@@ -1108,7 +1108,7 @@ class _CarsListState extends State<CarsList> {
                             SizedBox(width:  MediaQuery.of(context).size.width * 0.05),
                             Container(
                               padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.17),
-                              width: MediaQuery.of(context).size.width * 0.5,
+                              width: MediaQuery.of(context).size.width * 0.55,
                               height: 70,
                               decoration: BoxDecoration(
                                 color: Colors.red,
