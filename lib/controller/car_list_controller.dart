@@ -269,7 +269,7 @@ class CarListController extends GetxController{
       }
     }else if(Platform.isIOS){
       if(await canLaunch("https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}")){
-        return "https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}";
+        await launch( "https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}");
       }else{
         App.error_msg(context, 'can\'t open Whatsapp');
       }
