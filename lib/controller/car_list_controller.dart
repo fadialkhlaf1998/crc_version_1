@@ -52,6 +52,7 @@ class CarListController extends GetxController{
   RxBool loadingContact = false.obs;
   final isDialOpen = ValueNotifier(false);
   RxBool? bookOnWhatsappCheck;
+  RxBool openContactList = false.obs;
 
   @override
   void onInit() {
