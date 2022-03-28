@@ -58,14 +58,14 @@ class MyCarListController extends GetxController{
     loading.value = true;
       Api.check_internet().then((internet)async{
         if(internet){
-          loading.value = true;
+          //loading.value = true;
           Api.getMyCarsList(companyId).then((value)async{
             myCarList.addAll(value);
             tempCarList.addAll(value);
+            loading.value = false;
           });
-          loading.value = false;
         }else{
-
+          loading.value = false;
         }
       });
   }

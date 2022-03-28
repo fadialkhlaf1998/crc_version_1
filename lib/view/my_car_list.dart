@@ -26,12 +26,7 @@ class MyCarList extends StatelessWidget {
             children: [
               AnimatedSwitcher(
                 duration: const Duration(milliseconds: 200),
-                child: myCarListController.loading.value == true
-                    ? Container(
-                          width: MediaQuery.of(context).size.width,
-                          height:  MediaQuery.of(context).size.height * 0.89,
-                          child: Lottie.asset('assets/images/Animation.json')) :
-                _body(context),
+                child: _body(context),
               ),
               // _filterInterface(context),
               // _sortInterface(context),
@@ -54,7 +49,12 @@ class MyCarList extends StatelessWidget {
             SizedBox( height: MediaQuery.of(context).size.height * 0.02),
             _search(context),
             SizedBox( height: MediaQuery.of(context).size.height * 0.02),
-               myCarListController.myCarList.isEmpty ? Container(
+            myCarListController.loading.value ? Container(
+                width: MediaQuery.of(context).size.width,
+                height:  MediaQuery.of(context).size.height * 0.89,
+                child: Lottie.asset('assets/images/Animation.json')) :
+               myCarListController.myCarList.isEmpty
+                   ? Container(
                 width: MediaQuery.of(context).size.width,
                 height:  MediaQuery.of(context).size.height * 0.7,
                 child: Center(child: Text('You don\'t have any car yet',

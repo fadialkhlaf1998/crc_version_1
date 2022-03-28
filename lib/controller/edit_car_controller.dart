@@ -145,7 +145,8 @@ class EditCarController extends GetxController{
              if(value == true){
                print('Update successfully');
                loading.value = false;
-               Get.off(()=>MyCarList());
+               Get.back();
+               myCarListController.getCarList(Global.company_id);
              }else{
                print('Error Update');
                loading.value = false;

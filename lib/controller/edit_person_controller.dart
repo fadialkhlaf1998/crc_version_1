@@ -4,6 +4,7 @@ import 'package:crc_version_1/controller/add_people_controller.dart';
 import 'package:crc_version_1/controller/people_list_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
+import 'package:crc_version_1/view/people_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -44,7 +45,7 @@ class EditPersonController extends GetxController{
     name = peopleListController.myPeopleList[personIndex.value].name.obs;
     phone = peopleListController.myPeopleList[personIndex.value].phone.obs;
     myLanguage = peopleListController.myPeopleList[personIndex.value].languages.split(' / ').obs;
-    //languages = myLanguage.join(' / ').obs;
+    languages = myLanguage.join(' / ').obs;
     personId = peopleListController.myPeopleList[personIndex.value].id;
     personImage.add(File(peopleListController.myPeopleList[personIndex.value].image));
     editingNameController = TextEditingController(text: name!.value);
@@ -151,6 +152,8 @@ class EditPersonController extends GetxController{
         ).then((value){
           if(value == true){
             loading.value = false;
+            Get.back();
+            peopleListController.getInfo(Global.company_id);
           }else{
             loading.value = false;
           }

@@ -4,9 +4,9 @@
 <dict>
     <key>LSApplicationQueriesSchemes</key>
     <array>
-    <string>tel</string>
-    <string>https</string>
-    <string>http</string>
+        <string>tel</string>
+        <string>https</string>
+        <string>http</string>
     </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>

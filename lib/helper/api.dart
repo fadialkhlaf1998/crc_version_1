@@ -419,9 +419,8 @@ class Api {
       request.files.add(await http.MultipartFile.fromPath('file', file.path));
     }else{
       print('-------------- \n the same photo / no change happen/ \n-------------');
-      print(url + "uploads/" + personImage.path);
       File f = await _fileFromImageUrl(url + "uploads/" + personImage.path);
-      request.files.add(await http.MultipartFile.fromPath('files', f.path));
+      request.files.add(await http.MultipartFile.fromPath('file', f.path));
     }
 
     http.StreamedResponse response = await request.send();
