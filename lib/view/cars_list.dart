@@ -227,7 +227,7 @@ class _CarsListState extends State<CarsList> {
             ),
           ),
           AnimatedSwitcher(
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 400),
             child: carListController.openContactList.value ? _showContactsList(context) : Text('')
           ),
         ],
@@ -986,11 +986,7 @@ class _CarsListState extends State<CarsList> {
                             padding: const EdgeInsets.all(8.0),
                             child: GestureDetector(
                               onTap: () async{
-                                if(carListController.bookOnWhatsappCheck!.value){
-                                 await carListController.bookOnWhatsapp(context, index);
-                                }else{
-                                  carListController.bookOnPhone(index);
-                                }
+
                               },
                               child: Container(
                                 height: 130,
@@ -1100,64 +1096,80 @@ class _CarsListState extends State<CarsList> {
             SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width * 0.65,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: carListController.companyContactsList.length,
-                  itemBuilder: (context, index){
-                    return Container(
-                      padding: const EdgeInsets.only(bottom: 25),
-                      child: Stack(
-                        alignment: Alignment.centerLeft,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(width:  MediaQuery.of(context).size.width * 0.05),
-                              Container(
-                                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.17),
-                                width: MediaQuery.of(context).size.width * 0.60,
-                                height: 70,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: BorderRadius.circular(25)
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        carListController.companyContactsList[index].name,
-                                        maxLines: 2,
-                                      style: Theme.of(context).textTheme.headline3,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: carListController.loadingContact.value
+                      ? CircularProgressIndicator()
+                      : carListController.companyContactsList.isEmpty
+                    ? Text('')
+                      : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: carListController.companyContactsList.length,
+                      itemBuilder: (context, index){
+                        return GestureDetector(
+                          onTap: ()async{
+                            if(carListController.bookOnWhatsappCheck!.value){
+                              await carListController.bookOnWhatsapp(context, index);
+                            }else{
+                              carListController.bookOnPhone(index);
+                            }
+                          },
+                          child: Container(
+                              padding: const EdgeInsets.only(bottom: 25),
+                              child: Stack(
+                                alignment: Alignment.centerLeft,
+                                children: [
+                                  Row(
+                                    children: [
+                                      SizedBox(width:  MediaQuery.of(context).size.width * 0.05),
+                                      Container(
+                                        padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.17),
+                                        width: MediaQuery.of(context).size.width * 0.60,
+                                        height: 70,
+                                        decoration: BoxDecoration(
+                                            color: Theme.of(context).primaryColor,
+                                            borderRadius: BorderRadius.circular(25)
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              carListController.companyContactsList[index].name,
+                                              maxLines: 2,
+                                              style: Theme.of(context).textTheme.headline3,
+                                            ),
+                                            Text(
+                                              carListController.companyContactsList[index].languages,
+                                              maxLines: 2,
+                                              style: Theme.of(context).textTheme.headline3,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        color: Colors.black,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(width: 1,color: Theme.of(context).backgroundColor.withOpacity(0.3)),
+                                        image: DecorationImage(
+                                            image: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
+                                            fit: BoxFit.cover
+                                        )
                                     ),
-                                    Text(
-                                      carListController.companyContactsList[index].languages,
-                                      maxLines: 2,
-                                      style: Theme.of(context).textTheme.headline3,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                shape: BoxShape.circle,
-                              border: Border.all(width: 1,color: Theme.of(context).backgroundColor.withOpacity(0.3)),
-                              image: DecorationImage(
-                                  image: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
-                                  fit: BoxFit.cover
+                                    width: MediaQuery.of(context).size.width * 0.2,
+                                    height: 85,
+                                  ),
+                                ],
                               )
-                            ),
-                            width: MediaQuery.of(context).size.width * 0.2,
-                            height: 85,
                           ),
-                        ],
-                      )
-                    );
-                  },
-                ),
+                        );
+                      },
+                  ),
+                )
               ),
             )
           ],

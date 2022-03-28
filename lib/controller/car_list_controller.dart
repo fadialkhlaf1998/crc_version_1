@@ -54,6 +54,7 @@ class CarListController extends GetxController{
   RxBool? bookOnWhatsappCheck;
   RxBool openContactList = false.obs;
 
+
   @override
   void onInit() {
     super.onInit();
@@ -72,8 +73,8 @@ class CarListController extends GetxController{
         companyContactsList.clear();
         Api.getCompanyContactInfo(id).then((value){
           companyContactsList.addAll(value);
+          loadingContact.value = false;
         });
-        loadingContact.value = false;
       }else{
         loadingContact.value = false;
       }
