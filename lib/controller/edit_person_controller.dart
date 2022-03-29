@@ -21,6 +21,7 @@ class EditPersonController extends GetxController{
   TextEditingController? editingNameController;
   TextEditingController? editingNumberController;
   List allLanguages = [];
+  List staticLanguages = [];
   RxList myLanguage = [].obs;
   final ImagePicker _picker = ImagePicker();
   RxList<File> personImage = <File>[].obs;
@@ -50,11 +51,16 @@ class EditPersonController extends GetxController{
     personImage.add(File(peopleListController.myPeopleList[personIndex.value].image));
     editingNameController = TextEditingController(text: name!.value);
     editingNumberController = TextEditingController(text: phone!.value);
-    allLanguages = addPeopleController.language;
+    staticLanguages = addPeopleController.language;
+    if(Global.lang_code == 'en'){
+      allLanguages = addPeopleController.language;
+    }else{
+      allLanguages = addPeopleController.languageArabic;
+    }
     languageCheck = List.filled(allLanguages.length, false).obs;
    // myLanguage.value = peopleListController.myPeopleList[personIndex.value].languages.split(' / ');
-    for(int i = 0; i < allLanguages.length; i++){
-      if (myLanguage.contains(allLanguages[i])){
+    for(int i = 0; i < staticLanguages.length; i++){
+      if (myLanguage.contains(staticLanguages[i])){
         languageCheck![i] = true;
       }
     }
@@ -113,14 +119,14 @@ class EditPersonController extends GetxController{
   changeLanguage(index){
     if(languageCheck![index] == false){
       languageCheck![index] = true;
-      myLanguage.add(allLanguages[index]);
+      myLanguage.add(staticLanguages[index]);
       print(myLanguage.length);
       for(int i = 0 ; i < myLanguage.length; i++ ){
         print(myLanguage[i]);
       }
     }else if(languageCheck![index] == true){
       languageCheck![index] = false;
-      myLanguage.removeAt(myLanguage.indexOf(allLanguages[index]));
+      myLanguage.removeAt(myLanguage.indexOf(staticLanguages[index]));
       print(myLanguage.length);
       for(int i = 0 ; i < myLanguage.length; i++){
         print('-' + myLanguage[i] + '-');

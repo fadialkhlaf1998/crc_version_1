@@ -62,7 +62,7 @@ class EditPerson extends StatelessWidget {
                           child: Lottie.asset('assets/images/data.json'),
                         ),
                       ),
-                      Text('Saving person information',
+                      Text(App_Localization.of(context).translate('saving_person_information'),
                           style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Theme.of(context).backgroundColor)),
                     ],
                   )
@@ -223,7 +223,7 @@ class EditPerson extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Name',style: Theme.of(context).textTheme.bodyText1),
+                Text(App_Localization.of(context).translate('name'),style: Theme.of(context).textTheme.bodyText1),
                 Row(
                   children: [
                     Container(
@@ -264,7 +264,7 @@ class EditPerson extends StatelessWidget {
                     controller: editPersonController.editingNameController,
                     style:  TextStyle(color: Theme.of(context).dividerColor),
                     decoration: InputDecoration(
-                        labelText: "Enter a new name",
+                        labelText: App_Localization.of(context).translate('enter_new_name'),
                         labelStyle: TextStyle(color: Theme.of(context).dividerColor),
                         suffixIcon: GestureDetector(
                             onTap: (){
@@ -311,7 +311,7 @@ class EditPerson extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Mobile Number',style: Theme.of(context).textTheme.bodyText1),
+                Text(App_Localization.of(context).translate('mobile_number'),style: Theme.of(context).textTheme.bodyText1),
                 Row(
                   children: [
                    Container(
@@ -352,7 +352,7 @@ class EditPerson extends StatelessWidget {
                     controller: editPersonController.editingNumberController,
                     style:  TextStyle(color: Theme.of(context).dividerColor),
                     decoration: InputDecoration(
-                        labelText: "Enter a new mobile number",
+                        labelText: App_Localization.of(context).translate('enter_new_mobile_number'),
                         labelStyle: TextStyle(color: Theme.of(context).dividerColor),
                         suffixIcon: GestureDetector(
                             onTap: (){
@@ -400,7 +400,7 @@ class EditPerson extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Language',style: Theme.of(context).textTheme.bodyText1),
+                Text(App_Localization.of(context).translate('language'),style: Theme.of(context).textTheme.bodyText1),
                 Row(
                   children: [
                     Text(editPersonController.myLanguage.length.toString(),
@@ -532,13 +532,13 @@ class EditPerson extends StatelessWidget {
 
   showAlertDialog(BuildContext context) {
     Widget closeButton = TextButton(
-      child: Text("Close",style: Theme.of(context).textTheme.headline3,),
+      child: Text(App_Localization.of(context).translate('close'),style: Theme.of(context).textTheme.headline3,),
       onPressed: () {
         Get.back();
       },
     );
     Widget editButton = TextButton(
-      child: Text("Delete",style: Theme.of(context).textTheme.headline3,),
+      child: Text(App_Localization.of(context).translate('delete'),style: Theme.of(context).textTheme.headline3,),
       onPressed: () {
         editPersonController.deletePersonImage();
       },

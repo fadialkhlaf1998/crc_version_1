@@ -16,6 +16,8 @@ class AddPeopleController extends GetxController{
   RxInt currentStep = 0.obs;
 
   RxList language = ['English', 'Arabic','French'].obs;
+  RxList languageArabic = ['الانكليزية', 'العربية','الفرنسية'].obs;
+
   RxList select = [false, false, false].obs;
   String selectLanguages = '';
   final ImagePicker _picker = ImagePicker();

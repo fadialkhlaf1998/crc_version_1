@@ -151,7 +151,7 @@ class PeopleList extends StatelessWidget {
                                                 children: [
                                                   Icon(Icons.edit,size: 20,color: Theme.of(context).backgroundColor,),
                                                   const SizedBox(width: 2),
-                                                  Text('Edit',style: TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold),),
+                                                  Text(App_Localization.of(context).translate('edit'),style: TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold),),
                                                 ],
                                               ),
                                             )
@@ -167,7 +167,7 @@ class PeopleList extends StatelessWidget {
                                                 children: [
                                                   Icon(Icons.delete,size: 20,color: Theme.of(context).backgroundColor),
                                                   SizedBox(width: 2),
-                                                  Text('Delete',style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
+                                                  Text(App_Localization.of(context).translate('delete'),style:  TextStyle(color: Theme.of(context).backgroundColor,fontSize: 15, fontWeight: FontWeight.bold)),
                                                 ],
                                               ),
                                             )

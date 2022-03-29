@@ -317,14 +317,14 @@ class Settings extends StatelessWidget {
   showAlertDialog(BuildContext context) {
 
     Widget closeButton = TextButton(
-      child: Text("Close",style: Theme.of(context).textTheme.headline3,),
+      child: Text(App_Localization.of(context).translate('close'),style: Theme.of(context).textTheme.headline3,),
       onPressed: () {
         Get.back();
       },
     );
 
     Widget editButton = TextButton(
-      child: Text("Edit",style: Theme.of(context).textTheme.headline3,),
+      child: Text(App_Localization.of(context).translate("edit"),style: Theme.of(context).textTheme.headline3,),
       onPressed: () {
 
       },

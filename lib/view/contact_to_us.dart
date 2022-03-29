@@ -1,9 +1,14 @@
+import 'package:crc_version_1/controller/contact_us_controller.dart';
+import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class ContactToUs extends StatelessWidget {
-  const ContactToUs({Key? key}) : super(key: key);
+
+  ContactUsController contactUsController = Get.put(ContactUsController());
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +17,7 @@ class ContactToUs extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topCenter,
           children: [
-            //_body(context),
+            _body(context),
             _app_bar(context),
           ],
         ),
@@ -66,6 +71,122 @@ class ContactToUs extends StatelessWidget {
       ),
     );
   }
+
+
+  _body(context){
+    return Container(
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.15),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.3,
+            height: MediaQuery.of(context).size.width * 0.3,
+            padding: EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(width: 1,color: Color(0XFF202428),)
+            ),
+           child: SvgPicture.asset('assets/images/logo.svg',fit: BoxFit.contain),
+          ),
+          SizedBox(height: 7),
+          Text('Vip RentalCar',style: Theme.of(context).textTheme.headline2),
+          SizedBox(height: 80),
+          Obx((){
+            return GestureDetector(
+              onTap: (){
+                contactUsController.pressPhoneButton(context);
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 350),
+                width: contactUsController.phoneButton.value ? 60 :  MediaQuery.of(context).size.width * 0.6 ,
+                height: 60,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(width: 1, color: Color(0XFF202428).withOpacity(0.3),),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0XFF202428).withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 10,
+                      offset: Offset(1, 2), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedSwitcher(
+                      duration: Duration(milliseconds: 50),
+                      child: contactUsController.phoneButton.value ?  CircularProgressIndicator(color: Colors.black,) :  Image.asset('assets/icons/phone.gif',height: 50,width: 45,),
+                    ),
+
+                    SizedBox(width: contactUsController.phoneButton.value ? 0 : 10 ),
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        width: contactUsController.phoneButton.value ? 0 :  MediaQuery.of(context).size.width * 0.3,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text('+971 55 345 1555',style: TextStyle(color: Color(0XFF202428),fontSize: 15,fontWeight: FontWeight.bold)),
+                        )
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }),
+          SizedBox(height: 20,),
+          Obx((){
+            return GestureDetector(
+              onTap: (){
+                contactUsController.pressWhatsAppButton(context);
+              },
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 350),
+                width: contactUsController.whatsappButton.value ? 60 :  MediaQuery.of(context).size.width * 0.6 ,
+                height: 60,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                  border: Border.all(width: 1, color: Color(0XFF202428).withOpacity(0.3),),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color(0XFF202428).withOpacity(0.1),
+                      spreadRadius: 1,
+                      blurRadius: 10,
+                      offset: Offset(1, 2), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedSwitcher(
+                      duration: Duration(milliseconds: 50),
+                      child: contactUsController.whatsappButton.value ?  CircularProgressIndicator(color: Colors.black,) :  Image.asset('assets/icons/whatsapp.gif',height: 50,width: 45,),
+                    ),
+                    SizedBox(width: contactUsController.whatsappButton.value ? 0 : 10 ),
+                    AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        width: contactUsController.whatsappButton.value ? 0 :  MediaQuery.of(context).size.width * 0.3,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Text('+971 55 345 1555',style: TextStyle(color: Color(0XFF202428),fontSize: 15,fontWeight: FontWeight.bold)),
+                        )
+                    ),
+                  ],
+                ),
+              ),
+            );
+          })
+        ],
+      )
+    );
+  }
+
+
 
 
 }

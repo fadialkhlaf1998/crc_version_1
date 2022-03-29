@@ -116,10 +116,10 @@ class MyCarList extends StatelessWidget {
                         myCarListController.goToEditCarPage(index);
                       },
                     child: Row(
-                      children: const [
+                      children: [
                         Icon(Icons.edit, color: Colors.white,size: 22),
                         SizedBox(width: 3),
-                        Text('Edit', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text(App_Localization.of(context).translate('edit'), style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
                       ],
                     )
                   ),
@@ -131,7 +131,7 @@ class MyCarList extends StatelessWidget {
                       children: [
                         Icon(Icons.delete, color: Colors.white,size: 22),
                         SizedBox(width: 3),
-                        Text('Delete', style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                        Text(App_Localization.of(context).translate('delete'), style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
                       ],
                     )
                   ),
@@ -309,9 +309,9 @@ class MyCarList extends StatelessWidget {
         },
         controller: editingController,
         decoration: InputDecoration(
-            labelText: "Search",
+            labelText: App_Localization.of(context).translate('search'),
             labelStyle: TextStyle(color: Theme.of(context).dividerColor),
-            hintText: "Search",
+            hintText: App_Localization.of(context).translate('search'),
             hintStyle: Theme.of(context).textTheme.bodyText2,
             prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor,),
             prefixIconColor: Theme.of(context).primaryColor,

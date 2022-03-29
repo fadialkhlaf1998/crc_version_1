@@ -3,6 +3,8 @@ import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/home_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
+import 'package:crc_version_1/helper/global.dart';
+import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
 import 'package:crc_version_1/view/setting.dart';
@@ -44,6 +46,7 @@ class _CarsListState extends State<CarsList> {
       },
       child: Scaffold(
         floatingActionButton: _floatButton(context),
+        floatingActionButtonLocation: Global.lang_code == 'en' ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,
         body:Obx((){
           return  SafeArea(
             child: Stack(
@@ -656,7 +659,8 @@ class _CarsListState extends State<CarsList> {
                            carListController.chooseBrandFilter(index);
                          },
                          child: Container(
-                           width: 80,
+                           //width: 80,
+                           padding: EdgeInsets.symmetric(horizontal: 12),
                            decoration: BoxDecoration(
                                color: !carListController.brandListCheck![index] == true
                                    ? Theme.of(context).backgroundColor
@@ -807,7 +811,8 @@ class _CarsListState extends State<CarsList> {
                             carListController.chooseColorFilter(index);
                           },
                           child: Container(
-                            width: 80,
+                            //width: 80,
+                            padding: EdgeInsets.symmetric(horizontal: 13),
                             decoration: BoxDecoration(
                                 color: !carListController.colorListFilter![index] == true
                                     ? Theme.of(context).backgroundColor
@@ -879,7 +884,7 @@ class _CarsListState extends State<CarsList> {
   _sortInterface(context){
     return AnimatedContainer(
       width: MediaQuery.of(context).size.width,
-      height: carListController.checkSortOpen.value ? MediaQuery.of(context).size.height  * 0.25 : 10,
+      height: carListController.checkSortOpen.value ? MediaQuery.of(context).size.height  * 0.235 : 10,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.only(
@@ -911,7 +916,7 @@ class _CarsListState extends State<CarsList> {
                     ),
                     child: Center(
                       child: Text(
-                        'Price Low to high',
+                        App_Localization.of(context).translate('price_low_to_high'),
                         style: TextStyle(
                             color: carListController.sortFilter.value == 'ASC'
                                 ? Theme.of(context).primaryColor
@@ -937,7 +942,7 @@ class _CarsListState extends State<CarsList> {
                     ),
                     child: Center(
                       child: Text(
-                        'Price high to low',
+                        App_Localization.of(context).translate('price_high_to_low'),
                         style: TextStyle(
                             color: carListController.sortFilter.value != 'ASC'
                                 ? Theme.of(context).primaryColor
@@ -1137,7 +1142,7 @@ class _CarsListState extends State<CarsList> {
                                 children: [
                                   Row(
                                     children: [
-                                      SizedBox(width:  MediaQuery.of(context).size.width * 0.05),
+                                      Global.lang_code == 'en' ? SizedBox(width:  MediaQuery.of(context).size.width * 0.04) : Text(''),
                                       Container(
                                         padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.17),
                                         width: MediaQuery.of(context).size.width * 0.60,
@@ -1148,7 +1153,7 @@ class _CarsListState extends State<CarsList> {
                                         ),
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment: Global.lang_code == 'en' ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                                           children: [
                                             Text(
                                               carListController.companyContactsList[index].name,
@@ -1163,11 +1168,11 @@ class _CarsListState extends State<CarsList> {
                                           ],
                                         ),
                                       ),
+                                      Global.lang_code == 'en' ? Text('') : SizedBox(width:  MediaQuery.of(context).size.width * 0.04),
                                     ],
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.black,
                                         shape: BoxShape.circle,
                                         border: Border.all(width: 1,color: Theme.of(context).backgroundColor.withOpacity(0.3)),
                                         image: DecorationImage(
@@ -1210,7 +1215,8 @@ class _CarsListState extends State<CarsList> {
           backgroundColor: Theme.of(context).primaryColor,
           labelBackgroundColor: Theme.of(context).backgroundColor,
           child: Icon(Icons.people,color: Colors.white,),
-          label: 'Add people',
+          //label:  'Add people',
+          labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people') : null,
           labelStyle: Theme.of(context).textTheme.headline3,
         ),
         SpeedDialChild(
@@ -1219,11 +1225,36 @@ class _CarsListState extends State<CarsList> {
           },
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.directions_car,color: Colors.white,),
-          label: 'Add car',
+          labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car') : null,
           labelStyle: Theme.of(context).textTheme.headline3,
           labelBackgroundColor: Theme.of(context).backgroundColor,
         ),
       ],
+    );
+  }
+
+  _floatButtonText(sentence){
+    return Container(
+      width: 90,
+      height: 30,
+      child: Center(
+        child: Text(
+            sentence,
+          style: Theme.of(context).textTheme.headline3,
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).dividerColor.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
     );
   }
 

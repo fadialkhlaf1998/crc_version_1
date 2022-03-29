@@ -1,5 +1,6 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/login_controller.dart';
+import 'package:crc_version_1/helper/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
@@ -54,7 +55,8 @@ class LogIn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             /**Logo*/
-            Container(
+            Global.lang_code == 'en'
+                ? Container(
               width: MediaQuery.of(context).size.width * 0.4,
               height: 100,
               decoration: const BoxDecoration(
@@ -62,9 +64,20 @@ class LogIn extends StatelessWidget {
                       image: AssetImage('assets/images/logo_light.png')
                   )
               ),
-            ),
+            )
+                : Image.asset('assets/images/lines.png'),
             /**Lines*/
-            Image.asset('assets/images/lines.png'),
+            Global.lang_code == 'en'
+                ? Image.asset('assets/images/lines.png')
+            : Container(
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: 100,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/logo_light.png')
+                  )
+              ),
+            )
           ],
         ),
       const SizedBox(height: 0),
@@ -207,7 +220,7 @@ class LogIn extends StatelessWidget {
           Bounce(
             duration: (const Duration(milliseconds: 90)),
             onPressed: (){
-
+              loginController.whatsAppButton(context);
             },
             child: Container(
               height: 55,
@@ -235,7 +248,7 @@ class LogIn extends StatelessWidget {
           Bounce(
             duration: const Duration(milliseconds: 90),
             onPressed: (){
-
+              loginController.phoneButton();
             },
             child: Container(
               height: 55,

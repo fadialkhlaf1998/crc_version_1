@@ -24,7 +24,7 @@
   "daily_rent" : "Daily rent",
   "aed" : "AED",
   "year" : "Year",
-  "car_list" : "Car list",
+  "car_list" : "Cars list",
   "people_list" : "People list",
   "language": "Language",
   "connect_to_us" : "Contact to us",
@@ -51,5 +51,24 @@
   "contact_list" : "Contact list",
   "book_on_whatsapp" : "Book on whatsApp",
   "arabic" : "Arabic",
-  "english" : "English"
+  "english" : "English",
+  "price_low_to_high" : "Price low to high",
+  "price_high_to_low" : "Price high to low",
+  "close" : "Close",
+  "edit" : "Edit",
+  "delete" : "Delete",
+  "search" : "Search",
+  "location" : "Location",
+  "images" : "Images",
+  "enter_new_price" : "Enter a new price",
+  "saving_your_car_information" : "Saving your car information",
+  "name" : "Name",
+  "enter_new_name" : "Enter a new name",
+  "enter_new_mobile_number" : "Enter a new mobile number",
+  "saving_person_information" : "Saving person information",
+  "wrong_email_password" : "Wrong email or password",
+  "not_open_whatsapp" : "can't open Whatsapp",
+  "you_can_not_upload_than_eight_photos" : "you can't upload than 8 photos"
+
+
 }

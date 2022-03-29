@@ -49,7 +49,7 @@ class AddCar extends StatelessWidget {
                               color: Theme.of(context).dividerColor.withOpacity(0.9),
                               child: _loading(context),
                             ),
-                            Text('Saving your car information',
+                            Text(App_Localization.of(context).translate('saving_your_car_information'),
                                 style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Theme.of(context).backgroundColor)),
                           ],
                         )

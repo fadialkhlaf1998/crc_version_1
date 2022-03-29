@@ -10,6 +10,7 @@ class Global{
   static String remember_password="non";
   static String companyImage = '';
   static String companyTitle = '';
+  static String vip_phone_number = '+971553451555';
 
   static save_language(String locale){
     SharedPreferences.getInstance().then((prefs){

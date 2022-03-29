@@ -1,4 +1,5 @@
 import 'package:crc_version_1/controller/intro_controller.dart';
+import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -11,22 +12,18 @@ class IntroView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //     fit: BoxFit.cover,
-        //     image: AssetImage('assets/images/background2_light.png')
-        //   )
-        // ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _header(),
-            _carImage(),
-            _title(context),
-          ],
+      body: SafeArea(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _header(),
+              _carImage(),
+              _title(context),
+            ],
+          ),
         ),
       ),
     );
@@ -37,15 +34,15 @@ class IntroView extends StatelessWidget {
       children: [
         Expanded(
           flex: 1,
-          child: Container(
-            child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png') : Image.asset('assets/images/logo_light.png'),
-          ),
+          child: Global.lang_code == 'en'
+              ? Container(child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png') : Image.asset('assets/images/logo_light.png'), )
+              : Image.asset('assets/images/lines.png', fit: BoxFit.cover,),
         ),
         Expanded(
           flex: 1,
-          child: Container(
-            child: Image.asset('assets/images/lines.png', fit: BoxFit.cover,),
-          ),
+          child: Global.lang_code == 'en'
+              ? Image.asset('assets/images/lines.png', fit: BoxFit.cover,)
+              : Container(child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png') : Image.asset('assets/images/logo_light.png'), )
         ),
 
       ],

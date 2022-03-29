@@ -115,7 +115,7 @@ class Home extends StatelessWidget {
         controller: homeController.editingController,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(bottom: 0),
-            labelText: "Search",
+            labelText: App_Localization.of(context).translate('search'),
             labelStyle: TextStyle(color: Theme.of(context).dividerColor,fontSize: 14),
             prefixIcon: Icon(Icons.search,color: Theme.of(context).dividerColor,),
             prefixIconColor: Theme.of(context).primaryColor,
@@ -187,7 +187,7 @@ class Home extends StatelessWidget {
                     child: Container(
                       color: Colors.transparent,
                       width: MediaQuery.of(context).size.width * 0.85,
-                      child:Text('All car', style: Theme.of(context).textTheme.headline3),
+                      child:Text(App_Localization.of(context).translate('all_car'), style: Theme.of(context).textTheme.headline3),
                     ),
                   ),
                   Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)

@@ -3,6 +3,7 @@ import 'package:crc_version_1/controller/edit_car_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/controller/my_car_list_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
+import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -69,7 +70,7 @@ class EditCar extends StatelessWidget {
                           child: Lottie.asset('assets/images/data.json'),
                         ),
                       ),
-                      Text('Saving your car information',
+                      Text(App_Localization.of(context).translate('saving_your_car_information'),
                           style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Theme.of(context).backgroundColor)),
                     ],
                   )
@@ -233,7 +234,7 @@ class EditCar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Brands',style: Theme.of(context).textTheme.bodyText1),
+                Text(App_Localization.of(context).translate('brand'),style: Theme.of(context).textTheme.bodyText1),
                 Text(editCarController.brand!.value,
                     style: TextStyle(fontSize: 15,color: Colors.grey)
                 ),
@@ -254,7 +255,7 @@ class EditCar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Car Model',style: Theme.of(context).textTheme.bodyText1),
+              Text(App_Localization.of(context).translate('car_model'),style: Theme.of(context).textTheme.bodyText1),
               Text(editCarController.model!.value,
                   style: TextStyle(fontSize: 15,color: Colors.grey)
               ),
@@ -274,7 +275,7 @@ class EditCar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Year',style: Theme.of(context).textTheme.bodyText1),
+              Text(App_Localization.of(context).translate('year'),style: Theme.of(context).textTheme.bodyText1),
               Text(editCarController.year!.value,
                   style: TextStyle(fontSize: 15,color: Colors.grey)
               ),
@@ -294,7 +295,7 @@ class EditCar extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Color',style: Theme.of(context).textTheme.bodyText1),
+              Text(App_Localization.of(context).translate('color'),style: Theme.of(context).textTheme.bodyText1),
               Text(editCarController.color!.value,
                   style: TextStyle(fontSize: 15,color: Colors.grey)
               ),
@@ -310,6 +311,10 @@ class EditCar extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: (){
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
             editCarController.editPrice();
           },
           child: Container(
@@ -320,7 +325,7 @@ class EditCar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Daily rent',style: Theme.of(context).textTheme.bodyText1),
+                Text(App_Localization.of(context).translate('daily_rent'),style: Theme.of(context).textTheme.bodyText1),
                 Row(
                   children: [
                     Text(editCarController.price!.value,
@@ -352,7 +357,7 @@ class EditCar extends StatelessWidget {
                     controller: editCarController.editingController,
                     style:  TextStyle(color: Theme.of(context).dividerColor),
                     decoration: InputDecoration(
-                        labelText: "Enter a new price",
+                        labelText: App_Localization.of(context).translate('enter_new_price'),
                         labelStyle: TextStyle(color: Theme.of(context).dividerColor),
                         suffixIcon: GestureDetector(
                           onTap: (){
@@ -389,6 +394,10 @@ class EditCar extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: (){
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
             editCarController.editLocation();
           },
           child: Container(
@@ -398,7 +407,7 @@ class EditCar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Location',style: Theme.of(context).textTheme.bodyText1),
+                Text(App_Localization.of(context).translate('location'),style: Theme.of(context).textTheme.bodyText1),
                 Row(
                   children: [
                     Text(editCarController.location!.value,
@@ -458,7 +467,7 @@ class EditCar extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                    editCarController.emirates[index],
+                                  Global.lang_code == 'en' ? editCarController.emirates[index] : editCarController.emiratesArabic[index],
                                   maxLines: 2,
                                   style: TextStyle(
                                       color: editCarController.emiratesCheck[index] == true
@@ -484,11 +493,16 @@ class EditCar extends StatelessWidget {
       ],
     );
   }
+
   _image(context){
     return Column(
       children: [
         GestureDetector(
           onTap: (){
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
             editCarController.imagePage.value = true;
           },
           child: Container(
@@ -498,7 +512,7 @@ class EditCar extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Image',style: Theme.of(context).textTheme.bodyText1),
+                Text(App_Localization.of(context).translate('images'),style: Theme.of(context).textTheme.bodyText1),
                 Row(
                   children: [
                     Text((editCarController.imageList.length + editCarController.newImageList.length).toString(),style: TextStyle(fontSize: 15,color: Colors.grey)),
@@ -514,9 +528,6 @@ class EditCar extends StatelessWidget {
       ],
     );
   }
-
-
-
 
   _editImageList(context){
     return Container(

@@ -33,7 +33,10 @@ class EditCarController extends GetxController{
   RxList<File> imageList = <File>[].obs;
   RxList<File> newImageList = <File>[].obs;
 
-  List<String> emirates = ['Dubai', 'Abu Dhabi', 'Ajman', 'Dubai Eye', 'Ras Al Khaimah','Sharjah','Umm Al Quwain'];
+  List<String> emirates = ['Dubai','Abu Dhabi','Ajman','Dubai Eye','Ras Al Khaimah','Sharjah','Umm Al Quwain'];
+
+  List<String> emiratesArabic = ['دبي','أبو ظبي','عجمان','عين دبي','رأس الخيمة','الشارقة','أم القويين'];
+
   List<String> emiratesPhoto = ['dubai.png', 'Abu_Dhabi.png', 'Ajman.png', 'Dubai_eye.png', 'Ras_Al_Khaimah.png', 'Sharjah.png','Umm_Al_Quwain.png'];
   RxList<bool> emiratesCheck =  List.filled(7, false).obs;
 
@@ -46,11 +49,8 @@ class EditCarController extends GetxController{
   final ImagePicker _picker = ImagePicker();
 
 
-
-
   @override
   void onInit() {
-
    brands = introController.brands.obs;
    brand = myCarListController.brand;
    model = myCarListController.model;
@@ -94,7 +94,11 @@ class EditCarController extends GetxController{
   }
 
   getNewLocation(index){
-    location!.value = emirates[index];
+    if(Global.lang_code == 'en'){
+      location!.value = emirates[index];
+    }else{
+      location!.value = emiratesArabic[index];
+    }
     for(int i = 0; i < emiratesCheck.length; i++){
       emiratesCheck[i] = false;
     }
