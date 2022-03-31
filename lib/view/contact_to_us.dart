@@ -87,9 +87,12 @@ class ContactToUs extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
-              border: Border.all(width: 1,color: Color(0XFF202428),)
+              border: Border.all(width: 1,color: Color(0XFF202428),),
+              image:  DecorationImage(
+                fit: BoxFit.contain,
+                image: NetworkImage(Global.companyImage.value.replaceAll("http://127.0.0.1:3004/", Api.url))
+              )
             ),
-           child: Image.network(Global.companyImage.value.replaceAll("http://127.0.0.1:3004/", Api.url))
           ),
           SizedBox(height: 7),
           Text('Vip RentalCar',style: Theme.of(context).textTheme.headline2),
