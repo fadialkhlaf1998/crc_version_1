@@ -46,6 +46,8 @@ class _CarsListState extends State<CarsList> {
           return carListController.checkFilterOpen.value = false;
         }else if (carListController.checkSortOpen.value == true){
           return carListController.checkSortOpen.value = false;
+        } else if (carListController.isDialOpen.value){
+         return carListController.isDialOpen.value = false;
         } else{
           Get.back();
           return carListController.openContactList.value = false;

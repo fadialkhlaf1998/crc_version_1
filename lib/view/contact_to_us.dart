@@ -1,4 +1,5 @@
 import 'package:crc_version_1/controller/contact_us_controller.dart';
+import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,7 +89,7 @@ class ContactToUs extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(width: 1,color: Color(0XFF202428),)
             ),
-           child: SvgPicture.asset('assets/images/logo.svg',fit: BoxFit.contain),
+           child: Image.network(Global.companyImage.value.replaceAll("http://127.0.0.1:3004/", Api.url))
           ),
           SizedBox(height: 7),
           Text('Vip RentalCar',style: Theme.of(context).textTheme.headline2),
