@@ -92,9 +92,7 @@ class AddCar extends StatelessWidget {
                 width: 80,
                 child: IconButton(
                   onPressed: () {
-                    addCarController.currentStep.value == 0
-                        ? Get.back()
-                        : addCarController.backwardStep();
+                    addCarController.backwardStep();
                   },
                   icon: Icon(Icons.arrow_back_ios),
                 ),
@@ -307,6 +305,9 @@ class AddCar extends StatelessWidget {
                       return  GestureDetector(
                         onTap: (){
                           addCarController.selectBrand(index);
+                          print('////////////////////////////');
+                          print(addCarController.tempBrandsList[index].image);
+                          print('////////////////////////////');
                         },
                         child:  Container(
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -667,10 +668,11 @@ class AddCar extends StatelessWidget {
                             ?  Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
+                                Global.lang_code == 'en'
+                                    ? GestureDetector(
                                   onTap: (){
                                     if(addCarController.imageList.length == 8){
-                                      App.info_msg(context, 'you can\'t upload than 8 photos');
+                                      App.info_msg(context, App_Localization.of(context).translate('you_can_upload_just_eight_photos'));
                                     }else {
                                       addCarController.selectPhotosFromCamera();
                                     }
@@ -680,18 +682,18 @@ class AddCar extends StatelessWidget {
                                     height: 50,
                                     decoration: BoxDecoration(
                                       borderRadius: const BorderRadius.only(
-                                          bottomLeft: Radius.circular(25),
+                                           bottomLeft: Radius.circular(25),
                                           topLeft: Radius.circular(25)
                                       ),
                                       color: Theme.of(context).primaryColor,
                                     ),
                                     child:const Icon(Icons.camera, color: Colors.white,),
                                   ),
-                                ),
-                                GestureDetector(
+                                )
+                                    : GestureDetector(
                                   onTap: (){
                                     if(addCarController.imageList.length == 8){
-                                      App.info_msg(context, 'You can upload just 8 photos');
+                                      App.info_msg(context, App_Localization.of(context).translate('you_can_upload_just_eight_photos'));
                                     }else{
                                       addCarController.selectImage(context);
                                     }
@@ -709,6 +711,49 @@ class AddCar extends StatelessWidget {
                                     child:  Icon(Icons.photo, color: Colors.white,),
                                   ),
                                 ),
+                                Global.lang_code == 'en'
+                                    ? GestureDetector(
+                                  onTap: (){
+                                    if(addCarController.imageList.length == 8){
+                                      App.info_msg(context, App_Localization.of(context).translate('you_can_upload_just_eight_photos'));
+                                    }else{
+                                      addCarController.selectImage(context);
+                                    }
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                          bottomRight: Radius.circular(25),
+                                          topRight: Radius.circular(25)
+                                      ),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    child:  Icon(Icons.photo, color: Colors.white,),
+                                  ),
+                                )
+                                    : GestureDetector(
+                                  onTap: (){
+                                    if(addCarController.imageList.length == 8){
+                                      App.info_msg(context, App_Localization.of(context).translate('you_can_upload_just_eight_photos'));
+                                    }else {
+                                      addCarController.selectPhotosFromCamera();
+                                    }
+                                  },
+                                  child: Container(
+                                    width:  60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(25),
+                                          topLeft: Radius.circular(25)
+                                      ),
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    child:const Icon(Icons.camera, color: Colors.white,),
+                                  ),
+                                )
                               ],
                         )
                             : Text(''),

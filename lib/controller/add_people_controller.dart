@@ -1,3 +1,4 @@
+import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
@@ -31,6 +32,7 @@ class AddPeopleController extends GetxController{
   @override
   void onInit() {
     super.onInit();
+    userImage = <File>[].obs;
     companyID = Global.company_id.toDouble();
   }
 
@@ -41,20 +43,31 @@ class AddPeopleController extends GetxController{
   forwardStep(context)async{
     if(currentStep.value >= 3){
       selectLanguages = '';
-      for(int i = 0; i < select.length; i++){
-        if(select[i] == true && selectLanguages != ''){
+      for(int i = 0; i < select.length; i++) {
+        if (select[i] == true && selectLanguages != '') {
           selectLanguages += ' / ' + language[i];
-        }else if(select[i] == true){
+        } else if (select[i] == true) {
           selectLanguages += language[i];
         }
       }
-      currentStep.value += 1;
-      loadingUpload.value = true;
-      Api.addPerson(username.text, userImage.first, mobileNumber.text, selectLanguages, companyID!);
-      Future.delayed(const Duration(milliseconds: 1500),(){
-        loadingUpload.value = false;
-        Get.off(()=>PeopleList());
-      });
+      if(selectLanguages == ''){
+          App.info_msg(context, App_Localization.of(context).translate('you_should_select_language'));
+      }else{
+        currentStep.value += 1;
+        loadingUpload.value = true;
+        if(userImage.isEmpty){
+          final byteData = await rootBundle.load('assets/images/profile_picture.png');
+          final file = File('${(await getTemporaryDirectory()).path}/profile_picture.png');
+          await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
+          userImage.add(file);
+        }
+        Api.addPerson(username.text, userImage.first, mobileNumber.text, selectLanguages, companyID!).then((value){
+          Future.delayed(Duration(milliseconds: 500)).then((value){
+            loadingUpload.value = false;
+            Get.off(()=>PeopleList());
+          });
+        });
+        }
     }
     else if(currentStep.value == 0){
       if( username.text.isEmpty){
@@ -64,12 +77,7 @@ class AddPeopleController extends GetxController{
       }
     }
     else if (currentStep.value == 1){
-      if(userImage.isEmpty){
-        final byteData = await rootBundle.load('assets/images/profile_picture.png');
-        final file = File('${(await getTemporaryDirectory()).path}/profile_picture.png');
-        await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
-        userImage.add(file);
-      }
+
       currentStep.value +=1;
     }
     else if(currentStep.value == 2){

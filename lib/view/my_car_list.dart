@@ -16,6 +16,7 @@ class MyCarList extends StatelessWidget {
 
 
 
+
   @override
   Widget build(BuildContext context) {
     return Obx((){
@@ -54,7 +55,7 @@ class MyCarList extends StatelessWidget {
                    ? Container(
                 width: MediaQuery.of(context).size.width,
                 height:  MediaQuery.of(context).size.height * 0.7,
-                child: Center(child: Text('You don\'t have any car yet',
+                child: Center(child: Text(App_Localization.of(context).translate('you_do_not_own_any_car_with_that_name'),
                   style: Theme.of(context).textTheme.bodyText2,)),
               ) :
              ListView.builder(
@@ -307,8 +308,10 @@ class MyCarList extends StatelessWidget {
         onChanged: (value){
           myCarListController.filterSearchResults(value);
         },
+        style: Theme.of(context).textTheme.bodyText2,
         controller: editingController,
         decoration: InputDecoration(
+          contentPadding: EdgeInsets.all(0),
             labelText: App_Localization.of(context).translate('search'),
             labelStyle: TextStyle(color: Theme.of(context).dividerColor),
             hintText: App_Localization.of(context).translate('search'),

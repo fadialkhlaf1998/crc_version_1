@@ -437,4 +437,47 @@ class Api {
 
   }
 
+  static Future updateCompanyImage(String companyId,String image)async{
+
+    var request = http.MultipartRequest('PUT', Uri.parse(url + 'api/company_image'));
+    request.fields.addAll({
+      'company_id': companyId
+    });
+    request.files.add(await http.MultipartFile.fromPath('file',image));
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+    else {
+      return false;
+    }
+
+  }
+
+  static Future tracker(String fromCompanyId, String toCompanyId)async{
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+    var request = http.Request('POST', Uri.parse(url + 'api/tracker'));
+    request.body = json.encode({
+      "_to": toCompanyId,
+      "_from": fromCompanyId
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Success');
+      return true;
+    }
+    else {
+      print('Field');
+      return false;
+    }
+
+  }
+
 }

@@ -39,7 +39,15 @@ class Home extends StatelessWidget {
                 AnimatedSwitcher(
                   duration: Duration(milliseconds: 300),
                   child: !homeController.modelOption.value ?
-                  _brandBody(context) : _modelsBody(context),
+                   homeController.tempBrandsList.isEmpty
+                       ? Text(App_Localization.of(context).translate('there_are_no_car_with_this_name'))
+                       : _brandBody(context)
+                       : AnimatedSwitcher(
+                    duration: Duration(milliseconds: 0),
+                    child: homeController.tempModelsList.isEmpty
+                        ? Text(App_Localization.of(context).translate('there_are_no_car_with_this_model_name'))
+                        : _modelsBody(context),
+                  )
                 ),
               ],
             ),
@@ -63,6 +71,7 @@ class Home extends StatelessWidget {
               width: 50,
               child: GestureDetector(
                 onTap: (){
+                  FocusManager.instance.primaryFocus?.unfocus();
                   homeController.goToBrandMenu();
                 },
                 child: Icon(Icons.arrow_back_ios, color: Theme.of(context).dividerColor,),
@@ -84,21 +93,20 @@ class Home extends StatelessWidget {
                     :Text(App_Localization.of(context).translate('please_select_the_vehicle_type'), style: Theme.of(context).textTheme.bodyText2) ,
             ],
           ),
-          !homeController.modelOption.value ?
-          SizedBox(
-            width: 50,
-            child: GestureDetector(
-              onTap: (){
-                if(homeController.brandName.value == '%' ){
-                  App.info_msg(context, 'You must choose the brand of car');
-                }else{
-                  homeController.modelOption.value = true;
-                 homeController.editingController.text = '';
-                }
-              },
-              child: Text(App_Localization.of(context).translate('next'), style: Theme.of(context).textTheme.headline2),
-            ),
-          ) : SizedBox(width: 50,),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 1000),
+            child:  !homeController.modelOption.value ? SizedBox(
+              width: 50,
+              child: GestureDetector(
+                onTap: (){
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  homeController.getAll();
+                },
+                child: Text(App_Localization.of(context).translate('skip'),style: Theme.of(context).textTheme.headline3,)
+              ),
+            ) : SizedBox(width: 50),
+          ),
+          //SizedBox(width: 50,)
         ],
       ),
     );
@@ -112,6 +120,7 @@ class Home extends StatelessWidget {
         onChanged: (value){
           homeController.filterSearchResults(value);
         },
+        style: Theme.of(context).textTheme.bodyText2,
         controller: homeController.editingController,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(bottom: 0),
@@ -156,6 +165,8 @@ class Home extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () async {
+                print('222222222222222');
+                FocusManager.instance.primaryFocus?.unfocus();
 
               },
               icon: const Icon(
@@ -215,7 +226,7 @@ class Home extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(homeController.tempBrandsList[index].title, style: homeController.tempBrandsList[index].selected.value ? TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold) : Theme.of(context).textTheme.headline3),
-                                homeController.tempBrandsList[index].selected.value ? Icon(Icons.check,size: 25, color: Theme.of(context).primaryColor) : Text(''),
+                               // homeController.tempBrandsList[index].selected.value ? Icon(Icons.check,size: 25, color: Theme.of(context).primaryColor) : Text(''),
                               ],
                             ),
                           ),
@@ -226,6 +237,7 @@ class Home extends StatelessWidget {
                   });
                 },
               ),
+              SizedBox(height: 30)
             ],
           ),
         ),
@@ -245,13 +257,12 @@ class Home extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: (){
-                    homeController.modelName.value= "%";
-                    homeController.getAll();
+                    homeController.getAllModels();
                   },
                   child: Container(
                     color: Colors.transparent,
                     width: MediaQuery.of(context).size.width * 0.85,
-                    child:Text('All models', style: Theme.of(context).textTheme.headline3),
+                    child:Text(App_Localization.of(context).translate('all_models'), style: Theme.of(context).textTheme.headline3),
                   ),
                 ),
                 Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)
@@ -268,8 +279,6 @@ class Home extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: (){
-                          print(homeController.brands.length);
-                          print("homeController.brands.length");
                           homeController.chooseModel(index);
                         },
                         child: Container(
@@ -291,6 +300,7 @@ class Home extends StatelessWidget {
                 });
               },
             ),
+            SizedBox(height: 30)
           ],
         ),
       ),

@@ -41,12 +41,20 @@ class _CarsListState extends State<CarsList> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Get.back();
-        return carListController.openContactList.value = false;
+        if(carListController.openContactList.value == true){
+          return carListController.openContactList.value = false;
+        }else if (carListController.checkFilterOpen.value == true) {
+          return carListController.checkFilterOpen.value = false;
+        }else if (carListController.checkSortOpen.value == true){
+          return carListController.checkSortOpen.value = false;
+        } else{
+          Get.back();
+          return carListController.openContactList.value = false;
+        }
       },
       child: Scaffold(
         floatingActionButton: _floatButton(context),
-        floatingActionButtonLocation: Global.lang_code == 'en' ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,
+        //floatingActionButtonLocation: Global.lang_code == 'en' ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,
         body:Obx((){
           return  SafeArea(
             child: Stack(
@@ -259,13 +267,17 @@ class _CarsListState extends State<CarsList> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            backgroundColor: Colors.white,
-            maxRadius: 25,
-            child: carListController.myCars[index].companyImage == null ?
-            Image.asset('assets/images/car.png')
-                : Image.network(
-                carListController.myCars[index].companyImage,
+          Container(
+            width: MediaQuery.of(context).size.width * 0.1,
+            height:  MediaQuery.of(context).size.width * 0.1,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(width: 1,color:Color(0XFF202428).withOpacity(0.2)),
+              image: DecorationImage(
+                fit: BoxFit.contain,
+                image: NetworkImage(carListController.myCars[index].companyImage.replaceAll("http://127.0.0.1:3004/",Api.url),)
+              )
             ),
           ),
           const SizedBox(width: 10),
@@ -310,6 +322,7 @@ class _CarsListState extends State<CarsList> {
                 isLoop: false,
               ),
             ),
+            /*
             carListController.myCars[index].avilable == 0
                 ? Stack(
                   alignment: Alignment.center,
@@ -334,6 +347,7 @@ class _CarsListState extends State<CarsList> {
 
               ],
             ) : Text('')
+             */
           ],
         ),
         const SizedBox(height: 10),
@@ -371,7 +385,7 @@ class _CarsListState extends State<CarsList> {
                 if(carListController.myCars[index].avilable == 1){
                   carListController.getContactData(carListController.myCars[index].companyId);
                   carListController.bookOnWhatsappCheck = true.obs;
-                  //_contactsMenu(index);
+                  carListController.carIndex.value = index;
                   carListController.openContactList.value = true;
                 }
               },
@@ -960,147 +974,6 @@ class _CarsListState extends State<CarsList> {
     );
   }
 
-  _contactsMenu(index){
-    return showModalBottomSheet(
-      barrierColor: Theme.of(context).dividerColor.withOpacity(0.3),
-      backgroundColor: Theme.of(context).backgroundColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(10),
-          ),
-        ),
-      context: context,
-      builder: (context){
-        return Container(
-          height: 250,
-          child: Obx((){
-            return Stack(
-              children: [
-                carListController.loadingContact.value
-                    ? Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor,),)
-                    : Text(''),
-                carListController.companyContactsList.isEmpty
-                ? Center(
-                  child: Text(
-                    App_Localization.of(context).translate('there_are_no_people_at_the_moment'),
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                )
-                : Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 5,),
-                    Text(
-                      App_Localization.of(context).translate('contact_list'),
-                      style: Theme.of(context).textTheme.headline3,
-                    ),
-                    Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),indent: 80,endIndent: 80,height: 10,),
-                    Container(
-                      height: 180,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: carListController.companyContactsList.length,
-                        itemBuilder: (context,index){
-                          return  Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () async{
-
-                              },
-                              child: Container(
-                                height: 130,
-                                width: 300-20,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Theme.of(context).dividerColor.withOpacity(0.1),
-                                      spreadRadius: 1,
-                                      blurRadius: 5,
-                                      offset: Offset(2, 2),
-                                    )
-                                  ]
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).backgroundColor,
-                                          borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomLeft: Radius.circular(10)),
-                                          image: DecorationImage(
-                                              image: NetworkImage(Api.url + 'uploads/' + carListController.companyContactsList[index].image),
-                                              fit: BoxFit.cover
-                                          )
-                                      ),
-                                    ),),
-                                    Expanded(
-                                      flex: 1,
-                                      child:   Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(topRight: Radius.circular(10),bottomRight: Radius.circular(10)),
-                                        color: Theme.of(context).backgroundColor,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  carListController.companyContactsList[index].name,
-                                                  style: Theme.of(context).textTheme.headline2,
-                                                  maxLines: 1,
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              carListController.companyContactsList[index].phone,
-                                              style: Theme.of(context).textTheme.headline3,
-                                              maxLines: 1,
-                                            ),
-
-                                            Text(
-                                              carListController.companyContactsList[index].languages,
-                                              style: Theme.of(context).textTheme.headline3,
-                                              textAlign: TextAlign.center,
-                                              maxLines: 2,
-                                            ),
-
-                                            SizedBox(width: 10),
-                                            Column(
-                                              children: [
-
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),),
-
-
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }),
-        );
-      }
-    );
-  }
-
   _showContactsList(context){
     return GestureDetector(
       onTap: (){
@@ -1131,8 +1004,10 @@ class _CarsListState extends State<CarsList> {
                           onTap: ()async{
                             if(carListController.bookOnWhatsappCheck!.value){
                               await carListController.bookOnWhatsapp(context, index);
+                              carListController.trackerRecord(index);
                             }else{
                               carListController.bookOnPhone(index);
+                              carListController.trackerRecord(index);
                             }
                           },
                           child: Container(
@@ -1240,7 +1115,7 @@ class _CarsListState extends State<CarsList> {
       child: Center(
         child: Text(
             sentence,
-          style: Theme.of(context).textTheme.headline3,
+          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15),
         ),
       ),
       decoration: BoxDecoration(

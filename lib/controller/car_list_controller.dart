@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
+import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/model/car.dart';
 import 'package:crc_version_1/model/person_for_company.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,6 +54,8 @@ class CarListController extends GetxController{
   final isDialOpen = ValueNotifier(false);
   RxBool? bookOnWhatsappCheck;
   RxBool openContactList = false.obs;
+  RxInt sortCheckValue = 0.obs;
+  RxInt carIndex = 0.obs;
 
 
   @override
@@ -189,8 +192,8 @@ class CarListController extends GetxController{
       brandListCheck![index] = false;
       brandFilter.value = '%';
     }else{
-      selectedBrand = introController.brands[index].id.obs;
-      modelListCheck = List.filled(introController.brands[selectedBrand.value].models.length, false).obs;
+      selectedBrand.value = index;
+      modelListCheck = List.filled(introController.brands[index].models.length, false).obs;
       for(int i = 0; i < brandListCheck!.length; i++){
         brandListCheck![i] = false;
       }
@@ -232,6 +235,9 @@ class CarListController extends GetxController{
     modelFilter.value  = "%";
     yearFilter.value  = "%";
     colorFilter.value  = "%";
+    brand.value = "%";
+    model.value = "%";
+    sortCheckValue.value = 0;
     priceFilter.value  = "99999999999";
     sortFilter.value  = "ASC";
     brandListCheck = List.filled(introController.brands.length, false).obs;
@@ -246,30 +252,44 @@ class CarListController extends GetxController{
 
   getFilterResult(){
     checkFilterOpen.value = false;
-    getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
+    sortCheckValue.value = 0;
+    getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, myValue!.value.toString(), sortFilter.value);
 
   }
 
   selectSortType(value){
     if(sortFilter.value == 'ASC' && value == 1){
       sortFilter.value = 'DES';
-      getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
+      checkSortOpen.value = false;
+      sortCheckValue.value = 0;
+      if(brandFilter.value != '%' || modelFilter.value != '%'){
+        getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, myValue!.value.toString(), sortFilter.value);
+      }else{
+        getCarsList(yearFilter.value, brand.value, model.value, colorFilter.value, myValue!.value.toString(), sortFilter.value);
+      }
     }else if(sortFilter.value != 'ASC' && value == 0){
       sortFilter.value = 'ASC';
-      getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, priceFilter.value, sortFilter.value);
+      sortCheckValue.value = 1;
+      checkSortOpen.value = false;
+      if(brandFilter.value != '%' || modelFilter.value != '%'){
+        getCarsList(yearFilter.value, brandFilter.value, modelFilter.value, colorFilter.value, myValue!.value.toString(), sortFilter.value);
+      }else{
+        getCarsList(yearFilter.value, brand.value, model.value, colorFilter.value, myValue!.value.toString(), sortFilter.value);
+      }
     }
   }
 
   bookOnWhatsapp(context, index)async{
+    String message = "Hi I Need Car ${myCars[carIndex.value].title} ${myCars[carIndex.value].year}";
     if (Platform.isAndroid){
-      if(await canLaunch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse('Hi')}")){
-        await launch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse('Hi')}");
+      if(await canLaunch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse(message)}")){
+        await launch("https://wa.me/${companyContactsList[index].phone}/?text=${Uri.parse(message)}");
       }else{
         App.error_msg(context, 'can\'t open Whatsapp');
       }
     }else if(Platform.isIOS){
-      if(await canLaunch("https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}")){
-        await launch( "https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse('Hi')}");
+      if(await canLaunch("https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse(message)}")){
+        await launch( "https://api.whatsapp.com/send?phone=${companyContactsList[index].phone.toString()}=${Uri.parse(message)}");
       }else{
         App.error_msg(context, 'can\'t open Whatsapp');
       }
@@ -287,6 +307,16 @@ class CarListController extends GetxController{
     }else if (Platform.isIOS){
       launch("tel://${companyContactsList[index].phone}");
     }
+  }
+
+  trackerRecord(index){
+    Api.check_internet().then((internet){
+      if (internet){
+        Api.tracker(Global.company_id.toString(), myCars[index].companyId.toString());
+      }else{
+
+      }
+    });
   }
 
   // openBookList(index,id){

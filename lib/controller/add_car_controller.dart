@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/app.dart';
@@ -50,8 +51,6 @@ class AddCarController extends GetxController{
   void onInit() {
     super.onInit();
     tempBrandsList.addAll(introController.brands);
-    selectBrandIndex = List.filled(introController.brands.length, false).obs;
-    //selectBrandIndex![0] = true;
 
     selectYearIndex = List.filled(10, false).obs;
     selectColorIndex = List.filled(introController.colors.length, false).obs;
@@ -65,7 +64,6 @@ class AddCarController extends GetxController{
     }
     tempBrandsList[index].selected.value = true;
     brand = tempBrandsList[index].title.obs;
-    selectBrandIndex![index] = true;
     brandIndex.value = introController.brands.indexOf(tempBrandsList[index]);
   }
 
@@ -121,15 +119,14 @@ class AddCarController extends GetxController{
   Future selectImage(context)async{
     _picker.pickMultiImage().then((value){
       if ((value!.length + imageList.length) > 8 && value.isNotEmpty){
-        App.info_msg(context, 'You can\'t upload more than 8 photos');
+        App.info_msg(context, App_Localization.of(context).translate('you_can_not_upload_more_than_eight_photos'));
         int listLength = imageList.length;
         for(int i = 0; i < (8 - listLength); i++){
           print(i);
           imageList.add(File(value[i].path));
         }
       } else if (value.length > 8){
-        App.info_msg(context, 'You can\'t upload more than 8 photos');
-        for(int i = 0; i < 8; i++){
+        App.info_msg(context, App_Localization.of(context).translate('you_can_not_upload_more_than_eight_photos'));        for(int i = 0; i < 8; i++){
           imageList.add(File(value[i].path));
         }
       }else{
@@ -148,7 +145,7 @@ class AddCarController extends GetxController{
   forwardStep(context){
       if(currentStep.value == 0){
         if(brand == null){
-          App.info_msg(context, 'You should select brand');
+          App.info_msg(context, App_Localization.of(context).translate('you_should_select_brand'));
         }else{
           brand!.value = introController.brands[brandIndex.value].title;
           brandId = introController.brands[brandIndex.value].id;
@@ -161,7 +158,7 @@ class AddCarController extends GetxController{
       else if(currentStep.value == 1){
         print(model);
       if(model == null){
-          App.info_msg(context, 'You should select model');
+          App.info_msg(context, App_Localization.of(context).translate('you_should_select_model'));
         }else{
           model = introController.brands[brandIndex.value].models[modelIndex.value].title.obs;
           modelId = introController.brands[brandIndex.value].models[modelIndex.value].id;
@@ -171,52 +168,60 @@ class AddCarController extends GetxController{
       }
       else if(currentStep.value == 2){
         if(yearModelSelect == null){
-          App.info_msg(context, 'you must choose year model');
+          App.info_msg(context, App_Localization.of(context).translate('you_should_select_year'));
         }else{
           currentStep.value +=1;
         }
       }
       else if(currentStep.value == 3){
         if(colorSelect == null){
-          App.info_msg(context, 'You must choose color');
+          App.info_msg(context, App_Localization.of(context).translate('you_should_select_color'));
         }else{
           currentStep.value +=1;
         }
       }
       else if(currentStep.value == 4){
         if(emiratesSelect == null){
-          App.info_msg(context, 'You must choose emirates');
+          App.info_msg(context, App_Localization.of(context).translate('you_should_select_emirates'));
         }else{
           currentStep.value += 1;
         }
       }
       else if(currentStep.value == 5){
         if(imageList.length < 3){
-          App.info_msg(context, 'You must upload at least three photos');
+          App.info_msg(context, App_Localization.of(context).translate('you_should_upload_three_photos'));
         }else{
           currentStep.value += 1;
         }
       }
       else if(currentStep.value == 6){
         if(carPrice.text.isEmpty){
-          App.info_msg(context, 'You must enter the price');
+          App.info_msg(context, App_Localization.of(context).translate('you_must_enter_the_price'));
         }else{
           /** Upload Information*/
           currentStep.value += 1;
+          tempBrandsList[brandIndex.value].selected.value = false;
+          tempModelsList[modelIndex.value].selected.value = false;
           FocusManager.instance.primaryFocus?.unfocus();
-          Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!);
           loadingUpload.value = true;
-          Future.delayed(Duration(milliseconds: 1500),(){
-            loadingUpload.value = false;
-            Get.off(()=>MyCarList());
+          Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!).then((value){
+            Future.delayed(Duration(milliseconds: 500)).then((value){
+              loadingUpload.value = false;
+              Get.off(()=>MyCarList());
+            });
           });
         }
       }
     }
 
   backwardStep(){
-    if(currentStep.value <= 0){
-
+    if(currentStep.value == 0){
+      tempBrandsList[brandIndex.value].selected.value = false;
+      Get.back();
+      if(model != null){
+        tempModelsList[modelIndex.value].selected.value = false;
+        model = null;
+      }
     }else{
       currentStep.value -=1;
     }

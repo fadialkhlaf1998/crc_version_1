@@ -58,18 +58,33 @@ class IntroView extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.45,
     child: Row(
         children: [
-          Expanded(
+          Global.lang_code == 'en'
+              ? Expanded(
             flex: 5,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.4,
               child: Image.asset('assets/images/english_title.png',fit: BoxFit.contain,),
             ),
-          ),
-          Expanded(
+          )
+              :  Expanded(
             flex: 1,
             child: Container(
               height: MediaQuery.of(context).size.height * 0.35,
-              child: Image.asset('assets/images/arabic_title.png'),
+                child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/arabic_title_light.png' ): Image.asset('assets/images/arabic_title.png'),
+            ),
+          ),
+          Global.lang_code == 'en'
+              ? Expanded(
+            flex: 1,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.35,
+              child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/arabic_title_light.png' ): Image.asset('assets/images/arabic_title.png'),            ),
+          )
+              :  Expanded(
+            flex: 5,
+            child: Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: Image.asset('assets/images/english_title.png',fit: BoxFit.contain,),
             ),
           ),
         ],

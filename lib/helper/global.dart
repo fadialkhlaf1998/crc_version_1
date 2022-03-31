@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:crc_version_1/model/login_info.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Global{
@@ -8,7 +9,7 @@ class Global{
   static bool remember_pass=false;
   static LoginInfo? loginInfo;
   static String remember_password="non";
-  static String companyImage = '';
+  static RxString companyImage = ''.obs;
   static String companyTitle = '';
   static String vip_phone_number = '+971553451555';
 

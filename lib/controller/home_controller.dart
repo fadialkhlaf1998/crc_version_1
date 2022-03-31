@@ -31,38 +31,51 @@ class HomeController extends GetxController{
     get_data();
   }
   get_data(){
-
     brands=introController.brands.obs;
     tempBrandsList.addAll(brands);
     colors=introController.colors.obs;
   }
 
   chooseBrand(index){
-    for(int i = 0; i < tempBrandsList.length; i++) {
-      tempBrandsList[i].selected.value = false;
-    }
-    tempBrandsList[index].selected.value = true;
+    // for(int i = 0; i < tempBrandsList.length; i++) {
+    //   tempBrandsList[i].selected.value = false;
+    // }
+    // tempBrandsList[index].selected.value = true;
+    FocusManager.instance.primaryFocus?.unfocus();
     brandName.value = tempBrandsList[index].title;
     brandIndex.value = brands.indexOf(tempBrandsList[index]);
-    tempModelsList.value = brands[brands.indexOf(tempBrandsList[index])].models;
+    tempModelsList = brands[brands.indexOf(tempBrandsList[index])].models.obs;
+    modelOption.value = true;
   }
 
   getAll(){
+    FocusManager.instance.primaryFocus?.unfocus();
     brandName.value= "%";
     modelName.value= "%";
     tempBrandsList[brandIndex.value].selected.value = false;
-    // carListController.brand = brandName;
-    // carListController.model = modelName;
+     carListController.brand = brandName;
+     carListController.model = modelName;
+    Get.to(()=>CarsList());
+  }
+
+  getAllModels(){
+    FocusManager.instance.primaryFocus?.unfocus();
+    modelName.value= "%";
+    carListController.brand = brandName;
+    carListController.model = modelName;
     Get.to(()=>CarsList());
   }
 
   goToBrandMenu(){
+    FocusManager.instance.primaryFocus?.unfocus();
+
     modelOption.value = false;
     tempBrandsList[brandIndex.value].selected.value = false;
     editingController.text = '';
   }
 
   chooseModel(index){
+    FocusManager.instance.primaryFocus?.unfocus();
     carListController.brand = brandName;
     carListController.model.value = brands[brandIndex.value].models[index].title;
     Get.to(()=>CarsList());
@@ -70,9 +83,6 @@ class HomeController extends GetxController{
 
   filterSearchResults(String query) {
     if(modelOption.value == false){
-      for(int i = 0; i <  tempBrandsList.length; i++){
-        tempBrandsList[i].selected.value = false;
-      }
       List<Brands> dummySearchList = <Brands>[];
       dummySearchList.addAll(brands);
       if(query.isNotEmpty) {
@@ -84,8 +94,6 @@ class HomeController extends GetxController{
         }
         tempBrandsList.clear();
         tempBrandsList.addAll(dummyListData);
-        print(tempBrandsList.length);
-
         return;
       } else {
         tempBrandsList.clear();
@@ -93,10 +101,11 @@ class HomeController extends GetxController{
 
       }
     }
-
     else if(modelOption.value == true){
       List<Models> dummySearchList = <Models>[];
       dummySearchList.addAll(brands[brandIndex.value].models);
+      print('///////////');
+      print(brands[brandIndex.value].models.length);
       if(query.isNotEmpty) {
         List<Models> dummyListData = <Models>[];
         for (var model in dummySearchList) {
@@ -108,6 +117,8 @@ class HomeController extends GetxController{
         tempModelsList.addAll(dummyListData);
         return;
       } else {
+        print('empty');
+        print(brands[brandIndex.value].models.length);
         tempModelsList.clear();
         tempModelsList.addAll(brands[brandIndex.value].models);
 

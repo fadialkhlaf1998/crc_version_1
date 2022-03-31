@@ -41,9 +41,8 @@ class IntroController extends GetxController{
           });
         }else{
           Api.login(Global.loginInfo!.email, Global.loginInfo!.pass).then((company) {
-
             Global.company_id = company.id;
-            Global.companyImage = company.profileImage;
+            Global.companyImage.value = company.profileImage;
             Global.companyTitle = company.title;
             Future.delayed(const Duration(milliseconds: 1000)).then((value) {
               Get.offAll(()=>Home());

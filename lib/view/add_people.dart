@@ -182,10 +182,10 @@ class AddPeople extends StatelessWidget {
                 color: Theme.of(context).backgroundColor,
                 boxShadow: [
                   BoxShadow(
-                    color: Theme.of(context).dividerColor.withOpacity(0.3),
+                    color: Theme.of(context).dividerColor.withOpacity(0.2),
                     spreadRadius: 1,
                     blurRadius: 7,
-                    offset: const Offset(0, -3), // changes position of shadow
+                    offset: const Offset(0, -2), // changes position of shadow
                   ),
                 ],
               ),

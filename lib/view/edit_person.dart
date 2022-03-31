@@ -349,6 +349,7 @@ class EditPerson extends StatelessWidget {
                     onChanged: (value){
                       editPersonController.getNewPhone(value);
                     },
+                    keyboardType: TextInputType.number,
                     controller: editPersonController.editingNumberController,
                     style:  TextStyle(color: Theme.of(context).dividerColor),
                     decoration: InputDecoration(
@@ -437,7 +438,7 @@ class EditPerson extends StatelessWidget {
                         Obx((){
                           return   GestureDetector(
                             onTap: (){
-                              editPersonController.changeLanguage(index);
+                              editPersonController.changeLanguage(context, index);
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.2,

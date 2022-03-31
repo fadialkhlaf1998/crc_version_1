@@ -38,8 +38,8 @@
   "mobile_number_is_required" : "Mobile number is required",
   "choose_the_rent_per_day" : "Choose the rent per day",
   "save" : "Save",
-  "price" : "Price",
-  "enter_the_price_you_went" : "Enter the price you went",
+  "price" : "Rent per day",
+  "enter_the_price_you_went" : "Enter the Rent you went",
   "hid_or_show" : "Hide or show",
   "brand" : "Brand",
   "car_model" : "Car Model",
@@ -68,7 +68,24 @@
   "saving_person_information" : "Saving person information",
   "wrong_email_password" : "Wrong email or password",
   "not_open_whatsapp" : "can't open Whatsapp",
-  "you_can_not_upload_than_eight_photos" : "you can't upload than 8 photos"
+  "you_can_not_upload_than_eight_photos" : "you can't upload than 8 photos",
+  "you_must_choose_the_brand_of_car" : "You must choose the brand of car",
+  "all_models" : "All models",
+  "you_should_select_brand" : "You should select brand",
+  "you_should_select_model" : "You should select model",
+  "you_should_select_year" : "You should select year",
+  "you_should_select_color" : "You should choose color",
+  "you_should_select_emirates" : "You should choose emirates",
+  "you_should_upload_three_photos" : "You must upload at least three photos",
+  "you_must_enter_the_price" : "You must enter the price",
+  "you_can_upload_just_eight_photos" : "You can upload just eight photos",
+  "you_can_not_upload_more_than_eight_photos" : "You can't upload more than eight photos",
+  "there_are_no_car_with_this_name" : "There are no cars with this name",
+  "there_are_no_car_with_this_model_name" : "There are no car with this model name",
+  "you_should_select_language" : "You should select one or more languages",
+  "you_do_not_own_any_car_with_that_name" : "You don't own any car with that name",
+  "there_must_be_at_least_one_language" : "There must be at least one language",
+  "skip" : "Skip"
 
 
 }

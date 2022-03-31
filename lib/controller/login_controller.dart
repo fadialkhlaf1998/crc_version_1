@@ -29,7 +29,7 @@ class LoginController extends GetxController{
               Global.loginInfo!.pass=password.text;
               Store.Save_login();
               Global.company_id=company.id;
-              Global.companyImage = company.profileImage;
+              Global.companyImage.value = company.profileImage;
               Global.companyTitle = company.title;
               Get.offAll(()=>Home());
             }else if (company.id == -1){
@@ -67,16 +67,17 @@ class LoginController extends GetxController{
   }
 
   whatsAppButton(context)async{
+    String message = "Hello\n\nI want to join to Car Rental Club (CRC)\n\nThanks";
     if (Platform.isAndroid){
-      if(await canLaunch("https://wa.me/${Global.vip_phone_number}/?text=${Uri.parse('')}")){
-        await launch("https://wa.me/${Global.vip_phone_number}/?text=${Uri.parse('')}");
+      if(await canLaunch("https://wa.me/${Global.vip_phone_number}/?text=${Uri.parse(message)}")){
+        await launch("https://wa.me/${Global.vip_phone_number}/?text=${Uri.parse(message)}");
 
       }else{
         App.error_msg(context, App_Localization.of(context).translate('not_open_whatsapp'));
       }
     }else if(Platform.isIOS) {
-      if (await canLaunch("https://api.whatsapp.com/send?phone=${Global.vip_phone_number}=${Uri.parse('')}")) {
-        await launch("https://api.whatsapp.com/send?phone=${Global.vip_phone_number}=${Uri.parse('')}");
+      if (await canLaunch("https://api.whatsapp.com/send?phone=${Global.vip_phone_number}=${Uri.parse(message)}")) {
+        await launch("https://api.whatsapp.com/send?phone=${Global.vip_phone_number}=${Uri.parse(message)}");
       } else {
         App.error_msg(context, App_Localization.of(context).translate('not_open_whatsapp'));
       }

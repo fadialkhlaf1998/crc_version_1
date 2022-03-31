@@ -38,8 +38,8 @@
   "mobile_number_is_required" : "رقم الهاتف المحمول مطلوب",
   "choose_the_rent_per_day" : "اختر الآجار اليومي",
   "save" : "حفظ",
-  "price" : "السعر",
-  "enter_the_price_you_went" : "اختر السعر الذي تريده",
+  "price" : "الآجار",
+  "enter_the_price_you_went" : "اختر الآجار الذي تريده",
   "hid_or_show" : "إخفاء أو إظهار",
   "brand" : "الماركة",
   "car_model" : "نوع السيارة",
@@ -53,7 +53,7 @@
   "arabic" : "العربية",
   "english" : "English",
   "price_low_to_high" : "السعر من الأقل إلى الأعلى",
-  "price_high_to_low" : "السعر من الأعلى إالى الأقل",
+  "price_high_to_low" : "السعر من الأعلى إلى الأقل",
   "close" : "إغلاق",
   "edit" : "تعديل",
   "delete" : "حذف",
@@ -68,7 +68,26 @@
   "saving_person_information" : "جاري حفظ معلومات الشخص",
   "wrong_email_password" : "البريد الالكتروني او كلمة المرور خطأ",
   "not_open_whatsapp" : "لا يمكن فتح الواتساب",
-  "you_can_not_upload_than_eight_photos" : "لا تستطيع تحميل أكثر من ثمانية صور"
+  "you_can_not_upload_than_eight_photos" : "لا تستطيع تحميل أكثر من ثمانية صور",
+  "you_must_choose_the_brand_of_car" : "يجب اختيار ماركة السيارة",
+  "all_models" : "كل الأصناف",
+  "you_should_select_brand" : "يجب اختيار ماركة السيارة",
+  "you_should_select_model" : "يجب اختيار نوع السيارة",
+  "you_should_select_year" : "يجب اختيار السنة",
+  "you_should_select_color" : "يجب اختيار اللون",
+  "you_should_select_emirates" : "يجب اختيار الإمارة",
+  "you_should_upload_three_photos" : "يجب رفع على الأقل ثلاثة صور",
+  "you_must_enter_the_price" : "يجب إدخال الإيجار اليومي",
+  "you_can_upload_just_eight_photos" : "تسطيع فقط رفع ثمانية صور",
+  "you_can_not_upload_more_than_eight_photos" : "لا تستطيع رفع أكثر من ثمانية صور",
+  "there_are_no_car_with_this_name" : "لا يوجد سيارات بهذا الاسم",
+  "there_are_no_car_with_this_model_name" : "لا يوجد سيارات بهذا النوع",
+  "you_should_select_language" : "يجب اختيار لغة أو أكثر",
+  "you_do_not_own_any_car_with_that_name" : "لا تملك أي سيارة بهذا الاسم",
+  "there_must_be_at_least_one_language" : "يجب أن يكون هناك على الأقل لغة واحدة",
+  "skip" : "تخطي"
+
+
 
 
 

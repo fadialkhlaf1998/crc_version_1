@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/add_people_controller.dart';
 import 'package:crc_version_1/controller/people_list_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
+import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/view/people_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -116,7 +118,7 @@ class EditPersonController extends GetxController{
 
   }
 
-  changeLanguage(index){
+  changeLanguage(context, index){
     if(languageCheck![index] == false){
       languageCheck![index] = true;
       myLanguage.add(staticLanguages[index]);
@@ -125,13 +127,24 @@ class EditPersonController extends GetxController{
         print(myLanguage[i]);
       }
     }else if(languageCheck![index] == true){
-      languageCheck![index] = false;
-      myLanguage.removeAt(myLanguage.indexOf(staticLanguages[index]));
-      print(myLanguage.length);
-      for(int i = 0 ; i < myLanguage.length; i++){
-        print('-' + myLanguage[i] + '-');
+      int count = 0;
+      for (int i = 0; i < languageCheck!.length; i++){
+        if (languageCheck![i] == true){
+          count++;
+        }
+      }
+      if (count == 1){
+        App.info_msg(context, App_Localization.of(context).translate('there_must_be_at_least_one_language'));
+      }else{
+        languageCheck![index] = false;
+        myLanguage.removeAt(myLanguage.indexOf(staticLanguages[index]));
+        print(myLanguage.length);
+        for(int i = 0 ; i < myLanguage.length; i++){
+          print('-' + myLanguage[i] + '-');
+        }
       }
     }
+
     if(myLanguage.isEmpty){
       languages = ''.obs;
     }else{

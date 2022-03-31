@@ -23,29 +23,38 @@ class Settings extends StatelessWidget {
     onWillPop: () async{
       if(settingController.isDialOpen.value){
         settingController.isDialOpen.value = false;
+        settingController.carListController.updateCarList();
         return false;
       }else{
+        settingController.carListController.updateCarList();
         return true;
       }
     },
     child: Obx((){
       return  Scaffold(
         floatingActionButton: _floatButton(context),
+        //floatingActionButtonLocation: Global.lang_code == 'en' ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,
         body: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _header(context),
-              _body(context),
-              _footer(context),
-              const SizedBox(height: 1),
-            ],
+          child: SingleChildScrollView(
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _header(context),
+                  _body(context),
+                  _footer(context),
+                  const SizedBox(height: 1),
+                ],
+              ),
+            ),
           ),
         ),
       );
     }),
   );
+
 
   _floatButton(context){
     return  SpeedDial(
@@ -64,7 +73,8 @@ class Settings extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           labelBackgroundColor: Theme.of(context).backgroundColor,
           child: Icon(Icons.people,color: Colors.white,),
-          label: 'Add people',
+          //label:  'Add people',
+          labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people',context) : null,
           labelStyle: Theme.of(context).textTheme.headline3,
         ),
         SpeedDialChild(
@@ -73,13 +83,40 @@ class Settings extends StatelessWidget {
           },
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.directions_car,color: Colors.white,),
-          label: 'Add car',
+          labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car',context) : null,
           labelStyle: Theme.of(context).textTheme.headline3,
           labelBackgroundColor: Theme.of(context).backgroundColor,
         ),
       ],
     );
   }
+
+  _floatButtonText(sentence,context){
+    return Container(
+      width: 90,
+      height: 30,
+      child: Center(
+        child: Text(
+          sentence,
+          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15),
+        ),
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).dividerColor.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 2,
+            offset: Offset(0, 2), // changes position of shadow
+          ),
+        ],
+      ),
+    );
+  }
+
+
   _header(context){
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,23 +154,40 @@ class Settings extends StatelessWidget {
                     print('show');
                     showAlertDialog(context);
                   },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.22,
-                    height: MediaQuery.of(context).size.width * 0.22,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4)),
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.contain,
-                        image: NetworkImage(Global.companyImage)
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.22,
+                        height: MediaQuery.of(context).size.width * 0.22,
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Theme.of(context).dividerColor.withOpacity(0.4)),
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: NetworkImage(Global.companyImage.value.replaceAll("http://127.0.0.1:3004/", Api.url))
+                            )
+                        ),
+                      ),
+                      settingController.imageLoading.value ?
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.22,
+                        height: MediaQuery.of(context).size.width * 0.22,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.4),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Container(
+                          child: CircularProgressIndicator(strokeWidth: 3),
+                        ),
                       )
-                    ),
-                  ),
+                      :Text(''),
+                    ],
+                  )
                 ),
                 GestureDetector(
                   onTap: (){
-                    settingController.changeCompanyImage();
+                    settingController.updateImage();
                   },
                   child: Container(
                     width: MediaQuery.of(context).size.width * 0.07,
@@ -195,41 +249,113 @@ class Settings extends StatelessWidget {
           ),
         ),
         Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
-        Container(
-          width: MediaQuery.of(context).size.width * 0.9,
-          height: 45,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(App_Localization.of(context).translate('language'), style: Theme.of(context).textTheme.bodyText1,),
-              DropdownButton(
-                hint: Text(
-                  Global.lang_code == 'en'
-                      ? App_Localization.of(context).translate('english')
-                      : App_Localization.of(context).translate('arabic'),
+        GestureDetector(
+          onTap: (){
+            settingController.openLanguagesList.value = !settingController.openLanguagesList.value;
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: 45,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AnimatedContainer(
+                          width: settingController.openLanguagesList.value ? 0 : MediaQuery.of(context).size.width * 0.8,
+                          duration: Duration(milliseconds: 800),
+                          curve: Curves.fastOutSlowIn,
+                          child: Text(App_Localization.of(context).translate('language'),maxLines: 1, style: Theme.of(context).textTheme.bodyText1,)
+                        ),
+                        AnimatedContainer(
+                          duration: Duration(milliseconds: 800),
+                          curve: Curves.fastOutSlowIn,
+                          width: settingController.openLanguagesList.value ? MediaQuery.of(context).size.width * 0.9 : 0,
+                          height: 45,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: settingController.languages.length,
+                            itemBuilder: (context, index){
+                              return GestureDetector(
+                                onTap: (){
+                                      settingController.changeLanguage(context,settingController.languages[index]["id"].toString());
+                                      if(Global.lang_code == 'en'){
+                                        settingController.languagesCheck.value = [false,true];
+                                      }else{
+                                        settingController.languagesCheck.value = [true,false];
+                                      }
+                                      Future.delayed(Duration(milliseconds: 1000)).then((value){
+                                        settingController.openLanguagesList.value = false;
+                                      });
+
+                                },
+                                child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 10),
+                                    width: MediaQuery.of(context).size.width * 0.2,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        border: Border.all(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.3)),
+                                        borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    child: Center(
+                                      child:  Text(
+                                        Global.lang_code == 'en' ? settingController.languages[index]["name"] : settingController.ArabicLanguages[index]["name"],
+                                        style: settingController.languagesCheck[index]
+                                            ? TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)
+                                            : TextStyle(color: Theme.of(context).dividerColor,fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+
+                        /*
+                  DropdownButton(
+                    hint: Text(
+                      Global.lang_code == 'en'
+                          ? App_Localization.of(context).translate('english')
+                          : App_Localization.of(context).translate('arabic'),
+                    ),
+                    value: settingController.languages[0][Global.lang_code],
+                    style: TextStyle(color: Colors.red,fontSize: 17),
+                    dropdownColor: Theme.of(context).backgroundColor,
+                    icon: Icon(Icons.arrow_forward_ios, size: 20,color: Theme.of(context).dividerColor,),
+                    items: settingController.languages.map((items) {
+                      return DropdownMenuItem(
+                        value: items["id"],
+                        child: Text(items["name"],style: Theme.of(context).textTheme.headline3),
+                      );
+                    }).toList(),
+                    onChanged: (newValue) {
+                      print(newValue);
+                      settingController.changeLanguage(context,newValue!.toString());
+                      if(newValue == "en"){
+                        settingController.currentLanguage.value = settingController.languages[0]["name"];
+                      }else{
+                        settingController.currentLanguage.value = settingController.languages[1]["name"];
+                      }
+                    },
+                  ),
+                   */
+                      ],
+                    ),
+                  ),
                 ),
-                value: settingController.languages[0][Global.lang_code],
-                style: TextStyle(color: Colors.red,fontSize: 17),
-                dropdownColor: Theme.of(context).backgroundColor,
-                icon: Icon(Icons.arrow_forward_ios, size: 20,color: Theme.of(context).dividerColor,),
-                items: settingController.languages.map((items) {
-                  return DropdownMenuItem(
-                    value: items["id"],
-                    child: Text(items["name"],style: Theme.of(context).textTheme.headline3),
-                  );
-                }).toList(),
-                onChanged: (newValue) {
-                  print(newValue);
-                  settingController.changeLanguage(context,newValue!.toString());
-                  if(newValue == "en"){
-                    settingController.currentLanguage.value = settingController.languages[0]["name"];
-                  }else{
-                    settingController.currentLanguage.value = settingController.languages[1]["name"];
-                  }
-                },
-              ),
-            ],
-          ),
+                AnimatedSwitcher(
+                  duration: Duration(milliseconds: 500),
+                  child: !settingController.openLanguagesList.value ? Icon(Icons.arrow_forward_ios) : Icon(Icons.close),
+                ),
+              ],
+            )
+          )
         ),
         Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
         GestureDetector(
@@ -320,29 +446,37 @@ class Settings extends StatelessWidget {
       child: Text(App_Localization.of(context).translate('close'),style: Theme.of(context).textTheme.headline3,),
       onPressed: () {
         Get.back();
+        //print(Global.companyImage);
       },
     );
 
     Widget editButton = TextButton(
       child: Text(App_Localization.of(context).translate("edit"),style: Theme.of(context).textTheme.headline3,),
       onPressed: () {
-
+        settingController.updateImage();
+        Get.back();
       },
     );
 
     AlertDialog alert = AlertDialog(
       contentPadding: EdgeInsets.zero,
       backgroundColor: Theme.of(context).backgroundColor,
-      content: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.4))
-        ),
-        width: MediaQuery.of(context).size.width * 0.5,
-        height: MediaQuery.of(context).size.width * 0.5,
-        child: Image.network(Global.companyImage,fit: BoxFit.contain,),
-      ),
+      content: Obx((){
+        return Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.4)),
+            image: DecorationImage(
+                fit: BoxFit.cover,
+              image: NetworkImage(Global.companyImage.value.replaceAll("http://127.0.0.1:3004/", Api.url))
+            )
+          ),
+          width: MediaQuery.of(context).size.width * 0.5,
+          height: MediaQuery.of(context).size.width * 0.5,
+
+        );
+      }),
       actionsAlignment: MainAxisAlignment.spaceBetween,
       actions: [
         editButton,
