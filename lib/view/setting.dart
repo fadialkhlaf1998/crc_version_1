@@ -441,7 +441,6 @@ class Settings extends StatelessWidget {
   }
 
   showAlertDialog(BuildContext context) {
-
     Widget closeButton = TextButton(
       child: Text(App_Localization.of(context).translate('close'),style: Theme.of(context).textTheme.headline3,),
       onPressed: () {
@@ -468,7 +467,7 @@ class Settings extends StatelessWidget {
               color: Colors.white,
               border: Border.all(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.4)),
             image: DecorationImage(
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               image: NetworkImage(Global.companyImage.value.replaceAll("http://127.0.0.1:3004/", Api.url))
             )
           ),
