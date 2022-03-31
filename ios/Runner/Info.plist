@@ -8,6 +8,8 @@
         <string>https</string>
         <string>http</string>
     </array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>My description about why I need this capability</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
