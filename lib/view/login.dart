@@ -1,6 +1,7 @@
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/login_controller.dart';
 import 'package:crc_version_1/helper/global.dart';
+import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,7 @@ class LogIn extends StatelessWidget {
           return SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height *0.96,
+              height: MediaQuery.of(context).size.height *0.92,
               child: loginController.loading.value ?
               Container(
                 child: Lottie.asset('assets/images/Animation.json'),
@@ -56,7 +57,17 @@ class LogIn extends StatelessWidget {
           children: [
             /**Logo*/
             Global.lang_code == 'en'
+                ? MyTheme.isDarkTheme.value
                 ? Container(
+              width: MediaQuery.of(context).size.width * 0.4,
+              height: 100,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/logo_dark.png')
+                  )
+              ),
+            )
+                : Container(
               width: MediaQuery.of(context).size.width * 0.4,
               height: 100,
               decoration: const BoxDecoration(
@@ -132,12 +143,13 @@ class LogIn extends StatelessWidget {
                 keyboardType: TextInputType.text,
               ),
             ),
+            const SizedBox(height: 10),
             Container(
               width: MediaQuery.of(context).size.width * 0.9,
               //height: 90,
               child: TextFormField(
                   style: Theme.of(context).textTheme.headline3,
-                  obscureText: loginController.showPassword.value ? true : false,
+                  obscureText: !loginController.showPassword.value ? true : false,
                   obscuringCharacter: '*',
                   controller: loginController.password,
                   validator: (pass) {
@@ -153,7 +165,7 @@ class LogIn extends StatelessWidget {
                     errorStyle: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),
                     prefixIcon:
                     Icon(Icons.vpn_key, color: Theme.of(context).primaryColor),
-                    suffixIcon: loginController.showPassword.value
+                    suffixIcon: !loginController.showPassword.value
                         ? GestureDetector(
                       onTap: (){
                         loginController.showPassword.value = !loginController.showPassword.value;
@@ -178,7 +190,7 @@ class LogIn extends StatelessWidget {
                   ),
                   keyboardType: TextInputType.visiblePassword),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 50),
             Container(
               height: 55,
               width: MediaQuery.of(context).size.width * 0.9,
