@@ -153,37 +153,41 @@ class EditPersonController extends GetxController{
 
   }
 
-  savePersonInformation(){
-    loading.value = true;
-    Api.check_internet().then((internet){
-      if(internet){
-        if(newImage.isNotEmpty){
-          personImage[0] = File(newImage[0].path);
-        }
-        Api.updatePersonInformation(
-            name!.value,
-            phone!.value,
-            languages!.value,
-            Global.company_id.toString(),
-            personId.toString(),
-            personImage[0],
-            checkImageChange.value
-        ).then((value){
-          if(value == true){
-            loading.value = false;
-            Get.back();
-            peopleListController.getInfo(Global.company_id);
-          }else{
-            loading.value = false;
+  savePersonInformation(context){
+    if (editingNameController!.text.isEmpty){
+      App.info_msg(context, App_Localization.of(context).translate('name_cant_be_empty'));
+    }else if (editingNumberController!.text.isEmpty){
+      App.info_msg(context, App_Localization.of(context).translate('number_cant_be_empty'));
+    }else{
+      loading.value = true;
+      Api.check_internet().then((internet){
+        if(internet){
+          if(newImage.isNotEmpty){
+            personImage[0] = File(newImage[0].path);
           }
-        });
-      }else{
-        loading.value = false;
-      }
-    });
-    //loading.value = false;
+          Api.updatePersonInformation(
+              name!.value,
+              phone!.value,
+              languages!.value,
+              Global.company_id.toString(),
+              personId.toString(),
+              personImage[0],
+              checkImageChange.value
+          ).then((value){
+            if(value == true){
+              loading.value = false;
+              Get.back();
+              peopleListController.getInfo(Global.company_id);
+            }else{
+              loading.value = false;
+            }
+          });
+        }else{
+          loading.value = false;
+        }
+      });
+    }
   }
-
 
 
 }

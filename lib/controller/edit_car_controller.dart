@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/controller/my_car_list_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
@@ -154,7 +155,7 @@ class EditCarController extends GetxController{
              }else{
                print('Error Update');
                loading.value = false;
-               App.error_msg(context, 'Something went wrong');
+               App.error_msg(context, App_Localization.of(context).translate('something_went_wrong'));
              }
            });
      }

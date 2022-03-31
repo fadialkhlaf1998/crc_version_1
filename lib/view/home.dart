@@ -24,37 +24,48 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    // _checkVersion(context);
-    return Obx((){
-      return Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 30,),
-                _header(context),
-                const SizedBox(height: 30,),
-                _search(context),
-                const SizedBox(height: 30,),
-                AnimatedSwitcher(
-                  duration: Duration(milliseconds: 300),
-                  child: !homeController.modelOption.value ?
-                   homeController.tempBrandsList.isEmpty
-                       ? Text(App_Localization.of(context).translate('there_are_no_car_with_this_name'))
-                       : _brandBody(context)
-                       : AnimatedSwitcher(
-                    duration: Duration(milliseconds: 0),
-                    child: homeController.tempModelsList.isEmpty
-                        ? Text(App_Localization.of(context).translate('there_are_no_car_with_this_model_name'))
-                        : _modelsBody(context),
-                  )
-                ),
-              ],
+    return WillPopScope(
+      onWillPop: ()async{
+        if (homeController.modelOption.value){
+          homeController.modelOption.value = false;
+          return false;
+        }else{
+          Get.back();
+          return true;
+        }
+      },
+      child: Obx((){
+        return Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 30,),
+                  _header(context),
+                  const SizedBox(height: 30,),
+                  _search(context),
+                  const SizedBox(height: 30,),
+                  AnimatedSwitcher(
+                    duration: Duration(milliseconds: 300),
+                    child: !homeController.modelOption.value ?
+                     homeController.tempBrandsList.isEmpty
+                         ? Text(App_Localization.of(context).translate('there_are_no_car_with_this_name'))
+                         : _brandBody(context)
+                         : AnimatedSwitcher(
+                      duration: Duration(milliseconds: 0),
+                      child: homeController.tempModelsList.isEmpty
+                          ? Text(App_Localization.of(context).translate('there_are_no_car_with_this_model_name'))
+                          : _modelsBody(context),
+                    )
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 
 

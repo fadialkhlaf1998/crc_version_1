@@ -16,6 +16,7 @@ class LoginController extends GetxController{
   var loading = false.obs;
   var submited = false.obs;
   var sign_up_option = false.obs;
+  RxBool showPassword = false.obs;
 
   submite(BuildContext context){
     loading.value = true;

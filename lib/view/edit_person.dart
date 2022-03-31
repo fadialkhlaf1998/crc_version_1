@@ -510,7 +510,7 @@ class EditPerson extends StatelessWidget {
       child: Center(
         child: GestureDetector(
           onTap: (){
-           editPersonController.savePersonInformation();
+           editPersonController.savePersonInformation(context);
           },
           child: Container(
             width: MediaQuery.of(context).size.width * 0.5,

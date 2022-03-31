@@ -99,12 +99,12 @@ class LogIn extends StatelessWidget {
     return Form(
       key: formGlobalKey,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.3,
+        //height: MediaQuery.of(context).size.height * 0.34,
         child: Column(
           children: [
             Container(
              width: MediaQuery.of(context).size.width * 0.9,
-              height: 80,
+              //height: 90,
               child: TextFormField(
                 style: Theme.of(context).textTheme.headline3,
                 controller: loginController.username,
@@ -134,10 +134,10 @@ class LogIn extends StatelessWidget {
             ),
             Container(
               width: MediaQuery.of(context).size.width * 0.9,
-              height: 80,
+              //height: 90,
               child: TextFormField(
                   style: Theme.of(context).textTheme.headline3,
-                  obscureText: true,
+                  obscureText: loginController.showPassword.value ? true : false,
                   obscuringCharacter: '*',
                   controller: loginController.password,
                   validator: (pass) {
@@ -153,6 +153,19 @@ class LogIn extends StatelessWidget {
                     errorStyle: TextStyle(color: Colors.red,fontWeight: FontWeight.bold),
                     prefixIcon:
                     Icon(Icons.vpn_key, color: Theme.of(context).primaryColor),
+                    suffixIcon: loginController.showPassword.value
+                        ? GestureDetector(
+                      onTap: (){
+                        loginController.showPassword.value = !loginController.showPassword.value;
+                      },
+                        child: Icon(Icons.visibility_outlined, color: Theme.of(context).primaryColor))
+                        : GestureDetector(
+                      onTap: (){
+                        loginController.showPassword.value = !loginController.showPassword.value;
+
+                      },
+                      child:  Icon(Icons.visibility_off_outlined, color: Theme.of(context).primaryColor),
+                    ),
                     focusedBorder: UnderlineInputBorder(
                       borderSide: BorderSide(width: 1, color: Theme.of(context).dividerColor),
                     ),

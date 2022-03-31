@@ -71,7 +71,7 @@ class AddPeopleController extends GetxController{
     }
     else if(currentStep.value == 0){
       if( username.text.isEmpty){
-        App.info_msg(context, 'Name can\'t be empty');
+        App.info_msg(context, App_Localization.of(context).translate('name_cant_be_empty'));
       }else{
         currentStep.value +=1;
       }

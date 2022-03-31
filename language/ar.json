@@ -36,10 +36,10 @@
   "mobile_number" : "رقم الموبايل",
   "enter_your_mobile_number" : "أدخل رقم هاتفك المحمول",
   "mobile_number_is_required" : "رقم الهاتف المحمول مطلوب",
-  "choose_the_rent_per_day" : "اختر الآجار اليومي",
+  "choose_the_rent_per_day" : "أدخل الآجار اليومي",
   "save" : "حفظ",
   "price" : "الآجار",
-  "enter_the_price_you_went" : "اختر الآجار الذي تريده",
+  "enter_the_price_you_went" : "أدخل الآجار الذي تريده",
   "hid_or_show" : "إخفاء أو إظهار",
   "brand" : "الماركة",
   "car_model" : "نوع السيارة",
@@ -76,7 +76,7 @@
   "you_should_select_year" : "يجب اختيار السنة",
   "you_should_select_color" : "يجب اختيار اللون",
   "you_should_select_emirates" : "يجب اختيار الإمارة",
-  "you_should_upload_three_photos" : "يجب رفع على الأقل ثلاثة صور",
+  "you_should_upload_three_photos" : "يجب إضافة على الأقل ثلاثة صور",
   "you_must_enter_the_price" : "يجب إدخال الإيجار اليومي",
   "you_can_upload_just_eight_photos" : "تسطيع فقط رفع ثمانية صور",
   "you_can_not_upload_more_than_eight_photos" : "لا تستطيع رفع أكثر من ثمانية صور",
@@ -85,7 +85,13 @@
   "you_should_select_language" : "يجب اختيار لغة أو أكثر",
   "you_do_not_own_any_car_with_that_name" : "لا تملك أي سيارة بهذا الاسم",
   "there_must_be_at_least_one_language" : "يجب أن يكون هناك على الأقل لغة واحدة",
-  "skip" : "تخطي"
+  "skip" : "تخطي",
+  "something_went_wrong" : "حدث خطأ ما",
+  "name_cant_be_empty" : "الاسم لا يمكن أن يكون فارغ",
+  "number_cant_be_empty" : "رقم الموبايل لا يمكن أن يكون فارغ",
+  "mobile_number_is_necessary" : "الرقم لا يمكن أن يكون فارغ",
+  "saving_your_person_information" : "جاري حفظ معلومات الشخص"
+
 
 
 

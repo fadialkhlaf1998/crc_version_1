@@ -36,7 +36,7 @@
   "mobile_number" : "Mobile number",
   "enter_your_mobile_number" : "Enter your mobile number",
   "mobile_number_is_required" : "Mobile number is required",
-  "choose_the_rent_per_day" : "Choose the rent per day",
+  "choose_the_rent_per_day" : "Enter the rent per day",
   "save" : "Save",
   "price" : "Rent per day",
   "enter_the_price_you_went" : "Enter the Rent you went",
@@ -85,7 +85,12 @@
   "you_should_select_language" : "You should select one or more languages",
   "you_do_not_own_any_car_with_that_name" : "You don't own any car with that name",
   "there_must_be_at_least_one_language" : "There must be at least one language",
-  "skip" : "Skip"
+  "skip" : "Skip",
+  "something_went_wrong" : "Something went wrong",
+  "name_cant_be_empty" : "name can't be empty",
+  "number_cant_be_empty" : "mobile number can't be empty",
+  "mobile_number_is_necessary" : "Mobile number is necessary",
+  "saving_your_person_information" : "Saving your person information"
 
 
 }

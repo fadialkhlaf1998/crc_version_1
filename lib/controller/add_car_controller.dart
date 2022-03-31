@@ -201,7 +201,7 @@ class AddCarController extends GetxController{
           /** Upload Information*/
           currentStep.value += 1;
           tempBrandsList[brandIndex.value].selected.value = false;
-          tempModelsList[modelIndex.value].selected.value = false;
+        //  tempModelsList[modelIndex.value].selected.value = false;
           FocusManager.instance.primaryFocus?.unfocus();
           loadingUpload.value = true;
           Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!).then((value){

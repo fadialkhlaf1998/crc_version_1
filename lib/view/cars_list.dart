@@ -4,7 +4,6 @@ import 'package:crc_version_1/controller/home_controller.dart';
 import 'package:crc_version_1/controller/intro_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
-import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
 import 'package:crc_version_1/view/setting.dart';
@@ -764,9 +763,7 @@ class _CarsListState extends State<CarsList> {
                                maxLines: 1,
                                overflow: TextOverflow.ellipsis,
                                style: TextStyle(
-                                   color: !carListController.modelListCheck![index] == true
-                                       ? Theme.of(context).dividerColor
-                                   : Theme.of(context).backgroundColor,
+                                   color: Theme.of(context).dividerColor,
                                    fontSize: 12,
                                    fontWeight: FontWeight.bold),),
                            ),
@@ -1091,7 +1088,7 @@ class _CarsListState extends State<CarsList> {
           labelBackgroundColor: Theme.of(context).backgroundColor,
           child: Icon(Icons.people,color: Colors.white,),
           //label:  'Add people',
-          labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people') : null,
+         // labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people') : null,
           labelStyle: Theme.of(context).textTheme.headline3,
         ),
         SpeedDialChild(
@@ -1100,7 +1097,7 @@ class _CarsListState extends State<CarsList> {
           },
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.directions_car,color: Colors.white,),
-          labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car') : null,
+         // labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car') : null,
           labelStyle: Theme.of(context).textTheme.headline3,
           labelBackgroundColor: Theme.of(context).backgroundColor,
         ),

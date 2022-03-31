@@ -45,7 +45,17 @@ class HomeController extends GetxController{
     brandName.value = tempBrandsList[index].title;
     brandIndex.value = brands.indexOf(tempBrandsList[index]);
     tempModelsList = brands[brands.indexOf(tempBrandsList[index])].models.obs;
+    carListController.modelListCheck = List.filled(tempModelsList.length, false).obs;
+    carListController.selectedBrand.value = index;
     modelOption.value = true;
+    carListController.brandListOpen.value = true;
+    carListController.brandFilter = brandName;
+    for(int i = 0; i < carListController.brandListCheck!.length; i++){
+      carListController.brandListCheck![i] = false;
+    }
+    carListController.brandListCheck![index] = true;
+    carListController.myValue!.value = 5000;
+
   }
 
   getAll(){
@@ -55,6 +65,11 @@ class HomeController extends GetxController{
     tempBrandsList[brandIndex.value].selected.value = false;
      carListController.brand = brandName;
      carListController.model = modelName;
+    for(int i = 0; i < carListController.brandListCheck!.length; i++){
+      carListController.brandListCheck![i] = false;
+    }
+    carListController.brandListOpen.value = false;
+    carListController.myValue!.value = 5000;
     Get.to(()=>CarsList());
   }
 
@@ -63,6 +78,10 @@ class HomeController extends GetxController{
     modelName.value= "%";
     carListController.brand = brandName;
     carListController.model = modelName;
+    for(int i = 0; i < carListController.modelListCheck!.length; i++){
+      carListController.modelListCheck![i] = false;
+    }
+    carListController.myValue!.value = 5000;
     Get.to(()=>CarsList());
   }
 
@@ -78,6 +97,12 @@ class HomeController extends GetxController{
     FocusManager.instance.primaryFocus?.unfocus();
     carListController.brand = brandName;
     carListController.model.value = brands[brandIndex.value].models[index].title;
+    for(int i = 0; i < carListController.modelListCheck!.length; i++){
+      carListController.modelListCheck![index] = false;
+    }
+    carListController.modelListCheck![index] = true;
+    carListController.modelFilter.value = brands[brandIndex.value].models[index].title;
+    carListController.myValue!.value = 5000;
     Get.to(()=>CarsList());
   }
 

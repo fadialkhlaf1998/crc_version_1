@@ -239,6 +239,7 @@ class CarListController extends GetxController{
     model.value = "%";
     sortCheckValue.value = 0;
     priceFilter.value  = "99999999999";
+    myValue!.value = 5000.0;
     sortFilter.value  = "ASC";
     brandListCheck = List.filled(introController.brands.length, false).obs;
     yearModelListCheck = List.filled(yearModelList.length, false).obs;
