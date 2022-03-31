@@ -305,9 +305,6 @@ class AddCar extends StatelessWidget {
                       return  GestureDetector(
                         onTap: (){
                           addCarController.selectBrand(index);
-                          print('////////////////////////////');
-                          print(addCarController.tempBrandsList[index].image);
-                          print('////////////////////////////');
                         },
                         child:  Container(
                           width: MediaQuery.of(context).size.width * 0.9,
@@ -802,7 +799,16 @@ class AddCar extends StatelessWidget {
                   labelText: App_Localization.of(context).translate('price'),
                   hintText: App_Localization.of(context).translate('enter_the_price_you_went'),
                   hintStyle: Theme.of(context).textTheme.headline4,
-                  suffixText: App_Localization.of(context).translate('aed'),
+                  //suffixText: App_Localization.of(context).translate('aed'),
+                  suffixIcon: GestureDetector(
+                    onTap: (){
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
+                      }
+                    },
+                    child: Icon(Icons.check),
+                  ),
                   suffixStyle: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)
                 ),
                 keyboardType: TextInputType.number,
