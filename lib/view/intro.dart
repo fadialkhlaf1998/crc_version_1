@@ -13,16 +13,19 @@ class IntroView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _header(),
-              _carImage(),
-              _title(context),
-            ],
+        child: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _header(),
+                _carImage(),
+                _title(context),
+              ],
+            ),
           ),
         ),
       ),

@@ -13,7 +13,7 @@ import 'package:path/path.dart';
 
 class Api {
 
-  static String url = "http://phpstack-548447-2482384.cloudwaysapps.com/";
+  static String url = "https://www.carrentalclub.ae/";
 
   static Future<bool> check_internet()async{
     // return false;
@@ -41,7 +41,8 @@ class Api {
       return Intro.fromJson(jsonDecode(jsondata));
     }
     else {
-    print(response.reasonPhrase);
+      print('-*********************-');
+      print(response.reasonPhrase);
     return Intro(brands: <Brands>[], colors: <Colors>[]);
     }
 
