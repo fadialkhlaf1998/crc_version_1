@@ -276,13 +276,13 @@ class _CarsListState extends State<CarsList> {
               shape: BoxShape.circle,
               border: Border.all(width: 1,color:Color(0XFF202428).withOpacity(0.2)),
               image: DecorationImage(
-                fit: BoxFit.contain,
+                fit: BoxFit.fitWidth,
                 image: NetworkImage(carListController.myCars[index].companyImage.replaceAll("http://127.0.0.1:3004/",Api.url),)
               )
             ),
           ),
           const SizedBox(width: 10),
-          Text(carListController.myCars[index].company,style: Theme.of(context).textTheme.headline3,),
+          Text(carListController.myCars[index].company,style: Theme.of(context).textTheme.headline2,),
         ],
       ),
     );

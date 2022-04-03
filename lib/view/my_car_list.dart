@@ -14,9 +14,6 @@ class MyCarList extends StatelessWidget {
   MyCarListController myCarListController = Get.put(MyCarListController());
   TextEditingController editingController = TextEditingController();
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Obx((){
@@ -150,44 +147,64 @@ class MyCarList extends StatelessWidget {
       child: Container(
         child: Center(
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Stack(
             children: [
-              Text(
-                myCarListController.tempCarList[index].brand
-                    + ' - ' + myCarListController.tempCarList[index].model,
-                maxLines: 2,
-                style: Theme.of(context).textTheme.headline3,
-              ),
-              Text(
-                App_Localization.of(context).translate('daily_rent') + ' ' + myCarListController.tempCarList[index].pricPerDay.toString()
-                + ' ' + App_Localization.of(context).translate('aed'),
-                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 15 ),
-              ),
-              Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.1),indent: 1,endIndent: 10,height: 10,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(App_Localization.of(context).translate('hid_or_show'),style: TextStyle(color: Theme.of(context).dividerColor, fontSize: 12, fontWeight: FontWeight.bold )),
-                Obx((){
-                  return  Container(
-                    height: 20,
-                    width: MediaQuery.of(context).size.width * 0.12,
-                    child: Transform.scale(
-                      scale: 0.85,
-                      child: Switch(
-                        activeColor: Theme.of(context).primaryColor,
-                        value: myCarListController.tempCarList[index].availableSwitch.value,
-                        onChanged: (bool value) {
+                  Text(
+                    myCarListController.tempCarList[index].brand
+                        + ' - ' + myCarListController.tempCarList[index].model,
+                    maxLines: 2,
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  Text(
+                    App_Localization.of(context).translate('daily_rent') + ' ' + myCarListController.tempCarList[index].pricPerDay.toString()
+                    + ' ' + App_Localization.of(context).translate('aed'),
+                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 15 ),
+                  ),
+                  SizedBox(height: 10,),
+                  Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.1),indent: 1,endIndent: 10,height: 10,),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     Text(App_Localization.of(context).translate('hid_or_show'),style: TextStyle(color: Theme.of(context).dividerColor, fontSize: 12, fontWeight: FontWeight.bold )),
+                  //
+                  //   ],
+                  // ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Obx((){
+                  return  GestureDetector(
+                    onTap: (){
                           myCarListController.changeAvailability(index);
-                        },
+                    },
+                    child: Container(
+                      height: 70,
+                      width: 70,
+                      child: Transform.scale(
+                          scale: 0.85,
+                          child: myCarListController.tempCarList[index].availableSwitch.value?Container(
+                            child: Image.asset("assets/images/on.png"),
+                          ):Container(
+                            child: Image.asset("assets/images/off.png"),
+                          )
+                        //
+                        // Switch(
+                        //   activeColor: Theme.of(context).primaryColor,
+                        //   value: myCarListController.tempCarList[index].availableSwitch.value,
+                        //   onChanged: (bool value) {
+                        //     myCarListController.changeAvailability(index);
+                        //   },
+                        // ),
                       ),
                     ),
                   );
                 }),
-                ],
               ),
             ],
           ),
