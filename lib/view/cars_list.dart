@@ -1114,7 +1114,7 @@ class _CarsListState extends State<CarsList> {
       child: Center(
         child: Text(
             sentence,
-          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15),
+          style: TextStyle(color: Colors.black,fontSize: 12),
         ),
       ),
       decoration: BoxDecoration(

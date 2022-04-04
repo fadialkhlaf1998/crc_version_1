@@ -73,8 +73,8 @@ class Settings extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           labelBackgroundColor: Theme.of(context).backgroundColor,
           child: Icon(Icons.people,color: Colors.white,),
-          //label:  'Add people',
-         // labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people',context) : null,
+          label:  'Add people',
+         labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people',context) : null,
           labelStyle: Theme.of(context).textTheme.headline3,
         ),
         SpeedDialChild(
@@ -83,7 +83,7 @@ class Settings extends StatelessWidget {
           },
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.directions_car,color: Colors.white,),
-        //  labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car',context) : null,
+         labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car',context) : null,
           labelStyle: Theme.of(context).textTheme.headline3,
           labelBackgroundColor: Theme.of(context).backgroundColor,
         ),
@@ -98,7 +98,7 @@ class Settings extends StatelessWidget {
       child: Center(
         child: Text(
           sentence,
-          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold,fontSize: 15),
+          style: TextStyle(color: Colors.black,fontSize: 12),
         ),
       ),
       decoration: BoxDecoration(
