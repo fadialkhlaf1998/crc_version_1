@@ -43,20 +43,11 @@ class SettingController extends GetxController{
       "id" : "en"
     },
     {
-      "name" : "Arabic",
-      "id" : "ar"
-    }
-  ];
-  List ArabicLanguages = [
-    {
-      "name" : "الإنكليزية",
-      "id" : "en"
-    },
-    {
       "name" : "العربية",
       "id" : "ar"
     }
   ];
+
 
   changeMode(BuildContext context){
     myTheme.value.toggleTheme();

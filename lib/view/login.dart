@@ -22,7 +22,7 @@ class LogIn extends StatelessWidget {
           return SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height *0.95,
+              height: MediaQuery.of(context).size.height *0.92,
               child: loginController.loading.value ?
               Container(
                 child: Lottie.asset('assets/images/Animation.json'),
@@ -38,7 +38,7 @@ class LogIn extends StatelessWidget {
                     duration: const Duration(milliseconds: 250),
                     child: !loginController.sign_up_option.value ? _inputInfo(context) :  _signUpOptions(context),
                   ),
-                  const SizedBox(height: 30,),
+                  const SizedBox(height: 10,),
                   _signUpButton(context),
                 ],
               )

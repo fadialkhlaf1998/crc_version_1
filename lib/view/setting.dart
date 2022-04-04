@@ -305,7 +305,7 @@ class Settings extends StatelessWidget {
                                     ),
                                     child: Center(
                                       child:  Text(
-                                        Global.lang_code == 'en' ? settingController.languages[index]["name"] : settingController.ArabicLanguages[index]["name"],
+                                        settingController.languages[index]["name"] ,
                                         style: settingController.languagesCheck[index]
                                             ? TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)
                                             : TextStyle(color: Theme.of(context).dividerColor,fontWeight: FontWeight.bold),

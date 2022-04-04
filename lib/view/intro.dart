@@ -13,11 +13,11 @@ class IntroView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
+        child: Center(
+          // physics: NeverScrollableScrollPhysics(),
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -58,7 +58,7 @@ class IntroView extends StatelessWidget {
   }
   _title(context){
     return Container(
-      height: MediaQuery.of(context).size.height * 0.45,
+      height: MediaQuery.of(context).size.height * 0.45-MediaQuery.of(context).padding.top,
     child: Row(
         children: [
           Global.lang_code == 'en'

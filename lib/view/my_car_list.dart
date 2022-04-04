@@ -145,39 +145,44 @@ class MyCarList extends StatelessWidget {
     return Expanded(
       flex: 3,
       child: Container(
+        width: MediaQuery.of(context).size.width*0.55,
         child: Center(
 
-          child: Stack(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    myCarListController.tempCarList[index].brand
-                        + ' - ' + myCarListController.tempCarList[index].model,
-                    maxLines: 2,
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                  Text(
-                    App_Localization.of(context).translate('daily_rent') + ' ' + myCarListController.tempCarList[index].pricPerDay.toString()
-                    + ' ' + App_Localization.of(context).translate('aed'),
-                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 15 ),
-                  ),
-                  SizedBox(height: 10,),
-                  Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.1),indent: 1,endIndent: 10,height: 10,),
-                  // Row(
-                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: [
-                  //     Text(App_Localization.of(context).translate('hid_or_show'),style: TextStyle(color: Theme.of(context).dividerColor, fontSize: 12, fontWeight: FontWeight.bold )),
-                  //
-                  //   ],
-                  // ),
-                ],
+              Container(
+                width: MediaQuery.of(context).size.width*0.53-70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      myCarListController.tempCarList[index].brand
+                          + ' - ' + myCarListController.tempCarList[index].model,
+                      maxLines: 2,
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                    Text(
+                      App_Localization.of(context).translate('daily_rent') + ' ' + myCarListController.tempCarList[index].pricPerDay.toString()
+                      + ' ' + App_Localization.of(context).translate('aed'),
+                      style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold, fontSize: 15 ),
+                    ),
+                    // SizedBox(height: 10,),
+                    // Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.1),indent: 1,endIndent: 10,height: 10,),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //   crossAxisAlignment: CrossAxisAlignment.center,
+                    //   children: [
+                    //     Text(App_Localization.of(context).translate('hid_or_show'),style: TextStyle(color: Theme.of(context).dividerColor, fontSize: 12, fontWeight: FontWeight.bold )),
+                    //
+                    //   ],
+                    // ),
+                  ],
+                ),
               ),
               Align(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.bottomRight,
                 child: Obx((){
                   return  GestureDetector(
                     onTap: (){

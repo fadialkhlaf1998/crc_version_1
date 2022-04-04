@@ -272,8 +272,8 @@ class _CarsListState extends State<CarsList> {
             width: MediaQuery.of(context).size.width * 0.1,
             height:  MediaQuery.of(context).size.width * 0.1,
             decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
+              // color: Colors.white,
+              // shape: BoxShape.circle,
               border: Border.all(width: 1,color:Color(0XFF202428).withOpacity(0.2)),
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
@@ -1089,8 +1089,8 @@ class _CarsListState extends State<CarsList> {
           backgroundColor: Theme.of(context).primaryColor,
           labelBackgroundColor: Theme.of(context).backgroundColor,
           child: Icon(Icons.people,color: Colors.white,),
-          //label:  'Add people',
-         // labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people') : null,
+          label:  'Add people',
+         labelWidget: Global.lang_code == 'en' ? _floatButtonText('Add people') : null,
           labelStyle: Theme.of(context).textTheme.headline3,
         ),
         SpeedDialChild(
@@ -1099,7 +1099,7 @@ class _CarsListState extends State<CarsList> {
           },
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.directions_car,color: Colors.white,),
-         // labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car') : null,
+         labelWidget:  Global.lang_code == 'en' ? _floatButtonText('Add car') : null,
           labelStyle: Theme.of(context).textTheme.headline3,
           labelBackgroundColor: Theme.of(context).backgroundColor,
         ),
