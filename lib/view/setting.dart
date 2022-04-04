@@ -98,7 +98,7 @@ class Settings extends StatelessWidget {
       child: Center(
         child: Text(
           sentence,
-          style: TextStyle(color: Colors.black,fontSize: 13),
+          style: TextStyle(color: Colors.black,fontSize: 13,fontWeight: FontWeight.bold),
         ),
       ),
       decoration: BoxDecoration(

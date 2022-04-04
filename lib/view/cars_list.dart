@@ -362,7 +362,7 @@ class _CarsListState extends State<CarsList> {
                 child: Text(App_Localization.of(context).translate('daily_rent') + '  ' + carListController.myCars[index].pricPerDay.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
               ),
               carListController.myCars[index].pricePerMonth == null ||  carListController.myCars[index].pricePerMonth == 0 ?
-              Text('') : Container(
+              SizedBox(height: 0,) : Container(
                 child: Text(App_Localization.of(context).translate('rent_per_month') + '  ' + carListController.myCars[index].pricePerMonth.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
               ),
               Container(
@@ -419,7 +419,7 @@ class _CarsListState extends State<CarsList> {
                       child: Image.asset('assets/images/whatsapp.png'),
                     ),
                     const SizedBox(width: 5,),
-                    Text(App_Localization.of(context).translate('book_on_whatsapp'), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 13),)
+                    Text(App_Localization.of(context).translate('book_on_whatsapp'), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 14),)
                   ],
                 ),
               ),
@@ -449,7 +449,7 @@ class _CarsListState extends State<CarsList> {
                  children: [
                    const Icon(Icons.phone,color: Colors.white,),
                    const SizedBox(width: 5),
-                   Text(App_Localization.of(context).translate('call_us_to_book'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 13),)
+                   Text(App_Localization.of(context).translate('call_us_to_book'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 14),)
                  ],
                ),
              ),
@@ -1128,7 +1128,7 @@ class _CarsListState extends State<CarsList> {
       child: Center(
         child: Text(
             sentence,
-          style: TextStyle(color: Colors.black,fontSize: 13),
+          style: TextStyle(color: Colors.black,fontSize: 13, fontWeight: FontWeight.bold),
         ),
       ),
       decoration: BoxDecoration(
