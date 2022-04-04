@@ -796,7 +796,7 @@ class AddCar extends StatelessWidget {
                       borderSide: BorderSide(width: 1, color: Theme.of(context).dividerColor)
                   ),
                   labelStyle: Theme.of(context).textTheme.bodyText2,
-                  labelText: App_Localization.of(context).translate('price'),
+                  labelText: '* ' + App_Localization.of(context).translate('price') + ' ('+ App_Localization.of(context).translate('required') + ') ',
                   hintText: App_Localization.of(context).translate('enter_the_price_you_went'),
                   hintStyle: Theme.of(context).textTheme.headline4,
                   //suffixText: App_Localization.of(context).translate('aed'),
@@ -810,6 +810,49 @@ class AddCar extends StatelessWidget {
                     child: Icon(Icons.check),
                   ),
                   suffixStyle: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            SizedBox(height: 50),
+            Text(App_Localization.of(context).translate('enter_the_rent_per_month'),style: Theme.of(context).textTheme.headline2,),
+            Container(
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: 80,
+              child: TextFormField(
+                style: Theme.of(context).textTheme.headline3,
+                controller: addCarController.carPricePerMonth,
+                validator: (price) {
+                  if (price!.isEmpty) {
+                    return App_Localization.of(context).translate(
+                        'mobile_number_is_required');
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                    errorStyle: const TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.bold),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(width: 1, color: Theme.of(context).dividerColor),
+                    ),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+                    ),
+                    labelStyle: Theme.of(context).textTheme.bodyText2,
+                    labelText: App_Localization.of(context).translate('rent_per_month')+ ' (' + App_Localization.of(context).translate('optional') + ')',
+                    hintText: App_Localization.of(context).translate('enter_the_rent_per_month') ,
+                    hintStyle: Theme.of(context).textTheme.headline4,
+                    //suffixText: App_Localization.of(context).translate('aed'),
+                    suffixIcon: GestureDetector(
+                      onTap: (){
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
+                      },
+                      child: Icon(Icons.check),
+                    ),
+                    suffixStyle: TextStyle(color: Theme.of(context).primaryColor,fontWeight: FontWeight.bold)
                 ),
                 keyboardType: TextInputType.number,
               ),

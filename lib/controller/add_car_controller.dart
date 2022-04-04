@@ -18,6 +18,7 @@ class AddCarController extends GetxController{
   TextEditingController search = TextEditingController();
   TextEditingController searchModel = TextEditingController();
   TextEditingController carPrice = TextEditingController();
+  TextEditingController carPricePerMonth = TextEditingController();
   RxList<bool>? selectBrandIndex;
   RxList<bool>? selectModelIndex;
   RxList<bool>? selectYearIndex;
@@ -25,6 +26,7 @@ class AddCarController extends GetxController{
   RxList<bool>? selectEmiratesIndex;
   RxInt brandIndex = 0.obs;
   RxInt modelIndex = 0.obs;
+  RxDouble pricePerMonth = 0.0.obs;
   List<int> yearModelList = List.filled(10, 0).obs;
   List<String> emirates = ['Dubai', 'Abu Dhabi', 'Ajman', 'Dubai Eye', 'Ras Al Khaimah','Sharjah','Umm Al Quwain'];
   List<String> emiratesPhoto = ['dubai.png', 'Abu_Dhabi.png', 'Ajman.png', 'Dubai_eye.png', 'Ras_Al_Khaimah.png', 'Sharjah.png','Umm_Al_Quwain.png'];
@@ -204,7 +206,7 @@ class AddCarController extends GetxController{
         //  tempModelsList[modelIndex.value].selected.value = false;
           FocusManager.instance.primaryFocus?.unfocus();
           loadingUpload.value = true;
-          Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!).then((value){
+          Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!, pricePerMonth.value).then((value){
             Future.delayed(Duration(milliseconds: 500)).then((value){
               loadingUpload.value = false;
               Get.off(()=>MyCarList());

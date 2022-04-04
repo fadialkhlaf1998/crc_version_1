@@ -216,6 +216,7 @@ class EditCar extends StatelessWidget {
             _year(context),
             _color(context),
             _price(context),
+            _rentMonth(context),
             _location(context),
             _image(context)
           ],
@@ -354,6 +355,7 @@ class EditCar extends StatelessWidget {
                 SizedBox(
                   height: 45,
                   child: TextField(
+                    keyboardType: TextInputType.number,
                     controller: editCarController.editingController,
                     style:  TextStyle(color: Theme.of(context).dividerColor),
                     decoration: InputDecoration(
@@ -366,6 +368,90 @@ class EditCar extends StatelessWidget {
                               currentFocus.unfocus();
                             }
                             editCarController.getNewPrice();
+                            },
+                            child: Icon(Icons.check,color: Theme.of(context).primaryColor,)
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1,color: Theme.of(context).primaryColor),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(width: 1,color: Theme.of(context).dividerColor.withOpacity(0.5)),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Divider(thickness: 1,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 10,)
+      ],
+    );
+  }
+  _rentMonth(context){
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: (){
+            FocusScopeNode currentFocus = FocusScope.of(context);
+            if (!currentFocus.hasPrimaryFocus) {
+              currentFocus.unfocus();
+            }
+            editCarController.editPricePerMonth();
+          },
+          child: Container(
+            //duration: Duration(milliseconds: 500),
+            color: Colors.transparent,
+            height:  40,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(App_Localization.of(context).translate('rent_per_month'),style: Theme.of(context).textTheme.bodyText1),
+                Row(
+                  children: [
+                    Text(editCarController.pricePerMonth!.value,
+                        style: TextStyle(fontSize: 15,color: Colors.grey)
+                    ),
+                    SizedBox(width: 5),
+                    AnimatedSwitcher(
+                      duration: Duration(milliseconds: 500),
+                      child: !editCarController.editPricePerMonthOpenList.value ? Icon(Icons.arrow_forward_ios,size: 15) :Icon(Icons.keyboard_arrow_down,size: 23),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        AnimatedContainer(
+          curve: Curves.fastOutSlowIn,
+          duration: Duration(milliseconds: 500),
+          height: !editCarController.editPricePerMonthOpenList.value ? 0 : MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width * 0.7,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const SizedBox(height: 15),
+                SizedBox(
+                  height: 45,
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    controller: editCarController.editingMonthlyRentController,
+                    style:  TextStyle(color: Theme.of(context).dividerColor),
+                    decoration: InputDecoration(
+                        labelText: App_Localization.of(context).translate('enter_new_price'),
+                        labelStyle: TextStyle(color: Theme.of(context).dividerColor),
+                        suffixIcon: GestureDetector(
+                            onTap: (){
+                              FocusScopeNode currentFocus = FocusScope.of(context);
+                              if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                              }
+                              editCarController.getNewPricePerMonth();
                             },
                             child: Icon(Icons.check,color: Theme.of(context).primaryColor,)
                         ),
@@ -448,7 +534,7 @@ class EditCar extends StatelessWidget {
                               alignment: Alignment.center,
                               children: [
                                 Container(
-                                  width: MediaQuery.of(context).size.width * 0.31,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   height: MediaQuery.of(context).size.height * 0.1,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10),
@@ -459,7 +545,7 @@ class EditCar extends StatelessWidget {
                                   ),
                                 ),
                                 Container(
-                                  width: MediaQuery.of(context).size.width * 0.31,
+                                  width: MediaQuery.of(context).size.width * 0.33,
                                   height: MediaQuery.of(context).size.height * 0.1,
                                   decoration: BoxDecoration(
                                     color: Colors.black.withOpacity(0.6),
@@ -474,7 +560,7 @@ class EditCar extends StatelessWidget {
                                           ? Theme.of(context).primaryColor
                                       : Colors.white,
                                       fontWeight:  editCarController.emiratesCheck[index] == true ? FontWeight.bold : null,
-                                      fontSize:  editCarController.emiratesCheck[index] == true ? 17 : 15),
+                                      fontSize:  editCarController.emiratesCheck[index] == true ? 15 : 13),
                                 )
                               ],
                             ),

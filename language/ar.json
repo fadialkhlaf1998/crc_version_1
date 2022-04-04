@@ -90,10 +90,12 @@
   "name_cant_be_empty" : "الاسم لا يمكن أن يكون فارغ",
   "number_cant_be_empty" : "رقم الموبايل لا يمكن أن يكون فارغ",
   "mobile_number_is_necessary" : "الرقم لا يمكن أن يكون فارغ",
-  "saving_your_person_information" : "جاري حفظ معلومات الشخص"
-
-
-
+  "saving_your_person_information" : "جاري حفظ معلومات الشخص",
+  "you_can_add_rent_per_month" : "يمكنك إضافة الآجار خلال الشهر",
+  "required" : "ضروري",
+  "optional" : "اختياري",
+  "enter_the_rent_per_month" : "أدخل الآجار الذي تريده",
+  "rent_per_month" : "الآجار الشهري"
 
 
 

@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:crc_version_1/app_localization.dart';
-import 'package:crc_version_1/helper/app.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:crc_version_1/helper/store.dart';
@@ -88,5 +86,4 @@ class _MyAppState extends State<MyApp> {
         home: IntroView()
     );
   }
-
 }

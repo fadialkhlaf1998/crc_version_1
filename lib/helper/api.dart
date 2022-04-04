@@ -125,7 +125,7 @@ class Api {
 
   }
 
-  static Future addCar(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images, String price,double companyId) async{
+  static Future addCar(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images, String price,double companyId,double price_per_month) async{
     var request = http.MultipartRequest('POST', Uri.parse(url + 'api/car'));
     request.fields.addAll({
       'title': brand + ' - ' + model,
@@ -139,7 +139,8 @@ class Api {
       'location': location,
       'color': color,
       'model_id': modelId,
-      'year': year
+      'year': year,
+      'price_per_month' : price_per_month.toString()
     });
 
     for (int i = 0; i < images.length; i++) {
@@ -328,8 +329,7 @@ class Api {
 
   }
 
-  static Future updateCarInfo(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images,List<File> newImagesList, String price,double companyId, String carId,String avilable )async{
-
+  static Future updateCarInfo(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images,List<File> newImagesList, String price,double companyId, String carId,String avilable,String pricePerMonth)async{
     var request = http.MultipartRequest('PUT', Uri.parse(url + 'api/car'));
     request.fields.addAll({
       'title': brand + ' - ' + model,
@@ -344,7 +344,8 @@ class Api {
       'color': color,
       'model_id': modelId,
       'year': year,
-      'id': carId
+      'id': carId,
+      'price_per_month' : pricePerMonth
     });
 
     for (int i = 0; i < images.length; i++) {
