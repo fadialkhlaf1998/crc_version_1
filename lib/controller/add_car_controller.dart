@@ -206,7 +206,7 @@ class AddCarController extends GetxController{
         //  tempModelsList[modelIndex.value].selected.value = false;
           FocusManager.instance.primaryFocus?.unfocus();
           loadingUpload.value = true;
-          Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!, pricePerMonth.value).then((value){
+          Api.addCar(brand!.value,brandId.toString(), model!.value, modelId.toString(), yearModelSelect!,colorSelect!,emiratesSelect!,imageList,carPrice.text,companyId!, carPricePerMonth.text).then((value){
             Future.delayed(Duration(milliseconds: 500)).then((value){
               loadingUpload.value = false;
               Get.off(()=>MyCarList());

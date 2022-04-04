@@ -125,7 +125,7 @@ class Api {
 
   }
 
-  static Future addCar(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images, String price,double companyId,double price_per_month) async{
+  static Future addCar(String brand,String brandId, String model,String modelId,String year, String color,String location, List<File> images, String price,double companyId,String price_per_month) async{
     var request = http.MultipartRequest('POST', Uri.parse(url + 'api/car'));
     request.fields.addAll({
       'title': brand + ' - ' + model,
@@ -140,7 +140,7 @@ class Api {
       'color': color,
       'model_id': modelId,
       'year': year,
-      'price_per_month' : price_per_month.toString()
+      'price_per_month' : price_per_month
     });
 
     for (int i = 0; i < images.length; i++) {
