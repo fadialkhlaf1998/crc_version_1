@@ -18,13 +18,15 @@ class IntroView extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height-MediaQuery.of(context).padding.top,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _header(),
-                _carImage(),
-                _title(context),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _header(),
+                  _carImage(),
+                  _title(context),
+                ],
+              ),
             ),
           ),
         ),
@@ -58,7 +60,7 @@ class IntroView extends StatelessWidget {
   }
   _title(context){
     return Container(
-      height: MediaQuery.of(context).size.height * 0.45-MediaQuery.of(context).padding.top,
+     // height: MediaQuery.of(context).size.height * 0.45-MediaQuery.of(context).padding.top,
     child: Row(
         children: [
           Global.lang_code == 'en'
