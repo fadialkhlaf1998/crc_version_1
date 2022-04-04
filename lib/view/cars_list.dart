@@ -272,9 +272,9 @@ class _CarsListState extends State<CarsList> {
             width: MediaQuery.of(context).size.width * 0.1,
             height:  MediaQuery.of(context).size.width * 0.1,
             decoration: BoxDecoration(
-              // color: Colors.white,
+               //color: Colors.white,
               // shape: BoxShape.circle,
-              border: Border.all(width: 1,color:Color(0XFF202428).withOpacity(0.2)),
+              //border: Border.all(width: 1,color:Color(0XFF202428).withOpacity(0.2)),
               image: DecorationImage(
                 fit: BoxFit.fitWidth,
                 image: NetworkImage(carListController.myCars[index].companyImage.replaceAll("http://127.0.0.1:3004/",Api.url),)
