@@ -9,6 +9,7 @@ import 'package:crc_version_1/view/add_people.dart';
 import 'package:crc_version_1/view/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -39,6 +40,10 @@ class _CarsListState extends State<CarsList> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return WillPopScope(
       onWillPop: () async {
         if(carListController.openContactList.value == true){

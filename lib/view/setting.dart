@@ -11,6 +11,7 @@ import 'package:crc_version_1/view/my_car_list.dart';
 import 'package:crc_version_1/view/people_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
@@ -20,6 +21,7 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => WillPopScope(
+
     onWillPop: () async{
       if(settingController.isDialOpen.value){
         settingController.isDialOpen.value = false;
@@ -31,6 +33,10 @@ class Settings extends StatelessWidget {
       }
     },
     child: Obx((){
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
       return  Scaffold(
         floatingActionButton: _floatButton(context),
         //floatingActionButtonLocation: Global.lang_code == 'en' ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,

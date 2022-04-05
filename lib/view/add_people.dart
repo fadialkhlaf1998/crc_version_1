@@ -4,6 +4,7 @@ import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/add_people_controller.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
@@ -14,6 +15,10 @@ class AddPeople extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return Obx(() {
       return Scaffold(
         body: SafeArea(
