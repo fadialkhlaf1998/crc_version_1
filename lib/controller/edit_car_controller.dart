@@ -21,6 +21,7 @@ class EditCarController extends GetxController{
   RxString? year;
   RxString? color;
   RxString? price;
+  RxString? pricePerMonth;
   RxString? carId;
   RxString? modelId;
   RxString? brandId;
@@ -44,9 +45,11 @@ class EditCarController extends GetxController{
   RxList<Brands> brands = <Brands>[].obs;
   RxString? image;
   RxBool editPriceOpenList = false.obs;
+  RxBool editPricePerMonthOpenList = false.obs;
   RxBool editLocationOpenList = false.obs;
   RxBool editImageList = false.obs;
   TextEditingController? editingController;
+  TextEditingController? editingMonthlyRentController;
   final ImagePicker _picker = ImagePicker();
 
 
@@ -58,11 +61,13 @@ class EditCarController extends GetxController{
    year = myCarListController.year;
    color = myCarListController.color;
    price = myCarListController.price;
+   pricePerMonth = myCarListController.pricePerMonth;
    carId = myCarListController.carId;
    brandId = myCarListController.brandId;
    modelId = myCarListController.modelId;
    available = myCarListController.available;
    editingController = TextEditingController(text: price!.value);
+   editingMonthlyRentController = TextEditingController(text: pricePerMonth!.value);
    location = myCarListController.location;
 
    for(int  i = 0; i < myCarListController.carImages.length; i++){
@@ -86,12 +91,21 @@ class EditCarController extends GetxController{
   editPrice(){
     editPriceOpenList.value = !editPriceOpenList.value;
   }
+
+  editPricePerMonth(){
+    editPricePerMonthOpenList.value = !editPricePerMonthOpenList.value;
+  }
+
   editLocation(){
     editLocationOpenList.value = !editLocationOpenList.value;
   }
 
   getNewPrice(){
     price!.value = editingController!.text;
+  }
+
+  getNewPricePerMonth(){
+    pricePerMonth!.value = editingMonthlyRentController!.text;
   }
 
   getNewLocation(index){
@@ -146,7 +160,9 @@ class EditCarController extends GetxController{
            editingController!.text.toString(),
            Global.company_id.toDouble(),
            carId!.value,
-           available!.value).then((value){
+           available!.value,
+           editingMonthlyRentController!.text.toString()
+       ).then((value){
              if(value == true){
                print('Update successfully');
                loading.value = false;

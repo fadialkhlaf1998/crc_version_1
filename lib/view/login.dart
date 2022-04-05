@@ -22,7 +22,7 @@ class LogIn extends StatelessWidget {
           return SingleChildScrollView(
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height *0.92,
+              //height: MediaQuery.of(context).size.height *0.92,
               child: loginController.loading.value ?
               Container(
                 child: Lottie.asset('assets/images/Animation.json'),
@@ -59,7 +59,7 @@ class LogIn extends StatelessWidget {
             Global.lang_code == 'en'
                 ? MyTheme.isDarkTheme.value
                 ? Container(
-              width: MediaQuery.of(context).size.width * 0.4,
+             // width: MediaQuery.of(context).size.width * 0.4,
               height: 100,
               decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -68,7 +68,7 @@ class LogIn extends StatelessWidget {
               ),
             )
                 : Container(
-              width: MediaQuery.of(context).size.width * 0.4,
+              width: 100,
               height: 100,
               decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -81,7 +81,7 @@ class LogIn extends StatelessWidget {
             Global.lang_code == 'en'
                 ? Image.asset('assets/images/lines.png')
             : Container(
-              width: MediaQuery.of(context).size.width * 0.4,
+              //width: MediaQuery.of(context).size.width * 0.4,
               height: 100,
               decoration: const BoxDecoration(
                   image: DecorationImage(

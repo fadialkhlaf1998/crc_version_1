@@ -71,7 +71,7 @@ class Home extends StatelessWidget {
 
   _header(BuildContext context){
     return Container(
-      height: MediaQuery.of(context).size.height  * 0.14,
+      height: MediaQuery.of(context).size.height  * 0.15,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,7 +95,7 @@ class Home extends StatelessWidget {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width * 0.35,
-                height: MediaQuery.of(context).size.height * 0.07,
+                height: MediaQuery.of(context).size.height * 0.06,
                 child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png'): Image.asset('assets/images/logo_light.png'),
               ),
               Text(App_Localization.of(context).translate('welcome_to_crc'), style: Theme.of(context).textTheme.headline2),

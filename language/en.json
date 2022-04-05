@@ -90,7 +90,12 @@
   "name_cant_be_empty" : "name can't be empty",
   "number_cant_be_empty" : "mobile number can't be empty",
   "mobile_number_is_necessary" : "Mobile number is necessary",
-  "saving_your_person_information" : "Saving your person information"
+  "saving_your_person_information" : "Saving your person information",
+  "you_can_add_rent_per_month" : "You can add rent per month",
+  "required" : "required",
+  "optional" : "optional",
+  "enter_the_rent_per_month" : "Enter the rent you went",
+  "rent_per_month" : "Monthly rent"
 
 
 }

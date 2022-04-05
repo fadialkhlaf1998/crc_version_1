@@ -7,6 +7,7 @@ import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
 import 'package:crc_version_1/view/setting.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -353,17 +354,30 @@ class _CarsListState extends State<CarsList> {
         ),
         const SizedBox(height: 10),
         Container(
-          child: Text(App_Localization.of(context).translate('daily_rent') + '  ' + carListController.myCars[index].pricPerDay.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
-        ),
-        Container(
-          width: MediaQuery.of(context).size.width  * 0.9,
+          width: MediaQuery.of(context).size.width * 0.9,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(carListController.myCars[index].brand + ' - ' + carListController.myCars[index].model, maxLines: 2,overflow: TextOverflow.ellipsis,style: Theme.of(context).textTheme.headline2),],)
-        ),
-        Container(
-          child: Text(App_Localization.of(context).translate('year') + ' : ' + carListController.myCars[index].year.toString(),style: Theme.of(context).textTheme.headline3),
+              Container(
+                child: Text(App_Localization.of(context).translate('daily_rent') + '  ' + carListController.myCars[index].pricPerDay.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
+              ),
+              carListController.myCars[index].pricePerMonth == null ||  carListController.myCars[index].pricePerMonth == 0 ?
+              SizedBox(height: 0,) : Container(
+                child: Text(App_Localization.of(context).translate('rent_per_month') + '  ' + carListController.myCars[index].pricePerMonth.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width  * 0.9,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(carListController.myCars[index].brand + ' - ' + carListController.myCars[index].model, maxLines: 2,overflow: TextOverflow.ellipsis,style: Theme.of(context).textTheme.headline2),],)
+              ),
+              Container(
+                child: Text(App_Localization.of(context).translate('year') + ' : ' + carListController.myCars[index].year.toString(),style: Theme.of(context).textTheme.headline3),
+              ),
+
+            ],
+          ),
         ),
 
         // Text(),
@@ -405,7 +419,7 @@ class _CarsListState extends State<CarsList> {
                       child: Image.asset('assets/images/whatsapp.png'),
                     ),
                     const SizedBox(width: 5,),
-                    Text(App_Localization.of(context).translate('book_on_whatsapp'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
+                    Text(App_Localization.of(context).translate('book_on_whatsapp'), style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 14),)
                   ],
                 ),
               ),
@@ -435,7 +449,7 @@ class _CarsListState extends State<CarsList> {
                  children: [
                    const Icon(Icons.phone,color: Colors.white,),
                    const SizedBox(width: 5),
-                   Text(App_Localization.of(context).translate('call_us_to_book'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)
+                   Text(App_Localization.of(context).translate('call_us_to_book'),style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 14),)
                  ],
                ),
              ),
@@ -1114,7 +1128,7 @@ class _CarsListState extends State<CarsList> {
       child: Center(
         child: Text(
             sentence,
-          style: TextStyle(color: Colors.black,fontSize: 12),
+          style: TextStyle(color: Colors.black,fontSize: 13, fontWeight: FontWeight.bold),
         ),
       ),
       decoration: BoxDecoration(

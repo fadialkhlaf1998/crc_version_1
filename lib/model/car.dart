@@ -21,6 +21,7 @@ class Car {
     required this.color,
     required this.modelId,
     required this.year,
+    required this.pricePerMonth,
     required this.brand,
     required this.model,
     required this.company,
@@ -42,6 +43,7 @@ class Car {
   String color;
   int modelId;
   int year;
+  dynamic pricePerMonth;
   String brand;
   String model;
   String company;
@@ -70,6 +72,7 @@ class Car {
       color: json["color"],
       modelId: json["model_id"],
       year: json["year"],
+      pricePerMonth: json["price_per_month"],
       brand:json["brand"]==null?"": json["brand"],
       model:json["model"]==null?"": json["model"],
       company:json["company"]==null?"": json["company"],
@@ -95,6 +98,7 @@ class Car {
     "color": color,
     "model_id": modelId,
     "year": year,
+    "price_per_month": pricePerMonth,
     "brand": brand,
     "model": model,
     "company": company,

@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:crc_version_1/controller/edit_car_controller.dart';
 import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/model/car.dart';
@@ -35,6 +32,7 @@ class MyCarListController extends GetxController{
   RxString? year;
   RxString? color;
   RxString? price;
+  RxString? pricePerMonth;
   RxString? carId;
   RxString? modelId;
   RxString? brandId;
@@ -152,6 +150,7 @@ class MyCarListController extends GetxController{
         year = tempCarList[index].year.toString().obs;
         color = tempCarList[index].color.obs;
         price = tempCarList[index].pricPerDay.toString().obs;
+        pricePerMonth = tempCarList[index].pricePerMonth.toString().obs;
         carId = tempCarList[index].id.toString().obs;
         brandId = tempCarList[index].brandId.toString().obs;
         available = tempCarList[index].avilable.toString().obs;
