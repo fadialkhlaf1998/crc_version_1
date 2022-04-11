@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/car_list_controller.dart';
 import 'package:crc_version_1/controller/home_controller.dart';
@@ -6,6 +8,7 @@ import 'package:crc_version_1/helper/api.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/view/add_car.dart';
 import 'package:crc_version_1/view/add_people.dart';
+import 'package:crc_version_1/view/login.dart';
 import 'package:crc_version_1/view/setting.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +63,7 @@ class _CarsListState extends State<CarsList> {
         }
       },
       child: Scaffold(
-        floatingActionButton: _floatButton(context),
+        floatingActionButton: Global.company_id==-1?Center():_floatButton(context),
         //floatingActionButtonLocation: Global.lang_code == 'en' ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,
         body:Obx((){
           return  SafeArea(
@@ -72,11 +75,45 @@ class _CarsListState extends State<CarsList> {
                 _filterInterface(context),
                 _sortInterface(context),
                 _appBar(context),
+                Global.company_id==-1?_guest_msg(context):Center(),
               ],
             ),
           );
         }),
       ),
+    );
+  }
+
+  _guest_msg(BuildContext context){
+    return Column(
+      children: [
+        SizedBox(height: MediaQuery.of(context).size.height * 0.07,),
+        GestureDetector(
+          onTap: (){
+            Get.to(()=>LogIn());
+          },
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.07,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 5,
+                  offset: const Offset(0, 2), // changes position of shadow
+                ),
+              ],
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                bottomRight: Radius.circular(10),
+              ),
+            ),
+            child: Center(child: Text(App_Localization.of(context).translate("please_login"),style: TextStyle(color: Colors.white))),
+          ),
+        )
+      ],
     );
   }
 
@@ -239,22 +276,25 @@ class _CarsListState extends State<CarsList> {
                 : ListView.builder(
                 itemCount: carListController.myCars.length,
                 itemBuilder:(context, index){
-                  return  Column(
-                    children: [
-                      Container(
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 10),
-                            _companyInfo(context, index),
-                            const SizedBox(height: 10),
-                            _carInfo(context,index),
-                            const SizedBox(height: 10),
-                            _contactOptions(context,index),
-                          ],
+                  return  Padding(
+                    padding: EdgeInsets.only(top:index==0&&Global.company_id==-1?MediaQuery.of(context).size.height * 0.07:0),
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              _companyInfo(context, index),
+                              const SizedBox(height: 10),
+                              _carInfo(context,index),
+                              const SizedBox(height: 10),
+                              _contactOptions(context,index),
+                            ],
+                          ),
                         ),
-                      ),
-                      Divider(thickness: 1, indent: 20,endIndent: 20,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
-                    ],
+                        Divider(thickness: 1, indent: 20,endIndent: 20,color: Theme.of(context).dividerColor.withOpacity(0.2),height: 25,),
+                      ],
+                    ),
                   );
                 }
             ),
@@ -363,12 +403,14 @@ class _CarsListState extends State<CarsList> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                child: Text(App_Localization.of(context).translate('daily_rent') + '  ' + carListController.myCars[index].pricPerDay.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
+            Container(
+                child: Global.company_id==-1?Text(App_Localization.of(context).translate('daily_rent') + '  ' + "????" + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),)
+                    :Text(App_Localization.of(context).translate('daily_rent') + '  ' + carListController.myCars[index].pricPerDay.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
               ),
               carListController.myCars[index].pricePerMonth == null ||  carListController.myCars[index].pricePerMonth == 0 ?
               SizedBox(height: 0,) : Container(
-                child: Text(App_Localization.of(context).translate('rent_per_month') + '  ' + carListController.myCars[index].pricePerMonth.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
+                child: Global.company_id==-1?Text(App_Localization.of(context).translate('rent_per_month') + '  ' + "????" + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),)
+                    :Text(App_Localization.of(context).translate('rent_per_month') + '  ' + carListController.myCars[index].pricePerMonth.toString() + ' ' + App_Localization.of(context).translate('aed'),style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 15, fontWeight: FontWeight.bold),),
               ),
               Container(
                   width: MediaQuery.of(context).size.width  * 0.9,

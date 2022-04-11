@@ -2,6 +2,7 @@ import 'package:crc_version_1/app_localization.dart';
 import 'package:crc_version_1/controller/login_controller.dart';
 import 'package:crc_version_1/helper/global.dart';
 import 'package:crc_version_1/helper/myTheme.dart';
+import 'package:crc_version_1/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -44,12 +45,28 @@ class LogIn extends StatelessWidget {
                     child: !loginController.sign_up_option.value ? _inputInfo(context) :  _signUpOptions(context),
                   ),
                   const SizedBox(height: 10,),
+                  _visiAsGuest(context),
                   _signUpButton(context),
                 ],
               )
             ),
           );
         }),
+      ),
+    );
+  }
+  _visiAsGuest(BuildContext context){
+    return GestureDetector(
+      onTap: (){
+        Get.offAll(()=>Home());
+      },
+      child: Container(
+          padding: const EdgeInsets.only(bottom:10,top: 15),
+          child: AnimatedSwitcher(
+            duration: const  Duration(milliseconds: 500),
+            child:
+            Text(App_Localization.of(context).translate('visit_as_guest'),style: Theme.of(context).textTheme.bodyText2,)
+          )
       ),
     );
   }

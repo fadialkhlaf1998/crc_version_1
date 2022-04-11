@@ -38,7 +38,7 @@ class Settings extends StatelessWidget {
         DeviceOrientation.portraitDown,
       ]);
       return  Scaffold(
-        floatingActionButton: _floatButton(context),
+        floatingActionButton: Global.company_id==-1?Center():_floatButton(context),
         //floatingActionButtonLocation: Global.lang_code == 'en' ? FloatingActionButtonLocation.endFloat : FloatingActionButtonLocation.startFloat,
         body: SafeArea(
           child: SingleChildScrollView(
@@ -152,7 +152,7 @@ class Settings extends StatelessWidget {
 
             ),
             SizedBox(height: 20),
-            Stack(
+            Global.company_id==-1?Center(): Stack(
               alignment: Alignment.bottomRight,
               children: [
                 GestureDetector(
@@ -219,7 +219,7 @@ class Settings extends StatelessWidget {
   _body(context){
     return Column(
       children: [
-        GestureDetector(
+        Global.company_id==-1?Center():GestureDetector(
           onTap: (){
             Get.to(()=> MyCarList());
           },
@@ -236,8 +236,8 @@ class Settings extends StatelessWidget {
             ),
           ),
         ),
-        Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
-        GestureDetector(
+        Global.company_id==-1?Center(): Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
+        Global.company_id==-1?Center():GestureDetector(
           onTap: (){
             Get.to(()=>PeopleList());
           },
@@ -254,7 +254,7 @@ class Settings extends StatelessWidget {
             ),
           ),
         ),
-        Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
+        Global.company_id==-1?Center():Divider(thickness: 1, indent: 25,endIndent: 25,color: Theme.of(context).dividerColor.withOpacity(0.3),),
         GestureDetector(
           onTap: (){
             settingController.openLanguagesList.value = !settingController.openLanguagesList.value;
@@ -430,7 +430,7 @@ class Settings extends StatelessWidget {
     );
   }
   _footer(context){
-    return GestureDetector(
+    return Global.company_id==-1?Center():GestureDetector(
       onTap: (){
         settingController.logout();
       },

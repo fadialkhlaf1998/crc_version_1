@@ -95,7 +95,9 @@
   "required" : "ضروري",
   "optional" : "اختياري",
   "enter_the_rent_per_month" : "أدخل الآجار الذي تريده",
-  "rent_per_month" : "الآجار الشهري"
+  "rent_per_month" : "الآجار الشهري",
+  "visit_as_guest":"الزيارة كضيف",
+  "please_login": "يرجى تسجيل الدخول لمعرفة الأسعار"
 
 
 
