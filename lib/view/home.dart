@@ -12,15 +12,16 @@ class Home extends StatelessWidget {
 
   HomeController homeController = Get.put(HomeController());
 
-  // _checkVersion(BuildContext context)async{
-  //   //todo change IDS
-  //   final newVersion = NewVersion(
-  //     iOSId: "com.Maxart.ZyoAe",
-  //     androidId: 'com.maxart.crc_version_1',
-  //   );
-  //   final state = await newVersion.getVersionStatus();
-  //   newVersion.showUpdateDialog(context: context, versionStatus: state!);
-  // }
+  _checkVersion(BuildContext context)async{
+    final newVersion = NewVersion(
+      iOSId: "com.Maxart.Crc",
+      androidId: 'com.maxart.crc_version_1',
+    );
+    final state = await newVersion.getVersionStatus();
+    if(state!.canUpdate){
+      newVersion.showUpdateDialog(context: context, versionStatus: state);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class Home extends StatelessWidget {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
-   // _checkVersion(context);
+   _checkVersion(context);
     return WillPopScope(
       onWillPop: ()async{
         if (homeController.modelOption.value){
