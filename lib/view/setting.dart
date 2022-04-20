@@ -289,11 +289,16 @@ class Settings extends StatelessWidget {
                             itemBuilder: (context, index){
                               return GestureDetector(
                                 onTap: (){
-                                      settingController.changeLanguage(context,settingController.languages[index]["id"].toString());
                                       if(Global.lang_code == 'en'){
-                                        settingController.languagesCheck.value = [false,true];
+                                        if (index == 1){
+                                          settingController.languagesCheck.value = [false,true];
+                                          settingController.changeLanguage(context,settingController.languages[index]["id"].toString());
+                                        }
                                       }else{
-                                        settingController.languagesCheck.value = [true,false];
+                                        if (index == 0){
+                                          settingController.languagesCheck.value = [true,false];
+                                          settingController.changeLanguage(context,settingController.languages[index]["id"].toString());
+                                        }
                                       }
                                       Future.delayed(Duration(milliseconds: 1000)).then((value){
                                         settingController.openLanguagesList.value = false;
@@ -322,35 +327,6 @@ class Settings extends StatelessWidget {
                             },
                           ),
                         ),
-
-                        /*
-                  DropdownButton(
-                    hint: Text(
-                      Global.lang_code == 'en'
-                          ? App_Localization.of(context).translate('english')
-                          : App_Localization.of(context).translate('arabic'),
-                    ),
-                    value: settingController.languages[0][Global.lang_code],
-                    style: TextStyle(color: Colors.red,fontSize: 17),
-                    dropdownColor: Theme.of(context).backgroundColor,
-                    icon: Icon(Icons.arrow_forward_ios, size: 20,color: Theme.of(context).dividerColor,),
-                    items: settingController.languages.map((items) {
-                      return DropdownMenuItem(
-                        value: items["id"],
-                        child: Text(items["name"],style: Theme.of(context).textTheme.headline3),
-                      );
-                    }).toList(),
-                    onChanged: (newValue) {
-                      print(newValue);
-                      settingController.changeLanguage(context,newValue!.toString());
-                      if(newValue == "en"){
-                        settingController.currentLanguage.value = settingController.languages[0]["name"];
-                      }else{
-                        settingController.currentLanguage.value = settingController.languages[1]["name"];
-                      }
-                    },
-                  ),
-                   */
                       ],
                     ),
                   ),

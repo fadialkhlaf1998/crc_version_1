@@ -622,7 +622,7 @@ class _CarsListState extends State<CarsList> {
       duration: const Duration(milliseconds: 800),
       curve: Curves.fastOutSlowIn,
       width: MediaQuery.of(context).size.width * 0.9,
-      height: carListController.yearListOpen.value ? MediaQuery.of(context).size.height * 0.11 : 30,
+      height: carListController.yearListOpen.value ? MediaQuery.of(context).size.height * 0.09 : 30,
       child: SingleChildScrollView(
         physics: !carListController.yearListOpen.value ? const NeverScrollableScrollPhysics() :null,
         child: Column(
@@ -699,7 +699,7 @@ class _CarsListState extends State<CarsList> {
       duration: Duration(milliseconds: 800),
       curve: Curves.fastOutSlowIn,
       width: MediaQuery.of(context).size.width * 0.9,
-      height: carListController.brandListOpen.value ? MediaQuery.of(context).size.height * 0.11 : 30,
+      height: carListController.brandListOpen.value ? MediaQuery.of(context).size.height * 0.09 : 30,
       child: SingleChildScrollView(
         physics: !carListController.brandListOpen.value ? const NeverScrollableScrollPhysics() : null,
         child: Column(
@@ -773,7 +773,7 @@ class _CarsListState extends State<CarsList> {
       duration: const Duration(milliseconds: 800),
       curve: Curves.fastOutSlowIn,
       width: MediaQuery.of(context).size.width * 0.9,
-      height: carListController.carModelListOpen.value ? MediaQuery.of(context).size.height * 0.11 : 30,
+      height: carListController.carModelListOpen.value ? MediaQuery.of(context).size.height * 0.09 : 30,
       child: SingleChildScrollView(
         physics: !carListController.carModelListOpen.value ? const NeverScrollableScrollPhysics() :null,
         child: Column(
@@ -826,7 +826,9 @@ class _CarsListState extends State<CarsList> {
                                maxLines: 1,
                                overflow: TextOverflow.ellipsis,
                                style: TextStyle(
-                                   color: Theme.of(context).dividerColor,
+                                   color: carListController.modelListCheck![index] == true
+                                       ? Theme.of(context).backgroundColor
+                                    : Theme.of(context).dividerColor,
                                    fontSize: 12,
                                    fontWeight: FontWeight.bold),),
                            ),
@@ -850,7 +852,7 @@ class _CarsListState extends State<CarsList> {
       duration: const Duration(milliseconds: 800),
       curve: Curves.fastOutSlowIn,
       width: MediaQuery.of(context).size.width * 0.9,
-      height: carListController.colorListOpen.value ? MediaQuery.of(context).size.height * 0.11 : 30,
+      height: carListController.colorListOpen.value ? MediaQuery.of(context).size.height * 0.09 : 30,
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -958,7 +960,7 @@ class _CarsListState extends State<CarsList> {
   _sortInterface(context){
     return AnimatedContainer(
       width: MediaQuery.of(context).size.width,
-      height: carListController.checkSortOpen.value ? MediaQuery.of(context).size.height  * 0.235 : 10,
+      height: carListController.checkSortOpen.value ? MediaQuery.of(context).size.height  * 0.2 : 10,
       decoration: BoxDecoration(
         color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.only(

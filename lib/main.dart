@@ -79,7 +79,6 @@ class _MyAppState extends State<MyApp> {
               return supportedLocale;
             }
           }
-
           return supportedLocales.first;
         },
 

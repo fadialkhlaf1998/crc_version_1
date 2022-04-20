@@ -101,9 +101,10 @@ class Home extends StatelessWidget {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width * 0.35,
-                height: MediaQuery.of(context).size.height * 0.06,
-                child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png'): Image.asset('assets/images/logo_light.png'),
+                height: MediaQuery.of(context).size.height * 0.04,
+                child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png',fit: BoxFit.contain,): Image.asset('assets/images/logo_light.png',fit: BoxFit.contain),
               ),
+              SizedBox(height: 7),
               Text(App_Localization.of(context).translate('welcome_to_crc'), style: Theme.of(context).textTheme.headline2),
               !homeController.modelOption.value ?
                 Text(App_Localization.of(context).translate('please_select_car_brand'), style: Theme.of(context).textTheme.bodyText2)
@@ -206,53 +207,59 @@ class Home extends StatelessWidget {
           physics: const ScrollPhysics(),
           child: Column(
             children: [
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      homeController.getAll();
-                    },
-                    child: Container(
-                      color: Colors.transparent,
-                      width: MediaQuery.of(context).size.width * 0.85,
-                      child:Text(App_Localization.of(context).translate('all_car'), style: Theme.of(context).textTheme.headline3),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.86,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        homeController.getAll();
+                      },
+                      child: Container(
+                        color: Colors.transparent,
+                        width: MediaQuery.of(context).size.width * 0.85,
+                        child:Text(App_Localization.of(context).translate('all_car'), style: Theme.of(context).textTheme.headline3),
+                      ),
                     ),
-                  ),
-                  Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)
-                ],
+                    Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1)
+                  ],
+                ),
               ),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: homeController.tempBrandsList.length,
-                itemBuilder: (context, index){
-                  return Obx((){
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        GestureDetector(
-                          onTap: (){
-                            homeController.chooseBrand(index);
-                          },
-                          child: Container(
-                            color: Colors.transparent,
-                            width: MediaQuery.of(context).size.width * 0.85,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                            child:Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(homeController.tempBrandsList[index].title, style: homeController.tempBrandsList[index].selected.value ? TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold) : Theme.of(context).textTheme.headline3),
-                               // homeController.tempBrandsList[index].selected.value ? Icon(Icons.check,size: 25, color: Theme.of(context).primaryColor) : Text(''),
-                              ],
+              Container(
+                width: MediaQuery.of(context).size.width * 0.86,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: homeController.tempBrandsList.length,
+                  itemBuilder: (context, index){
+                    return Obx((){
+                      return Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          GestureDetector(
+                            onTap: (){
+                              homeController.chooseBrand(index);
+                            },
+                            child: Container(
+                              color: Colors.transparent,
+                              width: MediaQuery.of(context).size.width * 0.85,
+                              height: MediaQuery.of(context).size.height * 0.04,
+                              child:Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(homeController.tempBrandsList[index].title, style: homeController.tempBrandsList[index].selected.value ? TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.bold) : Theme.of(context).textTheme.headline3),
+                                 // homeController.tempBrandsList[index].selected.value ? Icon(Icons.check,size: 25, color: Theme.of(context).primaryColor) : Text(''),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Divider(color: Theme.of(context).dividerColor.withOpacity(0.2),thickness: 1,indent: 30,endIndent: 35,)
-                      ],
-                    );
-                  });
-                },
+                          Divider(color: Theme.of(context).dividerColor.withOpacity(0.3),thickness: 1,)
+                        ],
+                      );
+                    });
+                  },
+                ),
               ),
               SizedBox(height: 30)
             ],

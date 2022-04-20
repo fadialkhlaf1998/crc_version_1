@@ -109,7 +109,7 @@ class ContactToUs extends StatelessWidget {
               },
               child: AnimatedContainer(
                 duration: Duration(milliseconds: 350),
-                width: contactUsController.phoneButton.value ? 60 :  MediaQuery.of(context).size.width * 0.6 ,
+                width: contactUsController.phoneButton.value ? 60 :  MediaQuery.of(context).size.width * 0.6,
                 height: 60,
                 decoration: BoxDecoration(
                     color: Colors.white,
@@ -135,7 +135,7 @@ class ContactToUs extends StatelessWidget {
                     SizedBox(width: contactUsController.phoneButton.value ? 0 : 10 ),
                     AnimatedContainer(
                         duration: Duration(milliseconds: 300),
-                        width: contactUsController.phoneButton.value ? 0 :  MediaQuery.of(context).size.width * 0.3,
+                        width: contactUsController.phoneButton.value ? 0 :  150,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Text('+971 55 345 1555',style: TextStyle(color: Color(0XFF202428),fontSize: 15,fontWeight: FontWeight.bold)),
@@ -179,7 +179,7 @@ class ContactToUs extends StatelessWidget {
                     SizedBox(width: contactUsController.whatsappButton.value ? 0 : 10 ),
                     AnimatedContainer(
                         duration: Duration(milliseconds: 300),
-                        width: contactUsController.whatsappButton.value ? 0 :  MediaQuery.of(context).size.width * 0.3,
+                        width: contactUsController.whatsappButton.value ? 0 :  150,
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Text('+971 55 345 1555',style: TextStyle(color: Color(0XFF202428),fontSize: 15,fontWeight: FontWeight.bold)),

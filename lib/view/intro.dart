@@ -26,8 +26,8 @@ class IntroView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _header(),
-                _carImage(),
+                _header(context),
+                _carImage(context),
                 _title(context),
               ],
             ),
@@ -37,63 +37,73 @@ class IntroView extends StatelessWidget {
     );
   }
 
-  _header(){
+  _header(context){
     return Row(
       children: [
         Expanded(
           flex: 1,
           child: Global.lang_code == 'en'
-              ? Container(child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png') : Image.asset('assets/images/logo_light.png'), )
+              ? Container(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
+            child: MyTheme.isDarkTheme.value
+              ? Image.asset('assets/images/logo_dark.png', fit: BoxFit.cover,)
+              : Image.asset('assets/images/logo_light.png',fit: BoxFit.cover), )
               : Image.asset('assets/images/lines.png', fit: BoxFit.cover,),
         ),
         Expanded(
           flex: 1,
           child: Global.lang_code == 'en'
               ? Image.asset('assets/images/lines.png', fit: BoxFit.cover,)
-              : Container(child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/logo_dark.png') : Image.asset('assets/images/logo_light.png'), )
+              : Container(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
+            child: MyTheme.isDarkTheme.value
+              ? Image.asset('assets/images/logo_dark.png', fit: BoxFit.cover)
+              : Image.asset('assets/images/logo_light.png', fit: BoxFit.cover),
+          )
         ),
 
       ],
     );
   }
-  _carImage(){
+  _carImage(context){
     return Container(
-      child: Image.asset('assets/images/car.png'),
+      height: MediaQuery.of(context).size.height * 0.25,
+      child: Image.asset('assets/images/car.png', fit: BoxFit.cover),
     );
   }
   _title(context){
     return Container(
       height: MediaQuery.of(context).size.height * 0.45-MediaQuery.of(context).padding.top,
     child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Global.lang_code == 'en'
-              ? Expanded(
-            flex: 5,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: Image.asset('assets/images/english_title.png',fit: BoxFit.contain,),
-            ),
-          )
-              :  Expanded(
-            flex: 1,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.35,
-                child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/arabic_title_light.png' ): Image.asset('assets/images/arabic_title.png'),
-            ),
+              ? Container(
+                padding: EdgeInsets.symmetric(horizontal: 15),
+                width: MediaQuery.of(context).size.width * 0.7,
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: Image.asset('assets/images/english_title.png',fit: BoxFit.contain,),
+              )
+              :  Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: MyTheme.isDarkTheme.value
+                ? Image.asset('assets/images/arabic_title_light.png',fit: BoxFit.contain)
+                : Image.asset('assets/images/arabic_title.png',fit: BoxFit.contain,),
           ),
           Global.lang_code == 'en'
-              ? Expanded(
-            flex: 1,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.35,
-              child: MyTheme.isDarkTheme.value ?  Image.asset('assets/images/arabic_title_light.png' ): Image.asset('assets/images/arabic_title.png'),            ),
-          )
-              :  Expanded(
-            flex: 5,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              child: Image.asset('assets/images/english_title.png',fit: BoxFit.contain,),
-            ),
+              ? Container(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: MediaQuery.of(context).size.height * 0.4,
+                child: MyTheme.isDarkTheme.value
+                    ? Image.asset('assets/images/arabic_title_light.png',fit: BoxFit.contain)
+                    : Image.asset('assets/images/arabic_title.png',fit: BoxFit.contain,),
+              )
+              :  Container(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            width: MediaQuery.of(context).size.width * 0.7,
+            height: MediaQuery.of(context).size.height * 0.4,
+            child: Image.asset('assets/images/english_title.png',fit: BoxFit.contain,),
           ),
         ],
       ),
